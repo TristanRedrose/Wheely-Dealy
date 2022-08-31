@@ -1,0 +1,29 @@
+.listing-container {
+    box-sizing: border-box;
+    width: 80%;
+    height: 120px;
+    border: 1px red solid;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.listing-info {
+    padding: 16px 24px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.listing-image-container {
+    width: 40%;
+}
+
+.listing-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}

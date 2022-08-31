@@ -1,0 +1,33 @@
+.error-page-container {
+    box-sizing: border-box;
+    padding: 50px;
+    min-height: 95vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+}
+
+.cat-container {
+    margin: 40px 0px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#happy-cat-image {
+    width: 100%;
+}
+
+.error-page-container h3 {
+    text-align: center;
+}
+
+.back-link {
+    text-decoration: none;
+}
+
+.back-link:hover .lobster-text{
+    color:lightblue;
+}
