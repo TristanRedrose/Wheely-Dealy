@@ -1,20 +1,25 @@
 import React from "react";
+import { Listing } from "../../Stores/ListingStore";
 
-const Listing: React.FC = () => {
+interface ListingProps {
+    listing: Listing
+}
+
+const ListingComponent: React.FC<ListingProps> = ({listing}) => {
     return (
         <>
             <div className="listing-container">
                 <div className="listing-image-container">
-                    <img src="Images/Cars/mercedes.jpg" className="listing-image" alt="car-showcase"></img>
+                    <img src={listing.image} className="listing-image" alt="car-showcase"></img>
                 </div>
                 <div className="listing-info">
-                    <h5>BMW</h5>
-                    <p>Alistair 736</p>
-                    <p className="price-text">$123 000</p>
+                    <h5>{listing.make}</h5>
+                    <p>{listing.type}</p>
+                    <p className="price-text">${listing.price}</p>
                 </div>
             </div>
         </>
     )
 }
 
-export default Listing;
+export default ListingComponent;
