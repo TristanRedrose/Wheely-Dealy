@@ -10,7 +10,7 @@ const PageNotFound: React.FC = () => {
                 <div className="cat-container">
                     <img id="happy-cat-image" src="Images/404/Happy-cat.webp" alt="happy-cat"></img>
                 </div>
-                <Link to="/" className="back-link">
+                <Link to="/" className="router-link">
                     <h3 className="lobster-text">Return</h3>
                 </Link>
             </div>

@@ -4,8 +4,24 @@ import "./Listings.css";
 
 const Listings: React.FC = () => {
     return (
-        <>
-            <Listing></Listing>
+        <>  
+            <div className="listings">
+                <h2 className="lobster-text">All Listings</h2>
+                <div className="listings-container">
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                    <Listing></Listing>
+                </div>
+            </div>
         </>
     )
 }

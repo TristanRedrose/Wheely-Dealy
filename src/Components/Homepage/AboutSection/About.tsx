@@ -25,9 +25,9 @@ const About: React.FC = () => {
                     <h3>Drive into the sunset in your new car</h3>
                 </div>
             </div>
-            <Link to="listings">
+            <Link className="router-link" to="listings">
                 <div className="button-div">
-                    <h3 className="lobster-text">Browse now</h3>
+                    <h3>Browse now</h3>
                 </div>
             </Link>
         </div>

@@ -46,6 +46,15 @@ p,h6 {
   color: crimson;
 }
 
+.router-link {
+  text-decoration: none;
+  color: black;
+}
+
+.router-link:hover {
+  color: crimson;
+}
+
 @media only screen and (max-width: 640px) {
   h1 {
     font-size: 32px;
@@ -63,7 +72,7 @@ p,h6 {
     font-size: 16px;
   }
   
-  h5 {
+  h5, li {
     font-size: 14px;
   }
   

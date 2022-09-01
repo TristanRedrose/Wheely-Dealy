@@ -62,22 +62,21 @@
 .button-div {
     box-sizing: border-box;
     width: fit-content;
-    background-color: #f9d102;
     padding: 8px 16px;
-    border-radius: 16px;
-    border: 1px red solid;
-    -webkit-box-shadow: 4px 4px 8px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 4px 4px 8px 0px rgba(0,0,0,0.75);
-    box-shadow: 4px 4px 8px 0px rgba(0,0,0,0.75);
+    border-radius: 4px;
+    color: whitesmoke;
+    background-color: crimson;
+    border: 1px crimson solid;
 }
 
 .button-div:hover {
-    background-color: lightskyblue;
+    color: crimson;
+    background-color: whitesmoke;
     cursor: pointer;
 }
 
 .button-div:active {
-    box-shadow: none;
+    opacity: 0.6;
 }
 
 @media screen and (max-width: 640px) {

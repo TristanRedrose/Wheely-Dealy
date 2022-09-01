@@ -12,10 +12,10 @@ const NavbarComponent: React.FC = () => {
                 <div>
                     <ul>
                         <li>
-                            <Link to="/">Home</Link>
+                            <Link className="router-link" to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="listings">Listings</Link>
+                            <Link className="router-link" to="listings">Listings</Link>
                         </li>
                     </ul>
                 </div>

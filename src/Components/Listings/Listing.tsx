@@ -4,13 +4,13 @@ const Listing: React.FC = () => {
     return (
         <>
             <div className="listing-container">
-                <div className="listing-info">
-                    <h3>Make: BMW</h3>
-                    <h3>Model: Alistair 736</h3>
-                    <h3>Price: 123 000 $</h3>
-                </div>
                 <div className="listing-image-container">
-                    <img src="Images/About/sunset-car.jpg" className="listing-image" alt="car-showcase"></img>
+                    <img src="Images/Cars/mercedes.jpg" className="listing-image" alt="car-showcase"></img>
+                </div>
+                <div className="listing-info">
+                    <h5>BMW</h5>
+                    <p>Alistair 736</p>
+                    <p className="price-text">$123 000</p>
                 </div>
             </div>
         </>

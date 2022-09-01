@@ -24,10 +24,6 @@
     text-align: center;
 }
 
-.back-link {
-    text-decoration: none;
-}
-
-.back-link:hover .lobster-text{
+.router-link:hover .lobster-text{
     color:lightblue;
 }
