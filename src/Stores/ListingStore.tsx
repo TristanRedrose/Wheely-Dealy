@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 import { CarListing } from "../Types/listing.type";
-
+import { Company } from "../Types/company.type";
 
 const mockList: CarListing[] = [
     {
@@ -185,15 +185,90 @@ const mockList: CarListing[] = [
         price: 15000,
         image:"Images/Cars/volkswagen.png"
     },
+    {
+        id: 27,
+        make: "Volkswagen",
+        type: "Polo",
+        price: 15000,
+        image:"Images/Cars/volkswagen.png"
+    },
+    {
+        id: 28,
+        make: "Volkswagen",
+        type: "Polo",
+        price: 15000,
+        image:"Images/Cars/volkswagen.png"
+    },
+    {
+        id: 29,
+        make: "BMW",
+        type: "A-class",
+        price: 22000,
+        image:"Images/Cars/Bmw.png"
+    },
+    {
+        id: 30,
+        make: "Ford",
+        type: "Focus",
+        price: 10000,
+        image:"Images/Cars/ford.png"
+    },
+    {
+        id: 31,
+        make: "Mercedes",
+        type: "Benz-55",
+        price: 13000,
+        image:"Images/Cars/mercedes.png"
+    },
+    {
+        id: 32,
+        make: "Opel",
+        type: "Corsa",
+        price: 8000,
+        image:"Images/Cars/opel.png"
+    },
+    {
+        id: 33,
+        make: "Volkswagen",
+        type: "Polo",
+        price: 15000,
+        image:"Images/Cars/volkswagen.png"
+    },
+]
+
+const companyList: Company[] = [
+    {
+        id:1,
+        company: "BMW",
+    },
+    {
+        id:2,
+        company: "Ford",
+    },
+    {
+        id:3,
+        company: "Mercedes",
+    },
+    {
+        id:4,
+        company: "Volkswagen",
+    },
+    {
+        id:5,
+        company: "Opel",
+    },
 ]
 
 export class ListingStoreImpl {
 
     listings: CarListing[] = mockList;
 
+    companyList: Company[] = companyList
+
     constructor() {
         makeObservable(this, {
-            listings: observable
+            listings: observable,
+            companyList: observable,
         });
     }
 }

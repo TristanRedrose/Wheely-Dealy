@@ -17,7 +17,7 @@
 }
 
 .listings-container {
-    margin: 50px 0px;
+    margin: 100px 0px 50px 0px;
     width: 85%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -66,4 +66,12 @@
     position: absolute;
     bottom: 24px;
     text-align: center;
+}
+
+.filter {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px crimson solid;
+    color: whitesmoke;
+    background-color: crimson;
 }
