@@ -1,8 +1,8 @@
 import React from "react";
-import { Listing } from "../../Stores/ListingStore";
+import { CarListing } from "../../Types/listing.type";
 
 interface ListingProps {
-    listing: Listing
+    listing: CarListing
 }
 
 const ListingComponent: React.FC<ListingProps> = ({listing}) => {

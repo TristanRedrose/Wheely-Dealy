@@ -7,9 +7,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.listing-title {
+    position: absolute;
+    top: 24px;
+    text-align: center;
 }
 
 .listings-container {
+    margin: 50px 0px;
     width: 85%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -48,4 +56,14 @@
 
 .price-text {
     margin-top: 8px;
+}
+
+.page-info {
+    margin: 16px 0px;
+}
+
+.pagination-box {
+    position: absolute;
+    bottom: 24px;
+    text-align: center;
 }

@@ -1,7 +1,8 @@
 import { makeObservable, observable } from "mobx";
+import { CarListing } from "../Types/listing.type";
 
 
-const mockList: Listing[] = [
+const mockList: CarListing[] = [
     {
         id: 1,
         make: "BMW",
@@ -21,7 +22,7 @@ const mockList: Listing[] = [
         make: "Mercedes",
         type: "Benz-55",
         price: 13000,
-        image:"Images/Cars/mercedes.jpg"
+        image:"Images/Cars/mercedes.png"
     },
     {
         id: 4,
@@ -56,7 +57,7 @@ const mockList: Listing[] = [
         make: "Mercedes",
         type: "Benz-55",
         price: 13000,
-        image:"Images/Cars/mercedes.jpg"
+        image:"Images/Cars/mercedes.png"
     },
     {
         id: 9,
@@ -91,7 +92,7 @@ const mockList: Listing[] = [
         make: "Mercedes",
         type: "Benz-55",
         price: 13000,
-        image:"Images/Cars/mercedes.jpg"
+        image:"Images/Cars/mercedes.png"
     },
     {
         id: 14,
@@ -126,7 +127,7 @@ const mockList: Listing[] = [
         make: "Mercedes",
         type: "Benz-55",
         price: 13000,
-        image:"Images/Cars/mercedes.jpg"
+        image:"Images/Cars/mercedes.png"
     },
     {
         id: 19,
@@ -142,19 +143,53 @@ const mockList: Listing[] = [
         price: 15000,
         image:"Images/Cars/volkswagen.png"
     },
+    {
+        id: 21,
+        make: "Volkswagen",
+        type: "Polo",
+        price: 15000,
+        image:"Images/Cars/volkswagen.png"
+    },
+    {
+        id: 22,
+        make: "BMW",
+        type: "A-class",
+        price: 22000,
+        image:"Images/Cars/Bmw.png"
+    },
+    {
+        id: 23,
+        make: "Ford",
+        type: "Focus",
+        price: 10000,
+        image:"Images/Cars/ford.png"
+    },
+    {
+        id: 24,
+        make: "Mercedes",
+        type: "Benz-55",
+        price: 13000,
+        image:"Images/Cars/mercedes.png"
+    },
+    {
+        id: 25,
+        make: "Opel",
+        type: "Corsa",
+        price: 8000,
+        image:"Images/Cars/opel.png"
+    },
+    {
+        id: 26,
+        make: "Volkswagen",
+        type: "Polo",
+        price: 15000,
+        image:"Images/Cars/volkswagen.png"
+    },
 ]
-
-export interface Listing {
-    id: number,
-    make: string,
-    type: string,
-    price: number,
-    image: string,
-}
 
 export class ListingStoreImpl {
 
-    listings: Listing[] = mockList;
+    listings: CarListing[] = mockList;
 
     constructor() {
         makeObservable(this, {

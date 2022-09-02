@@ -1,0 +1,29 @@
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.page-button {
+    padding: 0px 16px;
+    margin: 0px 16px;
+    box-sizing: border-box;
+    height: 30px;
+    background-color: crimson;
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid crimson;
+    border-radius: 6px;
+}
+
+.page-button:hover {
+    background-color: whitesmoke;
+    color: crimson;
+}
+
+.page-button:active {
+    opacity: 0.6;
+}
