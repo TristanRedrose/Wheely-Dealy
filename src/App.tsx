@@ -6,7 +6,7 @@ import Homepage from './Components/Homepage/Homepage/Homepage';
 import { Routes, Route } from 'react-router-dom';
 import PageNotFound from './Components/404Page/PageNotFound';
 import Listings from './Components/Listings/Listings';
-import { ListingStore } from './Stores/ListingStore';
+import { ListingsProvider } from './Context/ListingsContext';
 
 const App: React.FC = () => {
   return (
@@ -14,7 +14,11 @@ const App: React.FC = () => {
       <NavbarComponent />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="listings" element={<Listings listingStore={ListingStore}/>} />
+        <Route path="listings" 
+          element={<ListingsProvider>
+            <Listings />
+          </ListingsProvider>} 
+        />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

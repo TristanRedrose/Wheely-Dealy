@@ -4,4 +4,5 @@ export interface CarListing {
     type: string,
     price: number,
     image: string,
+    horsepower: number,
 }

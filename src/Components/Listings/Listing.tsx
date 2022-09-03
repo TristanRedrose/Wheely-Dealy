@@ -15,6 +15,7 @@ const ListingComponent: React.FC<ListingProps> = ({listing}) => {
                 <div className="listing-info">
                     <h5>{listing.make}</h5>
                     <p>{listing.type}</p>
+                    <p className="price-text">{listing.horsepower}HP</p>
                     <p className="price-text">${listing.price}</p>
                 </div>
             </div>

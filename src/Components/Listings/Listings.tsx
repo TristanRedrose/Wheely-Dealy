@@ -1,59 +1,50 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect} from "react";
 import Listing from "./Listing";
 import "./Listings.css";
-import { ListingStoreImpl } from "../../Stores/ListingStore";
-import { CarListing } from "../../Types/listing.type";
+import { observer } from "mobx-react-lite"
+
 import Pagination from "./Pagination/Pagination";
+import { useListingsStore } from "../../Context/ListingsContext";
 
-interface ListingStoreProps {
-    listingStore: ListingStoreImpl
-}
+const Listings: React.FC = observer(() => {
 
-const Listings: React.FC<ListingStoreProps> = ({listingStore}) => {
-
-    let [filteredList, setFilteredList] = useState<CarListing[]>(listingStore.listings)
-    let [currentList, setCurrentList] = useState<CarListing[]>([])
-
-    let [page, setPage] = useState<number>(1)
-    let listingsPerPage: number = 8
-    let maxPages: number = Math.ceil(filteredList.length / listingsPerPage)
-
-    function filterList(event: React.FormEvent<HTMLSelectElement>): void  {
-        if (event.currentTarget.value === "All") {
-            setFilteredList(filteredList = listingStore.listings);
-            return;
-        }
-
-        setFilteredList(filteredList = listingStore.listings.filter(item => item.make === event.currentTarget.value));
-    }
+    const listingStore = useListingsStore()
 
     useEffect(() => {
-        setCurrentList(currentList = filteredList.slice((page - 1) * 8, page* 8))
-    }, [page, filteredList])
+        listingStore.paginate()
+    }, [listingStore.page, listingStore.filteredList])
 
     return (
         <div className="listings">
             <div className="listing-title">
                 <h2 className="lobster-text">All Listings</h2>
-                <h5 className="page-info">Page {page} of {maxPages}</h5>
-                <select className="filter" defaultValue={"All"} onChange={useMemo(() => filterList, [])}>
+                <h5 className="page-info">Page {listingStore.page} of {listingStore.maxPages}</h5>
+                <select className="filter" defaultValue={"All"} onChange={(e) => listingStore.filterList(e)}>
                     <option value={"All"}>All</option>
                     {listingStore.companyList.map(item => {
                         return <option key={item.id} value={item.company}>{item.company}</option>
                     })}
                 </select>
+                <div className="sorting-container">
+                <h5>Horsepower:</h5>
+                <select className="filter" defaultValue={"none"} onChange={(e) => listingStore.sortByHorsepower(e)}>
+                    <option value={"none"}>All</option>
+                    <option value={"highest"}>Highest first</option>
+                    <option value={"lowest"}>Lowest first</option>
+                </select>
+                </div>
             </div>
             <div className="listings-container">
-                {currentList.map(listing => {
+                {listingStore.currentList.map(listing => {
                     return <Listing key={listing.id} listing={listing} />
                 })}
             </div>
             <div className="pagination-box">
-                <h5 className="page-info">Page {page} of {maxPages}</h5>
-                <Pagination setPage={setPage} page={page} maxPages={maxPages} />
+                <h5 className="page-info">Page {listingStore.page} of {listingStore.maxPages}</h5>
+                <Pagination />
             </div>
         </div>
     )
-}
+})
 
 export default Listings;
