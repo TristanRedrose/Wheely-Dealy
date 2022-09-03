@@ -12,7 +12,7 @@ const Listings: React.FC = observer(() => {
 
     useEffect(() => {
         listingStore.paginate()
-    }, [listingStore.page, listingStore.filteredList])
+    }, [listingStore.page, listingStore.filteredList, listingStore.listings])
 
     return (
         <div className="listings">
@@ -35,7 +35,7 @@ const Listings: React.FC = observer(() => {
                 </div>
             </div>
             <div className="listings-container">
-                {listingStore.currentList.map(listing => {
+                {listingStore.currentPageList.map(listing => {
                     return <Listing key={listing.id} listing={listing} />
                 })}
             </div>

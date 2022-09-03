@@ -302,12 +302,16 @@ export class ListingStoreImpl {
     page:number = 1;
 
     listingsPerPage: number = 8;
-
-    filteredList:CarListing[] = mockList;
     
     maxPages: number = 0
 
-    currentList: CarListing[] = [];
+    isFiltered: boolean = false
+
+    isSorted: boolean = false
+
+    currentPageList: CarListing[] = [];
+
+    filteredList:CarListing[] = [];
 
     sortedList: CarListing[] = [];
 
@@ -319,8 +323,10 @@ export class ListingStoreImpl {
             listingsPerPage: observable,
             filteredList: observable,
             maxPages: observable,
-            currentList: observable,
+            currentPageList: observable,
             sortedList: observable,
+            isFiltered: observable,
+            isSorted: observable,
             filterList: action,
             sortByHorsepower: action,
             paginate: action,
@@ -337,32 +343,53 @@ export class ListingStoreImpl {
     filterList(event: React.FormEvent<HTMLSelectElement>): void  {
         this.page = 1;
         if (event.currentTarget.value === "All") {
-            this.filteredList = this.listings;
+            this.isFiltered = false;
+            this.filteredList = [];
             return;
         }
 
+        this.isFiltered = true;
         this.filteredList = this.listings.filter(item => item.make === event.currentTarget.value);
     }
 
     sortByHorsepower(event: React.FormEvent<HTMLSelectElement>): void {
-        this.page = 1;
         if (event.currentTarget.value === "none") {
-            this.filteredList = this.listings;
+            this.isSorted = false;
             return;
         }
 
         if (event.currentTarget.value === "highest") {
-            this.filteredList = this.filteredList.sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
+            this.isSorted = true;
+
+            if (this.isFiltered) {
+                this.filteredList = [...this.filteredList].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
+            }
+
+            this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
             return;
         }
 
-        this.filteredList = this.filteredList.sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
+        this.isSorted = true;
+
+        if (this.isFiltered) {
+            this.filteredList = [...this.filteredList].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
+        }
+
+        this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
     }
 
     paginate():void {
-        this.currentList = this.filteredList.slice((this.page - 1) * 8, this.page* 8)
-        this.getMaxPages();
-        console.log( this.currentList)
+        let currentList: CarListing[] = [];
+
+        if (this.isFiltered === true) {
+            currentList = this.filteredList;
+        } else {
+            currentList = this.listings;
+        }
+
+        this.maxPages = Math.ceil(currentList.length / this.listingsPerPage);
+
+        this.currentPageList = currentList.slice((this.page - 1) * 8, this.page* 8);
     }
 
     incrementPage() {
