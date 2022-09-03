@@ -299,6 +299,14 @@ export class ListingStoreImpl {
 
     companyList: Company[] = companyList;
 
+    currentPageList: CarListing[] = [];
+
+    filteredList:CarListing[] = [];
+
+    sortedList: CarListing[] = [];
+
+    unsortedList: CarListing[] = [];
+
     page:number = 1;
 
     listingsPerPage: number = 8;
@@ -308,12 +316,6 @@ export class ListingStoreImpl {
     isFiltered: boolean = false
 
     isSorted: boolean = false
-
-    currentPageList: CarListing[] = [];
-
-    filteredList:CarListing[] = [];
-
-    sortedList: CarListing[] = [];
 
     constructor() {
         makeObservable(this, {
@@ -350,11 +352,19 @@ export class ListingStoreImpl {
 
         this.isFiltered = true;
         this.filteredList = this.listings.filter(item => item.make === event.currentTarget.value);
+
+        this.unsortedList = mockList.filter(item => item.make === event.currentTarget.value);
     }
 
     sortByHorsepower(event: React.FormEvent<HTMLSelectElement>): void {
         if (event.currentTarget.value === "none") {
             this.isSorted = false;
+            if (this.isFiltered) {
+                this.filteredList = this.unsortedList;
+                return;
+            }
+
+            this.listings = mockList;
             return;
         }
 
