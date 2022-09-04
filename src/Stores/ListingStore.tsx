@@ -369,11 +369,11 @@ export class ListingStoreImpl {
             filteredList: observable,
             maxPages: observable,
             currentPageList: observable,
-            sortedList: observable,
             isFiltered: observable,
             isSorted: observable,
             filterList: action,
             sortByHorsepower: action,
+            sortByPrice: action,
             paginate: action,
             incrementPage: action,
             decrementPage: action,
@@ -396,7 +396,7 @@ export class ListingStoreImpl {
         } else {
             this.filter.make = event.currentTarget.value
         }
-
+        
         if (!this.filter.engine && !this.filter.make) {
             this.filteredList = [];
             this.isFiltered = false;
@@ -405,23 +405,31 @@ export class ListingStoreImpl {
 
         this.isFiltered = true;
 
-        let tempList: CarListing[] = mockList
+        let tempList: CarListing[];
+
+        if (this.isSorted) {
+            tempList = this.sortedList;
+        } else {
+            tempList = mockList;
+        }
+
+        let unsortedTempList: CarListing[] = mockList
 
         if (this.filter.make) {
-            tempList = [...tempList].filter(item => item.make === this.filter.make);
+            tempList = tempList.filter(item => item.make === this.filter.make);
 
-            this.unsortedList = mockList.filter(item => item.make === this.filter.make);
+            unsortedTempList = unsortedTempList.filter(item => item.make === this.filter.make);
         }
 
         if (this.filter.engine) {
-            tempList= [...tempList].filter(item => item.engine === this.filter.engine);
+            tempList= tempList.filter(item => item.engine === this.filter.engine);
 
-            this.unsortedList = mockList.filter(item => item.engine === this.filter.engine);
+            unsortedTempList = unsortedTempList.filter(item => item.engine === this.filter.engine);
         }
 
+        this.unsortedList = unsortedTempList;
+
         this.filteredList = tempList;
-        console.log(this.filteredList);
-        console.log(this.filter);
     }
 
     sortByHorsepower(event: React.FormEvent<HTMLSelectElement>): void {
@@ -441,9 +449,11 @@ export class ListingStoreImpl {
 
             if (this.isFiltered) {
                 this.filteredList = [...this.filteredList].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
+                this.sortedList = this.filteredList;
             }
 
             this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
+            this.sortedList = this.listings;
             return;
         }
 
@@ -451,9 +461,47 @@ export class ListingStoreImpl {
 
         if (this.isFiltered) {
             this.filteredList = [...this.filteredList].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
+            this.sortedList = this.filteredList;
         }
 
         this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
+        this.sortedList = this.listings;
+    }
+
+    sortByPrice(event: React.FormEvent<HTMLSelectElement>): void {
+        if (event.currentTarget.value === "none") {
+            this.isSorted = false;
+            if (this.isFiltered) {
+                this.filteredList = this.unsortedList;
+                return;
+            }
+
+            this.listings = mockList;
+            return;
+        }
+
+        if (event.currentTarget.value === "highest") {
+            this.isSorted = true;
+
+            if (this.isFiltered) {
+                this.filteredList = [...this.filteredList].sort(function(listing1, listing2){return listing2.price - listing1.price});
+                this.sortedList = this.filteredList;
+            }
+
+            this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.price - listing1.price});
+            this.sortedList = this.listings;
+            return;
+        }
+
+        this.isSorted = true;
+
+        if (this.isFiltered) {
+            this.filteredList = [...this.filteredList].sort(function(listing1, listing2){return listing1.price - listing2.price});
+            this.sortedList = this.filteredList;
+        }
+
+        this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.price - listing2.price});
+        this.sortedList = this.listings;
     }
 
     paginate():void {

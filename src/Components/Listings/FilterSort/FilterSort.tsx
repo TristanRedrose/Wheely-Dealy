@@ -40,7 +40,7 @@ const ListingsFilterSort = () => {
                 </div>
                 <div className="label-select-box">
                     <h6>Price:</h6>
-                    <select className="filter" defaultValue={"none"} onChange={(e) => listingStore.sortByHorsepower(e)}>
+                    <select className="filter" defaultValue={"none"} onChange={(e) => listingStore.sortByPrice(e)}>
                         <option value={"none"}>N/A</option>
                         <option value={"highest"}>Highest first</option>
                         <option value={"lowest"}>Lowest first</option>
