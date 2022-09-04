@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite"
 
 import Pagination from "./Pagination/Pagination";
 import { useListingsStore } from "../../Context/ListingsContext";
+import ListingsFilterSort from "./FilterSort/FilterSort";
 
 const Listings: React.FC = observer(() => {
 
@@ -19,20 +20,7 @@ const Listings: React.FC = observer(() => {
             <div className="listing-title">
                 <h2 className="lobster-text">All Listings</h2>
                 <h5 className="page-info">Page {listingStore.page} of {listingStore.maxPages}</h5>
-                <select className="filter" defaultValue={"All"} onChange={(e) => listingStore.filterList(e)}>
-                    <option value={"All"}>All</option>
-                    {listingStore.companyList.map(item => {
-                        return <option key={item.id} value={item.company}>{item.company}</option>
-                    })}
-                </select>
-                <div className="sorting-container">
-                <h5>Horsepower:</h5>
-                <select className="filter" defaultValue={"none"} onChange={(e) => listingStore.sortByHorsepower(e)}>
-                    <option value={"none"}>All</option>
-                    <option value={"highest"}>Highest first</option>
-                    <option value={"lowest"}>Lowest first</option>
-                </select>
-                </div>
+                <ListingsFilterSort />
             </div>
             <div className="listings-container">
                 {listingStore.currentPageList.map(listing => {

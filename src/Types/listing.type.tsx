@@ -5,4 +5,5 @@ export interface CarListing {
     price: number,
     image: string,
     horsepower: number,
+    engine:string
 }
