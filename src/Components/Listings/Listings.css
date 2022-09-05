@@ -17,13 +17,12 @@
 }
 
 .listings-container {
-    margin: 100px 0px 50px 0px;
+    margin: 250px 0px 100px 0px;
     width: 85%;
     max-width: 1300px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     row-gap: 25px;
-    padding: 125px 0px;
     justify-items:center;
 }
 
@@ -67,4 +66,16 @@
     position: absolute;
     bottom: 24px;
     text-align: center;
+}
+
+@media only screen and (max-width: 640px) {
+    .listings-container {
+        margin: 200px 0px 75px 0px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .listings-container {
+        margin: 150px 0px 75px 0px;
+    }
 }
