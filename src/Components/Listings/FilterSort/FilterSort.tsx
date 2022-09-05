@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useRef} from "react";
 import { useListingsStore } from "../../../Context/ListingsContext";
-import "./FilterSort.css"
+import "./FilterSort.css";
 
 const ListingsFilterSort = () => {
 
     const listingStore = useListingsStore();
+
+    const priceFilter = useRef<null | HTMLSelectElement>(null);
+    const horsepowerFilter = useRef<null | HTMLSelectElement>(null);
 
     return (
         <div className="filter-sort-container">
@@ -32,7 +35,11 @@ const ListingsFilterSort = () => {
                 <h5>Sort by:</h5>
                 <div className="label-select-box">
                     <h6>Horsepower:</h6>
-                    <select className="filter" defaultValue={"none"} onChange={(e) => listingStore.sortByHorsepower(e)}>
+                    <select ref={horsepowerFilter} className="filter" defaultValue={"none"} 
+                        onChange={(e) => {
+                            priceFilter.current!.value = "none";
+                            listingStore.sortByHorsepower(e)}
+                        }>
                         <option value={"none"}>N/A</option>
                         <option value={"highest"}>Highest first</option>
                         <option value={"lowest"}>Lowest first</option>
@@ -40,7 +47,11 @@ const ListingsFilterSort = () => {
                 </div>
                 <div className="label-select-box">
                     <h6>Price:</h6>
-                    <select className="filter" defaultValue={"none"} onChange={(e) => listingStore.sortByPrice(e)}>
+                    <select ref={priceFilter} className="filter" defaultValue={"none"} 
+                        onChange={(e) => {
+                            horsepowerFilter.current!.value = "none";
+                            listingStore.sortByPrice(e)}
+                        }>
                         <option value={"none"}>N/A</option>
                         <option value={"highest"}>Highest first</option>
                         <option value={"lowest"}>Lowest first</option>
