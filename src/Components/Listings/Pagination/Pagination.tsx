@@ -4,22 +4,22 @@ import "./Pagination.css"
 
 const Pagination: React.FC = () => {
 
-    const listingsStore = useListingsStore();
+    const {page, maxPages, setPage, incrementPage, decrementPage} = useListingsStore();
 
     return (
         <div className="pagination">
-            {listingsStore.page > 1 && <div className="page-button" onClick={() => {
-                listingsStore.setPage(1)}}>
+            {page > 1 && <div className="page-button" onClick={() => {
+                setPage(1)}}>
                 <h5>1</h5>
             </div>}
-            {listingsStore.page > 1 && <div className="page-button" onClick={() => listingsStore.decrementPage()}>
+            {page > 1 && <div className="page-button" onClick={() => decrementPage()}>
                 <h5>Prev...</h5>
             </div>}
-            {listingsStore.page < listingsStore.maxPages && <div className="page-button" onClick={() => listingsStore.incrementPage()}>
+            {page < maxPages && <div className="page-button" onClick={() => incrementPage()}>
                 <h5>Next...</h5>
             </div>}
-            {listingsStore.page < listingsStore.maxPages && <div className="page-button" onClick={() => listingsStore.setPage(listingsStore.maxPages)}>
-                <h5>{listingsStore.maxPages}</h5>
+            {page < maxPages && <div className="page-button" onClick={() => setPage(maxPages)}>
+                <h5>{maxPages}</h5>
             </div>}
         </div>
     )

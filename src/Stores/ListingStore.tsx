@@ -54,11 +54,11 @@ export class ListingStore {
         });
     }
 
-    getMaxPages(): void {
+    getMaxPages = () => {
         this.maxPages = Math.ceil(this.filteredList.length / this.listingsPerPage)
     }
 
-    filterList(event: React.FormEvent<HTMLSelectElement>): void  {
+    filterList = (event: React.FormEvent<HTMLSelectElement>) =>  {
         this.page = 1;
         if (event.currentTarget.value === "M-N/A") {
             this.filter.make = null
@@ -105,7 +105,7 @@ export class ListingStore {
         this.filteredList = tempList;
     }
 
-    sortByHorsepower(event: React.FormEvent<HTMLSelectElement>): void {
+    sortByHorsepower = (event: React.FormEvent<HTMLSelectElement>) =>{
         if (event.currentTarget.value === "none") {
             this.isSorted = false;
             if (this.isFiltered) {
@@ -141,7 +141,7 @@ export class ListingStore {
         this.sortedList = this.listings;
     }
 
-    sortByPrice(event: React.FormEvent<HTMLSelectElement>): void {
+    sortByPrice = (event: React.FormEvent<HTMLSelectElement>) => {
         if (event.currentTarget.value === "none") {
             this.isSorted = false;
             if (this.isFiltered) {
@@ -177,7 +177,7 @@ export class ListingStore {
         this.sortedList = this.listings;
     }
 
-    paginate():void {
+    paginate = () => {
         let currentList: CarListing[] = [];
 
         if (this.isFiltered === true) {
@@ -191,23 +191,22 @@ export class ListingStore {
         this.currentPageList = currentList.slice((this.page - 1) * 8, this.page* 8);
     }
 
-    incrementPage() {
+    incrementPage = () => {
         if (this.page === this.maxPages) return;
 
         ++this.page;
     }
 
-    decrementPage() {
+    decrementPage = () => {
         if (this.page === 1 ) return;
 
         --this.page;
     }
 
-    setPage(page:number) {
+    setPage = (page:number) => {
         this.page = page;
         console.log(page);
     }
-
 }
 
 export const listingStore = new ListingStore();

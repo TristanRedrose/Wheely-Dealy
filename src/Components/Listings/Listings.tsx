@@ -9,26 +9,26 @@ import ListingsFilterSort from "./FilterSort/FilterSort";
 
 const Listings: React.FC = observer(() => {
 
-    const listingStore = useListingsStore()
+    const {page, maxPages, listings, filteredList, currentPageList, paginate} = useListingsStore()
 
     useEffect(() => {
-        listingStore.paginate()
-    }, [listingStore.page, listingStore.filteredList, listingStore.listings])
+        paginate()
+    }, [page, filteredList, listings])
 
     return (
         <div className="listings">
             <div className="listing-title">
                 <h2 className="lobster-text">All Listings</h2>
-                <h5 className="page-info">Page {listingStore.page} of {listingStore.maxPages}</h5>
+                <h5 className="page-info">Page {page} of {maxPages}</h5>
                 <ListingsFilterSort />
             </div>
             <div className="listings-container">
-                {listingStore.currentPageList.map(listing => {
+                {currentPageList.map(listing => {
                     return <Listing key={listing.id} listing={listing} />
                 })}
             </div>
             <div className="pagination-box">
-                <h5 className="page-info">Page {listingStore.page} of {listingStore.maxPages}</h5>
+                <h5 className="page-info">Page {page} of {maxPages}</h5>
                 <Pagination />
             </div>
         </div>
