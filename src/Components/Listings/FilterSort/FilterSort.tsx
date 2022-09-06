@@ -15,7 +15,7 @@ const ListingsFilterSort = () => {
                 <h5>Filter by:</h5>
                 <div className="label-select-box">
                     <h6>Make:</h6>
-                    <select className="filter" defaultValue={"All"} onChange={(e) => listingStore.filterList(e)}>
+                    <select title="company-filter" className="filter" defaultValue={"All"} onChange={(e) => listingStore.filterList(e)}>
                         <option value={"M-N/A"}>All</option>
                         {listingStore.companyList.map(item => {
                             return <option key={item.id} value={item.company}>{item.company}</option>
@@ -24,7 +24,7 @@ const ListingsFilterSort = () => {
                 </div>
                 <div className="label-select-box">
                     <h6>Engine:</h6>
-                    <select className="filter" defaultValue={"All"} onChange={(e) => listingStore.filterList(e)}>
+                    <select title="engine-filter" className="filter" defaultValue={"All"} onChange={(e) => listingStore.filterList(e)}>
                         <option value={"E-N/A"}>All</option>
                         <option value={"petrol"}>Petrol</option>
                         <option value={"diesel"}>Diesel</option>
@@ -35,7 +35,7 @@ const ListingsFilterSort = () => {
                 <h5>Sort by:</h5>
                 <div className="label-select-box">
                     <h6>Horsepower:</h6>
-                    <select ref={horsepowerFilter} className="filter" defaultValue={"none"} 
+                    <select title="horsepower-sort" ref={horsepowerFilter} className="filter" defaultValue={"none"} 
                         onChange={(e) => {
                             priceFilter.current!.value = "none";
                             listingStore.sortByHorsepower(e)}
@@ -47,7 +47,7 @@ const ListingsFilterSort = () => {
                 </div>
                 <div className="label-select-box">
                     <h6>Price:</h6>
-                    <select ref={priceFilter} className="filter" defaultValue={"none"} 
+                    <select title="price-sort" ref={priceFilter} className="filter" defaultValue={"none"} 
                         onChange={(e) => {
                             horsepowerFilter.current!.value = "none";
                             listingStore.sortByPrice(e)}

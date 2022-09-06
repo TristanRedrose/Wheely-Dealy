@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { createContext } from "react";
-import { ListingStore, ListingStoreImpl } from "../Stores/ListingStore";
+import { listingStore, ListingStore } from "../Stores/ListingStore";
 
-const ListingsContext = createContext<ListingStoreImpl>({} as ListingStoreImpl);
+const ListingsContext = createContext<ListingStore>({} as ListingStore);
 
 export const ListingsProvider: React.FC<React.PropsWithChildren<{}>> = ({children}) => {
 
-    return <ListingsContext.Provider value={ListingStore}>
+    return <ListingsContext.Provider value={listingStore}>
         {children}
     </ListingsContext.Provider>
 }
