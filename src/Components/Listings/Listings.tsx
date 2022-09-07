@@ -1,28 +1,24 @@
 import React, { useEffect} from "react";
-import Listing from "./Listing";
-import "./Listings.css";
 import { observer } from "mobx-react-lite"
-
-import Pagination from "./Pagination/Pagination";
 import { useListingsStore } from "../../Context/ListingsContext";
+import "./Listings.css";
+import Listing from "./Listing";
 import ListingsFilterSort from "./FilterSort/FilterSort";
+import Pagination from "./Pagination/Pagination";
+
+
 
 const Listings: React.FC = observer(() => {
 
     const {page, maxPages, filter: {engine, make}, sorting:{sortBy, order}, currentPageList, paginate, getCurrentList} = useListingsStore();
 
     useEffect(() => {
-        if (page === 1) {
-            getCurrentList();
-            paginate();
-            return;
-        }
-        getCurrentList()
-    }, [engine, make, sortBy, order]);
+        getCurrentList();
+    }, [engine, make, sortBy, order, getCurrentList]);
 
     useEffect(() => {
         paginate();
-    }, [page]);
+    }, [page, paginate]);
 
     return (
         <div className="listings">

@@ -27,7 +27,7 @@ export class ListingStore {
 
     listingsPerPage: number = 8;
     
-    maxPages: number = 0
+    maxPages: number = 1
 
     constructor() {
         makeObservable(this, {
@@ -50,6 +50,7 @@ export class ListingStore {
     }
 
     getCurrentList = () => {
+        this.page = 1;
         this.listings = mockList;
 
         this.filterList();
@@ -60,7 +61,6 @@ export class ListingStore {
     }
 
     setFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
-        this.page = 1;
         if (event.currentTarget.value === "M-N/A") {
             this.filter.make = null
         } else if (event.currentTarget.value === "E-N/A") {
@@ -87,7 +87,6 @@ export class ListingStore {
     }
 
     setHorsepowerSorting = (event: React.FormEvent<HTMLSelectElement>) =>{
-        this.page = 1;
         if (event.currentTarget.value === "none") {
             this.sorting.sortBy = null;
             this.sorting.order = null;
@@ -100,7 +99,6 @@ export class ListingStore {
     }
 
     setPriceSorting = (event: React.FormEvent<HTMLSelectElement>) =>{
-        this.page = 1;
         if (event.currentTarget.value === "none") {
             this.sorting.sortBy = null;
             this.sorting.order = null;
@@ -145,6 +143,7 @@ export class ListingStore {
 
     paginate = () => {
         this.currentPageList = this.listings.slice((this.page - 1) * this.listingsPerPage, this.page* this.listingsPerPage);
+        console.log("did paginate")
     }
 
     incrementPage = () => {
