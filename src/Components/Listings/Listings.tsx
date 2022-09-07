@@ -9,11 +9,20 @@ import ListingsFilterSort from "./FilterSort/FilterSort";
 
 const Listings: React.FC = observer(() => {
 
-    const {page, maxPages, listings, filteredList, currentPageList, paginate} = useListingsStore()
+    const {page, maxPages, filter: {engine, make}, sorting:{sortBy, order}, currentPageList, paginate, getCurrentList} = useListingsStore();
 
     useEffect(() => {
-        paginate()
-    }, [page, filteredList, listings])
+        if (page === 1) {
+            getCurrentList();
+            paginate();
+            return;
+        }
+        getCurrentList()
+    }, [engine, make, sortBy, order]);
+
+    useEffect(() => {
+        paginate();
+    }, [page]);
 
     return (
         <div className="listings">
