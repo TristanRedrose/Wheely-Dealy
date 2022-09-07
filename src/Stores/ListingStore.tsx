@@ -27,7 +27,9 @@ export class ListingStore {
 
     listingsPerPage: number = 8;
     
-    maxPages: number = 1
+    maxPages: number = 1;
+
+    pageReset: boolean = true;
 
     constructor() {
         makeObservable(this, {
@@ -46,6 +48,7 @@ export class ListingStore {
             incrementPage: action,
             decrementPage: action,
             setPage: action,
+            pageReset: observable,
         });
     }
 
@@ -58,6 +61,8 @@ export class ListingStore {
         this.sortList();
 
         this.maxPages = Math.ceil(this.listings.length / this.listingsPerPage);
+
+        this.pageReset = true;
     }
 
     setFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
@@ -142,8 +147,11 @@ export class ListingStore {
     }
 
     paginate = () => {
-        this.currentPageList = this.listings.slice((this.page - 1) * this.listingsPerPage, this.page* this.listingsPerPage);
-        console.log("did paginate")
+        if (!this.pageReset) {
+            this.currentPageList = this.listings.slice((this.page - 1) * this.listingsPerPage, this.page* this.listingsPerPage);
+            console.log("did paginate");
+        }
+        this.pageReset = false;
     }
 
     incrementPage = () => {
