@@ -13,7 +13,7 @@ export class ListingStore {
 
     currentPageList: CarListing[] = [];
 
-    page:number = 1;
+    page:number = 0;
 
     filter: Filter = {
         make: null,
@@ -28,8 +28,6 @@ export class ListingStore {
     listingsPerPage: number = 8;
     
     maxPages: number = 1;
-
-    pageReset: boolean = true;
 
     constructor() {
         makeObservable(this, {
@@ -48,12 +46,11 @@ export class ListingStore {
             incrementPage: action,
             decrementPage: action,
             setPage: action,
-            pageReset: observable,
         });
     }
 
     getCurrentList = () => {
-        this.page = 1;
+        this.page = 0;
         this.listings = mockList;
 
         this.filterList();
@@ -61,8 +58,6 @@ export class ListingStore {
         this.sortList();
 
         this.maxPages = Math.ceil(this.listings.length / this.listingsPerPage);
-
-        this.pageReset = true;
     }
 
     setFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
@@ -124,34 +119,31 @@ export class ListingStore {
             if (this.sorting.order === "highest") {
 
                 this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.price - listing1.price});
-                console.log(this.listings);
                 return;
             }
 
             this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.price - listing2.price});
-            console.log(this.listings);
             return;
         }
 
         if (this.sorting.order === "highest") {
 
             this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
-            console.log(this.listings);
             return;
         }
 
         this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
-        console.log(this.listings);
         return;
 
     }
 
     paginate = () => {
-        if (!this.pageReset) {
+        if (this.page !== 0) {
             this.currentPageList = this.listings.slice((this.page - 1) * this.listingsPerPage, this.page* this.listingsPerPage);
-            console.log("did paginate");
+            return;
         }
-        this.pageReset = false;
+
+        this.page = 1;
     }
 
     incrementPage = () => {
