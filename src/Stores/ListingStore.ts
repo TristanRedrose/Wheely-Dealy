@@ -37,9 +37,10 @@ export class ListingStore {
             sorting: observable,
             filter: observable,
             currentPageList: observable,
-            getCurrentList: action,
+            setListings: action,
             maxPages: observable,
-            setFilter: action,
+            setMakeFilter: action,
+            setEngineFilter: action,
             setHorsepowerSorting: action,
             setPriceSorting: action,
             paginate: action,
@@ -49,7 +50,7 @@ export class ListingStore {
         });
     }
 
-    getCurrentList = () => {
+    setListings = () => {
         this.page = 0;
         this.listings = mockList;
 
@@ -60,23 +61,27 @@ export class ListingStore {
         this.maxPages = Math.ceil(this.listings.length / this.listingsPerPage);
     }
 
-    setFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
+    setMakeFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
         if (event.currentTarget.value === "M-N/A") {
-            this.filter.make = null
-        } else if (event.currentTarget.value === "E-N/A") {
-            this.filter.engine = null
-        } else if (event.currentTarget.value === "diesel" || event.currentTarget.value === "petrol") {
-            this.filter.engine = event.currentTarget.value
-        } else {
-            this.filter.make = event.currentTarget.value
+            this.filter.make = null;
+            return;
         }
+        
+        this.filter.make = event.currentTarget.value;
+        
+    }
+
+    setEngineFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
+        if (event.currentTarget.value === "E-N/A") {
+            this.filter.engine = null;
+            return
+        } 
+        
+        this.filter.engine = event.currentTarget.value
+       
     }
 
     filterList = () => {
-        if (!this.filter.engine && !this.filter.make) {
-            return;
-        }
-
         if (this.filter.make) {
             this.listings = this.listings.filter(item => item.make === this.filter.make);
         }

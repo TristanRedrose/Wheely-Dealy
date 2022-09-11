@@ -10,11 +10,11 @@ import Pagination from "./Pagination/Pagination";
 
 const Listings: React.FC = observer(() => {
 
-    const {page, maxPages, filter: {engine, make}, sorting:{sortBy, order}, currentPageList, paginate, getCurrentList} = useListingsStore();
+    const {page, maxPages, filter: {engine, make}, sorting:{sortBy, order}, currentPageList, paginate, setListings} = useListingsStore();
 
     useEffect(() => {
-        getCurrentList();
-    }, [engine, make, sortBy, order, getCurrentList]);
+        setListings();
+    }, [engine, make, sortBy, order, setListings]);
 
     useEffect(() => {
         paginate();

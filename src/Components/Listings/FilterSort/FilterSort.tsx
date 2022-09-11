@@ -4,7 +4,7 @@ import "./FilterSort.css";
 
 const ListingsFilterSort = () => {
 
-    const {companyList, setFilter, setHorsepowerSorting, setPriceSorting} = useListingsStore();
+    const {companyList, setMakeFilter, setEngineFilter, setHorsepowerSorting, setPriceSorting} = useListingsStore();
 
     const priceFilter = useRef<null | HTMLSelectElement>(null);
     const horsepowerFilter = useRef<null | HTMLSelectElement>(null);
@@ -15,7 +15,7 @@ const ListingsFilterSort = () => {
                 <h5>Filter by:</h5>
                 <div className="label-select-box">
                     <h6>Make:</h6>
-                    <select title="company-filter" className="filter" defaultValue={"All"} onChange={(e) => setFilter(e)}>
+                    <select title="company-filter" className="filter" defaultValue={"All"} onChange={(e) => setMakeFilter(e)}>
                         <option value={"M-N/A"}>All</option>
                         {companyList.map(item => {
                             return <option key={item.id} value={item.company}>{item.company}</option>
@@ -24,7 +24,7 @@ const ListingsFilterSort = () => {
                 </div>
                 <div className="label-select-box">
                     <h6>Engine:</h6>
-                    <select title="engine-filter" className="filter" defaultValue={"All"} onChange={(e) => setFilter(e)}>
+                    <select title="engine-filter" className="filter" defaultValue={"All"} onChange={(e) => setEngineFilter(e)}>
                         <option value={"E-N/A"}>All</option>
                         <option value={"petrol"}>Petrol</option>
                         <option value={"diesel"}>Diesel</option>
