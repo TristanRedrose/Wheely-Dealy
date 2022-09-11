@@ -3,7 +3,8 @@ import { CarListing } from "../Types/listing.type";
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { Sorting } from "../Types/sorting.types";
-import { mockList , companyList } from "./MockLists"
+import { companyList } from "./MockLists";
+import { getListingPage } from "../Services/Listing.service";
 
 export class ListingStore {
 
@@ -11,9 +12,7 @@ export class ListingStore {
 
     companyList: Company[] = companyList;
 
-    currentPageList: CarListing[] = [];
-
-    page:number = 0;
+    page:number = 1;
 
     filter: Filter = {
         make: null,
@@ -25,9 +24,7 @@ export class ListingStore {
         order: null,
     }
 
-    listingsPerPage: number = 8;
-    
-    maxPages: number = 1;
+    maxPages: number = 0;
 
     constructor() {
         makeObservable(this, {
@@ -36,62 +33,71 @@ export class ListingStore {
             page: observable,
             sorting: observable,
             filter: observable,
-            currentPageList: observable,
-            setListings: action,
             maxPages: observable,
             setMakeFilter: action,
             setEngineFilter: action,
             setHorsepowerSorting: action,
             setPriceSorting: action,
-            paginate: action,
             incrementPage: action,
             decrementPage: action,
             setPage: action,
+            setListings: action,
+            setMaxPages: action,
+            clearListings: action,
         });
     }
 
-    setListings = () => {
-        this.page = 0;
-        this.listings = mockList;
+    clearListings = () => {
+        this.listings = [];
+    }
 
-        this.filterList();
+    setListings = (list: CarListing[]) => {
+        this.listings = list;
+    }
 
-        this.sortList();
+    setMaxPages = (maxPages:number) => {
+        this.maxPages = maxPages;
+    }
 
-        this.maxPages = Math.ceil(this.listings.length / this.listingsPerPage);
+    getListings = async() =>{
+        let list: CarListing[] = []
+        let max: number = 0
+        await getListingPage(this.filter, this.sorting, this.page).then(function (result) {
+            if (result === undefined) {
+                list = [];
+                return;
+            }
+
+            console.log(result);
+            list = result.listing;
+            max = result.maxPages
+        })
+        this.setListings(list);
+        this.setMaxPages(max);
     }
 
     setMakeFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
+        this.page = 1;
         if (event.currentTarget.value === "M-N/A") {
             this.filter.make = null;
             return;
         }
         
         this.filter.make = event.currentTarget.value;
-        
     }
 
     setEngineFilter = (event: React.FormEvent<HTMLSelectElement>) =>  {
+        this.page = 1;
         if (event.currentTarget.value === "E-N/A") {
             this.filter.engine = null;
             return
         } 
         
         this.filter.engine = event.currentTarget.value
-       
-    }
-
-    filterList = () => {
-        if (this.filter.make) {
-            this.listings = this.listings.filter(item => item.make === this.filter.make);
-        }
-
-        if (this.filter.engine) {
-            this.listings = this.listings.filter(item => item.engine === this.filter.engine);
-        }
     }
 
     setHorsepowerSorting = (event: React.FormEvent<HTMLSelectElement>) =>{
+        this.page = 1;
         if (event.currentTarget.value === "none") {
             this.sorting.sortBy = null;
             this.sorting.order = null;
@@ -104,6 +110,7 @@ export class ListingStore {
     }
 
     setPriceSorting = (event: React.FormEvent<HTMLSelectElement>) =>{
+        this.page = 1;
         if (event.currentTarget.value === "none") {
             this.sorting.sortBy = null;
             this.sorting.order = null;
@@ -113,42 +120,6 @@ export class ListingStore {
         this.sorting.sortBy = "price";
 
         this.sorting.order = event.currentTarget.value;
-    }
-
-    sortList = () => {
-        if (!this.sorting.sortBy) {
-            return;
-        }
-
-        if (this.sorting.sortBy === "price") {
-            if (this.sorting.order === "highest") {
-
-                this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.price - listing1.price});
-                return;
-            }
-
-            this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.price - listing2.price});
-            return;
-        }
-
-        if (this.sorting.order === "highest") {
-
-            this.listings = [...this.listings].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
-            return;
-        }
-
-        this.listings = [...this.listings].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
-        return;
-
-    }
-
-    paginate = () => {
-        if (this.page !== 0) {
-            this.currentPageList = this.listings.slice((this.page - 1) * this.listingsPerPage, this.page* this.listingsPerPage);
-            return;
-        }
-
-        this.page = 1;
     }
 
     incrementPage = () => {

@@ -10,15 +10,13 @@ import Pagination from "./Pagination/Pagination";
 
 const Listings: React.FC = observer(() => {
 
-    const {page, maxPages, filter: {engine, make}, sorting:{sortBy, order}, currentPageList, paginate, setListings} = useListingsStore();
+    const {page, maxPages, listings, filter: {engine, make},getListings,clearListings, sorting:{sortBy, order},} = useListingsStore();
 
     useEffect(() => {
-        setListings();
-    }, [engine, make, sortBy, order, setListings]);
+        getListings();
 
-    useEffect(() => {
-        paginate();
-    }, [page, paginate]);
+        return () => clearListings();
+    }, [page, engine, make, sortBy, order, getListings, clearListings]);
 
     return (
         <div className="listings">
@@ -28,7 +26,7 @@ const Listings: React.FC = observer(() => {
                 <ListingsFilterSort />
             </div>
             <div className="listings-container">
-                {currentPageList.map(listing => {
+                {listings.map(listing => {
                     return <Listing key={listing.id} listing={listing} />
                 })}
             </div>
