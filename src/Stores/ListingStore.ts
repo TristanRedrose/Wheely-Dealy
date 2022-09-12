@@ -12,7 +12,7 @@ export class ListingStore {
 
     companyList: Company[] = companyList;
 
-    page:number = 1;
+    page: number = 1;
 
     filter: Filter = {
         make: null,
@@ -25,6 +25,8 @@ export class ListingStore {
     }
 
     maxPages: number = 0;
+
+    isLoading: boolean = true;
 
     constructor() {
         makeObservable(this, {
@@ -44,11 +46,17 @@ export class ListingStore {
             setListings: action,
             setMaxPages: action,
             clearListings: action,
+            setLoadingStatus: action,
+            isLoading: observable,
         });
     }
 
     clearListings = () => {
         this.listings = [];
+    }
+
+    setLoadingStatus(status:boolean) {
+        this.isLoading = status;
     }
 
     setListings = (list: CarListing[]) => {
@@ -62,6 +70,7 @@ export class ListingStore {
     getListings = async() =>{
         let list: CarListing[] = []
         let max: number = 0
+        this.setLoadingStatus(true);
         await getListingPage(this.filter, this.sorting, this.page).then(function (result) {
             if (result === undefined) {
                 list = [];
@@ -71,7 +80,8 @@ export class ListingStore {
             console.log(result);
             list = result.listing;
             max = result.maxPages
-        })
+        });
+        this.setLoadingStatus(false);
         this.setListings(list);
         this.setMaxPages(max);
     }
