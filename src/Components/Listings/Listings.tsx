@@ -28,7 +28,10 @@ const Listings: React.FC = observer(() => {
                     <ListingsFilterSort />
                 </div>}
             </div>
-            <LoadingCircle />
+            {isLoading && 
+            <div className="loading-container">
+                <LoadingCircle/>
+            </div>}
             {!isLoading && <div className="listings-container">
                 {listings.map(listing => {
                     return <Listing key={listing.id} listing={listing} />

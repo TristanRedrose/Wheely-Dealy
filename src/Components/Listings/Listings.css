@@ -68,6 +68,10 @@
     text-align: center;
 }
 
+.loading-container {
+    margin-top: 50px;
+}
+
 @media only screen and (max-width: 640px) {
     .listings-container {
         margin: 200px 0px 75px 0px;
