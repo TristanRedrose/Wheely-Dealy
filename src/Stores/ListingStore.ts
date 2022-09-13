@@ -74,10 +74,13 @@ export class ListingStore {
         this.maxPages = maxPages;
     }
 
-    cancelPreviousListCall() {
+    getCurrentListing() {
         if (this.isLoading) {
             this.setCancelStatus(true);
+            return;
         }
+
+        this.getListings();
     }
 
     getListings = async(): Promise<void> =>{
@@ -95,61 +98,57 @@ export class ListingStore {
         });
         if (this.isCancelled) {
             this.setCancelStatus(false);
+            this.getListings();
             return;
         }
         this.setLoadingStatus(false);
         this.setListings(list);
         this.setMaxPages(max);
-        console.log("look im running");
     }
 
     setMakeFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
         this.page = 1;
-        this.cancelPreviousListCall();
         if (event.currentTarget.value === "M-N/A") {
             this.filter.make = null;
-            this.getListings();
+            this.getCurrentListing();
             return;
         }
         
         this.filter.make = event.currentTarget.value;
-        this.getListings();
+        this.getCurrentListing();
     }
 
     setEngineFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
-        this.cancelPreviousListCall();
         this.page = 1;
         if (event.currentTarget.value === "E-N/A") {
             this.filter.engine = null;
-            this.getListings();
+            this.getCurrentListing();
             return;
         } 
         
         this.filter.engine = event.currentTarget.value
-        this.getListings();
+        this.getCurrentListing();
     }
 
     setHorsepowerSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
-        this.cancelPreviousListCall();
         this.page = 1;
         if (event.currentTarget.value === "none") {
             this.sorting.sortBy = null;
             this.sorting.order = null;
-            this.getListings();
+            this.getCurrentListing();
             return;
         }
 
         this.sorting.sortBy = "horsepower";
 
         this.sorting.order = event.currentTarget.value;
-        this.getListings();
+        this.getCurrentListing();
     }
 
     setPriceSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
-        this.cancelPreviousListCall();
         this.page = 1;
         if (event.currentTarget.value === "none") {
-            this.getListings();
+            this.getCurrentListing();
             this.sorting.sortBy = null;
             this.sorting.order = null;
             return;
@@ -159,7 +158,7 @@ export class ListingStore {
 
         this.sorting.order = event.currentTarget.value;
 
-        this.getListings();
+        this.getCurrentListing();
     }
 
     incrementPage = (): void => {
@@ -167,8 +166,7 @@ export class ListingStore {
 
         ++this.page;
 
-        this.cancelPreviousListCall();
-        this.getListings();
+        this.getCurrentListing();
     }
 
     decrementPage = (): void => {
@@ -176,15 +174,13 @@ export class ListingStore {
 
         --this.page;
 
-        this.cancelPreviousListCall();
-        this.getListings();
+        this.getCurrentListing();
     }
 
     setPage = (page:number): void => {
         this.page = page;
 
-        this.cancelPreviousListCall();
-        this.getListings();
+        this.getCurrentListing();
     }
 }
 
