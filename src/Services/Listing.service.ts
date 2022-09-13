@@ -21,22 +21,22 @@ const sortList = (response: Response, sorting:Sorting): void => {
     if (sorting.sortBy === "price") {
         if (sorting.order === "highest") {
 
-            response.listing = [...response.listing].sort(function(listing1, listing2){return listing2.price - listing1.price});
+            response.listing = [...response.listing].sort((listing1, listing2) => listing2.price - listing1.price);
             return;
         }
 
-        response.listing = [...response.listing].sort(function(listing1, listing2){return listing1.price - listing2.price});
+        response.listing = [...response.listing].sort((listing1, listing2) => listing1.price - listing2.price);
         return;
     }
 
     if (sorting.sortBy === "horsepower") {
         if (sorting.order === "highest") {
 
-            response.listing = [...response.listing].sort(function(listing1, listing2){return listing2.horsepower - listing1.horsepower});
+            response.listing = [...response.listing].sort((listing1, listing2) => listing2.horsepower - listing1.horsepower);
             return;
         }
     
-        response.listing = [...response.listing].sort(function(listing1, listing2){return listing1.horsepower - listing2.horsepower});
+        response.listing = [...response.listing].sort((listing1, listing2) => listing1.horsepower - listing2.horsepower);
     }
 }
 

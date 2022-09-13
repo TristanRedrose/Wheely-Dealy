@@ -28,6 +28,8 @@ export class ListingStore {
 
     isLoading: boolean = true;
 
+    isCancelled: boolean = false;
+
     constructor() {
         makeObservable(this, {
             listings: observable,
@@ -48,11 +50,16 @@ export class ListingStore {
             setMaxPages: action,
             clearListings: action,
             setLoadingStatus: action,
+            setCancelStatus: action,
         });
     }
 
     clearListings = (): void => {
         this.listings = [];
+    }
+
+    setCancelStatus= (status:boolean): void => {
+        this.isCancelled = status;
     }
 
     setLoadingStatus= (status:boolean): void => {
@@ -67,61 +74,82 @@ export class ListingStore {
         this.maxPages = maxPages;
     }
 
+    cancelPreviousListCall() {
+        if (this.isLoading) {
+            this.setCancelStatus(true);
+        }
+    }
+
     getListings = async(): Promise<void> =>{
         let list: CarListing[] = []
         let max: number = 0
         this.setLoadingStatus(true);
-        await getListingPage(this.filter, this.sorting, this.page).then(function (result) {
+        await getListingPage(this.filter, this.sorting, this.page).then((result) => {
             if (result === undefined) {
                 list = [];
                 return;
             }
 
-            console.log(result);
             list = result.listing;
             max = result.maxPages
         });
+        if (this.isCancelled) {
+            this.setCancelStatus(false);
+            return;
+        }
         this.setLoadingStatus(false);
         this.setListings(list);
         this.setMaxPages(max);
+        console.log("look im running");
     }
 
     setMakeFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
         this.page = 1;
+        this.cancelPreviousListCall();
         if (event.currentTarget.value === "M-N/A") {
             this.filter.make = null;
+            this.getListings();
             return;
         }
         
         this.filter.make = event.currentTarget.value;
+        this.getListings();
     }
 
     setEngineFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
+        this.cancelPreviousListCall();
         this.page = 1;
         if (event.currentTarget.value === "E-N/A") {
             this.filter.engine = null;
-            return
+            this.getListings();
+            return;
         } 
         
         this.filter.engine = event.currentTarget.value
+        this.getListings();
     }
 
     setHorsepowerSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
+        this.cancelPreviousListCall();
         this.page = 1;
         if (event.currentTarget.value === "none") {
             this.sorting.sortBy = null;
             this.sorting.order = null;
+            this.getListings();
             return;
         }
 
         this.sorting.sortBy = "horsepower";
 
         this.sorting.order = event.currentTarget.value;
+        this.getListings();
     }
 
     setPriceSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
+        this.cancelPreviousListCall();
         this.page = 1;
         if (event.currentTarget.value === "none") {
+            this.getListings();
             this.sorting.sortBy = null;
             this.sorting.order = null;
             return;
@@ -130,22 +158,33 @@ export class ListingStore {
         this.sorting.sortBy = "price";
 
         this.sorting.order = event.currentTarget.value;
+
+        this.getListings();
     }
 
     incrementPage = (): void => {
         if (this.page === this.maxPages) return;
 
         ++this.page;
+
+        this.cancelPreviousListCall();
+        this.getListings();
     }
 
     decrementPage = (): void => {
         if (this.page === 1 ) return;
 
         --this.page;
+
+        this.cancelPreviousListCall();
+        this.getListings();
     }
 
     setPage = (page:number): void => {
         this.page = page;
+
+        this.cancelPreviousListCall();
+        this.getListings();
     }
 }
 

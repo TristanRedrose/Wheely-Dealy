@@ -11,13 +11,11 @@ import LoadingCircle from "../Common/Loading/LoadingCircle";
 
 const Listings: React.FC = observer(() => {
 
-    const {page, maxPages, listings, filter: {engine, make},getListings,clearListings, sorting:{sortBy, order}, isLoading} = useListingsStore();
+    const {page, maxPages, listings, getListings, isLoading} = useListingsStore();
 
     useEffect(() => {
         getListings();
-
-        return () => clearListings();
-    }, [page, engine, make, sortBy, order, getListings, clearListings]);
+    }, [getListings]);
 
     return (
         <div className="listings-screen">
