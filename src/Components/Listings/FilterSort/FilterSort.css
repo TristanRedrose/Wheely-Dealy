@@ -1,4 +1,5 @@
 .filter-sort-container {
+    margin-top: 24px;
     display: flex;
     background-color: #f9d102;
     border: 1px crimson solid;

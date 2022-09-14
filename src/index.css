@@ -46,15 +46,6 @@ p,h6 {
   color: crimson;
 }
 
-.router-link {
-  text-decoration: none;
-  color: black;
-}
-
-.router-link:hover {
-  color: crimson;
-}
-
 @media only screen and (max-width: 640px) {
   h1 {
     font-size: 32px;
@@ -80,7 +71,6 @@ p,h6 {
     font-size: 12px;
   }
 }
-
 
 @media only screen and (max-width: 480px) {
   h1 {

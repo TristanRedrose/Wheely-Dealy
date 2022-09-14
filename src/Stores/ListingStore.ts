@@ -55,7 +55,18 @@ export class ListingStore {
     }
 
     clearListings = (): void => {
-        this.listings = [];
+        this.setListings([]);
+        this.setMaxPages(0);
+        this.filter = {
+            make: null,
+            engine: null,
+        }
+
+        this.sorting = {
+            sortBy: null,
+            order: null,
+        }
+        this.page = 1;
     }
 
     setCancelStatus= (status:boolean): void => {

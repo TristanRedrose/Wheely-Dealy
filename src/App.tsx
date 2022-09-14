@@ -14,9 +14,11 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="listings" 
-          element={<ListingsProvider>
-            <Listings />
-          </ListingsProvider>} 
+          element={
+            <ListingsProvider>
+              <Listings />
+            </ListingsProvider>
+          } 
         />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

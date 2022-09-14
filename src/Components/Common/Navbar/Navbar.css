@@ -23,3 +23,21 @@ ul {
 li {
     padding: 0px 4px;
 }
+
+.router-link {
+    text-decoration: none;
+    color: black;
+}
+
+.active {
+    color: crimson;
+    font-weight: 700;
+}
+
+.router-link:hover {
+    color: crimson;
+}
+
+.title-link {
+    text-decoration: none;
+}

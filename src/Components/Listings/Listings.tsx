@@ -11,20 +11,21 @@ import LoadingCircle from "../Common/Loading/LoadingCircle";
 
 const Listings: React.FC = observer(() => {
 
-    const {page, maxPages, listings, getListings, isLoading} = useListingsStore();
+    const {page, maxPages, listings, getListings, isLoading, clearListings} = useListingsStore();
 
     useEffect(() => {
         getListings();
-    }, [getListings]);
+
+        return () => {
+            clearListings();
+        }
+    }, [getListings, clearListings]);
 
     return (
         <div className="listings-screen">
             <div className="listing-title">
                 <h2 className="lobster-text">All Listings</h2>
-                {maxPages > 0 && <div>
-                    <h5 className="page-info">Page {page} of {maxPages}</h5>
-                    <ListingsFilterSort />
-                </div>}
+                {maxPages > 0 && <ListingsFilterSort />}
             </div>
             {isLoading && 
             <div className="loading-container">
@@ -35,10 +36,10 @@ const Listings: React.FC = observer(() => {
                     return <Listing key={listing.id} listing={listing} />
                 })}
             </div>}
-            <div className="pagination-box">
+            {!isLoading && <div className="pagination-box">
                 {maxPages > 0 && <h5 className="page-info">Page {page} of {maxPages}</h5>}
                 <Pagination />
-            </div>
+            </div>}
         </div>
     )
 })

@@ -59,7 +59,7 @@ export const getListingPage = async (filter: Filter, sorting: Sorting, page: num
 
         paginate(res, page);
 
-        await delay(2000);
+        await delay(1000);
         return res;
     }
     catch(err) {

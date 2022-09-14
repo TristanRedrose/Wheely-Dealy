@@ -1,21 +1,31 @@
 import React from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const NavbarComponent: React.FC = () => {
     return (
         <div className="nav-container">
             <div className="navbar">
-                <div className="">
-                    <h3 className="lobster-text">Wheely-Deally</h3>
-                </div>
+                <Link className="title-link" to="/">
+                    <div className="">
+                        <h3 className="lobster-text">Wheely-Deally</h3>
+                    </div>
+                </Link>
                 <div>
                     <ul>
                         <li>
-                            <Link className="router-link" to="/">Home</Link>
+                            <NavLink 
+                                className={({isActive}) => isActive ? "router-link active" : "router-link"} 
+                                to="/">
+                                    Home
+                            </NavLink>
                         </li>
                         <li>
-                            <Link className="router-link" to="listings">Listings</Link>
+                            <NavLink 
+                                className={({isActive}) => isActive ? "router-link active" : "router-link"} 
+                                to="listings">
+                                    Listings
+                            </NavLink>
                         </li>
                     </ul>
                 </div>
