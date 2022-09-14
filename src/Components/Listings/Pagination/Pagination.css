@@ -2,26 +2,44 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    border-radius: 16px;
+    width: 300px;
+}
+
+.current-page-div {
+    width: 33%;
+    background-color: whitesmoke;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+}
+
+.pagi-buttons-container {
+    width:33%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .page-button {
-    padding: 0px 16px;
-    margin: 0px 16px;
+    padding: 0px 8px;
     box-sizing: border-box;
-    height: 30px;
-    background-color: crimson;
-    color: whitesmoke;
+    height: 48px;
+    width: 32px;
+    background-color: whitesmoke;
+    color: crimson;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border: 1px solid crimson;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .page-button:hover {
-    background-color: whitesmoke;
-    color: crimson;
+    background-color: crimson;
+    color: whitesmoke;
 }
 
 .page-button:active {

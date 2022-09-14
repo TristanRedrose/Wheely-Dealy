@@ -11,7 +11,7 @@ import LoadingCircle from "../Common/Loading/LoadingCircle";
 
 const Listings: React.FC = observer(() => {
 
-    const {page, maxPages, listings, getListings, isLoading, clearListings} = useListingsStore();
+    const {listings, getListings, isLoading, clearListings} = useListingsStore();
 
     useEffect(() => {
         getListings();
@@ -25,7 +25,7 @@ const Listings: React.FC = observer(() => {
         <div className="listings-screen">
             <div className="listing-title">
                 <h2 className="lobster-text">All Listings</h2>
-                {maxPages > 0 && <ListingsFilterSort />}
+                <ListingsFilterSort />
             </div>
             {isLoading && 
             <div className="loading-container">
@@ -37,7 +37,6 @@ const Listings: React.FC = observer(() => {
                 })}
             </div>}
             {!isLoading && <div className="pagination-box">
-                {maxPages > 0 && <h5 className="page-info">Page {page} of {maxPages}</h5>}
                 <Pagination />
             </div>}
         </div>
