@@ -40,6 +40,10 @@ export class ListingStore {
         engine: "",
     }
 
+    message: string = '';
+
+    redirect: boolean = false;
+
     constructor() {
         makeObservable(this, {
             listings: observable,
@@ -49,6 +53,8 @@ export class ListingStore {
             filter: observable,
             maxPages: observable,
             isLoading: observable,
+            message: observable,
+            redirect: observable,
             setMakeFilter: action,
             setEngineFilter: action,
             setHorsepowerSorting: action,
@@ -62,6 +68,8 @@ export class ListingStore {
             setLoadingStatus: action,
             setCancelStatus: action,
             setNewListingValue: action,
+            setMessage: action,
+            clearAddListings:action,
         });
     }
 
@@ -231,25 +239,31 @@ export class ListingStore {
         }  
     }
 
-    addNewListing = async(): Promise<string> => {
-        console.log('gona add');
-        let message: string = "";
+    addNewListing = async(): Promise<void> => {
         const checkPassed = this.checkNewListValue();
-        console.log(checkPassed)
         if (!checkPassed) {
-            message = "Please fill out the form";
-            return message;
+            this.setMessage("Please fill out the form");
+            return;
         }
         await postNewListing(this.newListing).then((result) => {
             if (result) {
-                message = result
+                this.setMessage(result + ', redirecting');
+                setTimeout(() => {
+                    this.setRedirect(true);
+                }, 2000);
             }
-        })
-        console.log(message)
-        return message;
+        });
+    }
+
+    setMessage = (message: string): void => {
+        this.message = message;
+    }
+
+    setRedirect = (value: boolean): void => {
+        this.redirect = value;
     }
  
-    checkNewListValue = ():boolean => {
+    checkNewListValue = (): boolean => {
         let checkPassed = true;
         Object.entries(this.newListing).forEach(([key, value]) => {
             if ((key as string) !== "id" && !value) {
@@ -257,6 +271,24 @@ export class ListingStore {
             };
         });
         return checkPassed;
+    }
+
+    resetNewListing = (): void => {
+        this.newListing = {
+            id: 0,
+            make: "",
+            type: "",
+            price: 0,
+            horsepower: 0,
+            image: "",
+            engine: "",
+        }
+    }
+
+    clearAddListings = ():void => {
+        this.resetNewListing();
+        this.setRedirect(false);
+        this.setMessage('');
     }
 }
 

@@ -35,6 +35,10 @@
     background-color: crimson;
 }
 
+.form-message {
+    text-align: center;
+}
+
 @media only screen and (max-width: 640px) {
     .form-select-container {
         flex-direction: column;

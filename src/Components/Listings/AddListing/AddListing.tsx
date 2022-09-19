@@ -1,11 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useListingsStore } from "../../../Context/ListingsContext";
 import { companyList } from "../../../Stores/MockLists";
+import { observer } from "mobx-react-lite";
 import "./AddListing.css"
+import { useNavigate } from "react-router-dom";
 
-const AddListing: React.FC = () => {
+const AddListing: React.FC = observer(() => {
 
-    const {setNewListingValue, addNewListing} = useListingsStore()
+    const {setNewListingValue, addNewListing, message, redirect, clearAddListings} = useListingsStore();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (redirect === true) {
+            navigate("/listings");
+        }
+        return () => clearAddListings();
+    }, [clearAddListings, navigate, redirect]);
 
     return (
         <div className="main-body">
@@ -32,8 +42,9 @@ const AddListing: React.FC = () => {
                 <input name="image" className="form-input" type="text" placeholder="Image-url" onChange={(e) => setNewListingValue(e)}/>
                 <input className="button-div" type="submit"/>
             </form>
+            {message && <h4 className="form-message">{message}</h4>}
         </div>
     )
-}
+})
 
 export default AddListing;
