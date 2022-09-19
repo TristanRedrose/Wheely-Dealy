@@ -4,7 +4,7 @@ import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { Sorting } from "../Types/sorting.types";
 import { companyList } from "./MockLists";
-import { getListingPage } from "../Services/Listing.service";
+import { getListingPage, postNewListing } from "../Services/Listing.service";
 
 export class ListingStore {
 
@@ -30,6 +30,16 @@ export class ListingStore {
 
     isCancelled: boolean = false;
 
+    newListing: CarListing = {
+        id: 0,
+        make: "",
+        type: "",
+        price: 0,
+        horsepower: 0,
+        image: "",
+        engine: "",
+    }
+
     constructor() {
         makeObservable(this, {
             listings: observable,
@@ -51,6 +61,7 @@ export class ListingStore {
             clearListings: action,
             setLoadingStatus: action,
             setCancelStatus: action,
+            setNewListingValue: action,
         });
     }
 
@@ -192,6 +203,60 @@ export class ListingStore {
         this.page = page;
 
         this.getCurrentListing();
+    }
+
+    setNewListingValue = (event: React.FormEvent<HTMLSelectElement | HTMLInputElement>): void => {
+        const name = event.currentTarget.name
+        const value = event.currentTarget.value
+
+        switch (name) {
+            case "company":
+                this.newListing.make = value;
+                break;
+            case "price":
+                this.newListing.price = +value;
+                break;
+            case "horsepower":
+                this.newListing.horsepower = +value;
+                break;
+            case "type":
+                this.newListing.type = value;
+                break;
+            case "image":
+                this.newListing.image = value;
+                break;
+            case "engine":
+                this.newListing.engine = value;
+                break;
+        }  
+    }
+
+    addNewListing = async(): Promise<string> => {
+        console.log('gona add');
+        let message: string = "";
+        const checkPassed = this.checkNewListValue();
+        console.log(checkPassed)
+        if (!checkPassed) {
+            message = "Please fill out the form";
+            return message;
+        }
+        await postNewListing(this.newListing).then((result) => {
+            if (result) {
+                message = result
+            }
+        })
+        console.log(message)
+        return message;
+    }
+ 
+    checkNewListValue = ():boolean => {
+        let checkPassed = true;
+        Object.entries(this.newListing).forEach(([key, value]) => {
+            if ((key as string) !== "id" && !value) {
+                checkPassed = false
+            };
+        });
+        return checkPassed;
     }
 }
 
