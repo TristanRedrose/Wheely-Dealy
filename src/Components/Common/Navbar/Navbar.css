@@ -41,3 +41,15 @@ li {
 .title-link {
     text-decoration: none;
 }
+
+@media only screen and (max-width: 640px) {
+    .navbar {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 440px) {
+    .navbar {
+        width: 90%;
+    }
+}
