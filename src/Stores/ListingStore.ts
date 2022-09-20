@@ -26,7 +26,7 @@ export class ListingStore {
 
     maxPages: number = 0;
 
-    isLoading: boolean = true;
+    isLoading: boolean = false;
 
     isCancelled: boolean = false;
 
@@ -76,6 +76,7 @@ export class ListingStore {
     clearListings = (): void => {
         this.setListings([]);
         this.setMaxPages(0);
+        this.setLoadingStatus(false);
         this.filter = {
             make: null,
             engine: null,
@@ -216,6 +217,7 @@ export class ListingStore {
     setNewListingValue = (event: React.FormEvent<HTMLSelectElement | HTMLInputElement>): void => {
         const name = event.currentTarget.name
         const value = event.currentTarget.value
+        this.setMessage('');
 
         switch (name) {
             case "company":
@@ -236,23 +238,25 @@ export class ListingStore {
             case "engine":
                 this.newListing.engine = value;
                 break;
+
         }  
     }
 
     addNewListing = async(): Promise<void> => {
         const checkPassed = this.checkNewListValue();
         if (!checkPassed) {
-            this.setMessage("Please fill out the form");
             return;
         }
+        this.setLoadingStatus(true);
         await postNewListing(this.newListing).then((result) => {
             if (result) {
-                this.setMessage(result + ', redirecting');
+                this.setMessage(result);
                 setTimeout(() => {
                     this.setRedirect(true);
-                }, 2000);
+                }, 1000);
             }
         });
+        this.setLoadingStatus(false);
     }
 
     setMessage = (message: string): void => {
@@ -267,7 +271,9 @@ export class ListingStore {
         let checkPassed = true;
         Object.entries(this.newListing).forEach(([key, value]) => {
             if ((key as string) !== "id" && !value) {
-                checkPassed = false
+                this.setMessage("Please fill out the form");
+                checkPassed = false;
+                return checkPassed;
             };
         });
         return checkPassed;
