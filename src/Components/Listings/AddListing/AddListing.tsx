@@ -27,6 +27,9 @@ const AddListing: React.FC = observer(() => {
                 {message && <h4 className="form-message">{message}</h4>}
                 {!isLoading && message !== "Listing added" &&
                     <form className="add-listing-form" onSubmit={(e) => {e.preventDefault(); addNewListing()}}>
+                        <div className="form-logo-box">
+                            <img className="form-logo" src="../Images/Logo/car-logo.png" alt="car-logo" />
+                        </div>
                         <div className="form-select-container">
                             <select className="form-select" required name="company" defaultValue="" title="company-filter" onChange={(e) => setNewListingValue(e)}>
                                 <option value="" disabled>Company</option>

@@ -24,6 +24,7 @@ const App: React.FC = () => {
         >
           <Route path="" element = {<Listings />} />
           <Route path="add" element = {<AddListing />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
