@@ -13,8 +13,8 @@ const Pagination: React.FC = () => {
                     setPage(1)}}>
                     <h5>1</h5>
                 </div>}
-                {(page - 10) > 1 && <div className="page-button" onClick={() => setPage(page-10)}>
-                    <h5>{'<<'}</h5>
+                {(page - 4) > 1 && <div className="page-button" onClick={() => setPage(page - 4)}>
+                    <h5>{page - 4}</h5>
                 </div>}
                 {page > 1 && <div className="page-button" onClick={() => decrementPage()}>
                     <h5>{'<'}</h5>
@@ -29,8 +29,8 @@ const Pagination: React.FC = () => {
                 {page < maxPages && <div className="page-button" onClick={() => incrementPage()}>
                     <h5>{'>'}</h5>
                 </div>}
-                {(page + 10) < maxPages && <div className="page-button" onClick={() => setPage(page+10)}>
-                    <h5>{'>>'}</h5>
+                {(page + 4) < maxPages && <div className="page-button" onClick={() => setPage(page + 4)}>
+                    <h5>{page + 4}</h5>
                 </div>}
                 {page < maxPages && <div className="page-button" onClick={() => setPage(maxPages)}>
                     <h5>{maxPages}</h5>

@@ -12,19 +12,32 @@
 .listings-container {
     margin-bottom: 100px;
     width: 85%;
+    min-height: 400px;
     max-width: 1300px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     row-gap: 25px;
     justify-items:center;
+    align-items: center;
 }
 
 .listing-container {
+    box-sizing: border-box;
+    border: 2px crimson solid;
+    background-color: rgb(50, 50, 62);
+    color: whitesmoke;
+    border-radius: 8px;
     width: 250px;
-    height: 325px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition: box-shadow .3s;
+}
+
+.listing-container:hover {
+    box-shadow: 0 0 24px rgba(104, 11, 11, 0.7);  
+    border: 2px #f9d102 solid;
 }
 
 .listing-info {
@@ -38,7 +51,8 @@
 }
 
 .listing-image-container {
-    height: 200px;
+    height: 150px;
+    background-color: rgb(70, 70, 86);
 }
 
 .listing-image {
@@ -63,6 +77,11 @@
     justify-content: center;
 }
 
+.listing-nav {
+    text-decoration: none;
+    color: black;
+}
+
 @media only screen and (max-width: 640px) {
     .listings-container {
         margin-bottom:75px;
@@ -85,4 +104,4 @@
     .listing-image-container {
         height: 125px;
     }
-}
+}                           

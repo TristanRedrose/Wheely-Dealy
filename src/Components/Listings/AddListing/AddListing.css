@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: rgb(235, 225, 225);
 }
 
 .add-listing-form {
@@ -17,7 +18,7 @@
     justify-content: space-evenly;
     width: 500px;
     margin-top: 16px;
-    background-color: lightgray;
+    background-color: rgb(50, 50, 62);
     border-radius: 8px;
     padding: 16px;
 }
@@ -45,8 +46,9 @@
     border-radius: 4px;
     height: 32px;
     padding: 0px 8px;
-    background-color: whitesmoke;
+    background-color: rgb(70, 70, 86);
     border: none;
+    color: rgb(241, 234, 234);
 }
 
 .form-input:focus {
@@ -65,9 +67,9 @@
     height: 32px;
     border-radius: 8px;
     padding: 0px 8px;
-    border: 1px crimson solid;
+    border: 1px rgb(120, 24, 43) solid;
     color: whitesmoke;
-    background-color: crimson;
+    background-color: rgb(120, 24, 43);
 }
 
 .form-message {
@@ -87,6 +89,28 @@
     display: flex;
     padding: 8px 16px;
     justify-content: space-around;
+}
+
+.submit-button-div {
+    font-family: 'Lato', sans-serif;
+    box-sizing: border-box;
+    width: fit-content;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: whitesmoke;
+    background-color: rgb(120, 24, 43);
+    border: 1px rgb(123, 30, 48) solid;
+    font-weight: 700;
+}
+
+.submit-button-div:hover {
+    color: crimson;
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+
+.submit-button-div:active {
+    opacity: 0.6;
 }
 
 @media only screen and (max-width: 640px) {

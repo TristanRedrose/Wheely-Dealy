@@ -7,6 +7,7 @@ import PageNotFound from './Components/404Page/PageNotFound';
 import Listings from './Components/Listings/Listings';
 import { ListingsProvider } from './Context/ListingsContext';
 import AddListing from './Components/Listings/AddListing/AddListing';
+import ListingDetails from './Components/Listings/ListingDetails/ListingDetails';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         >
           <Route path="" element = {<Listings />} />
           <Route path="add" element = {<AddListing />} />
+          <Route path=":id" element = {<ListingDetails />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />

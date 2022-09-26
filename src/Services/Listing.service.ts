@@ -4,7 +4,7 @@ import { CarListing } from "../Types/listing.type";
 import { Response } from "../Types/response.type";
 import { Sorting } from "../Types/sorting.types";
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = () => new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * (1600) + 400)));
 
 const filterList = (response: Response, filter:Filter): void => {
     if (filter.make) {
@@ -60,7 +60,7 @@ export const getListingPage = async (filter: Filter, sorting: Sorting, page: num
 
         paginate(res, page);
 
-        await delay(1000);
+        await delay();
         return res;
     }
     catch(err) {
@@ -70,13 +70,24 @@ export const getListingPage = async (filter: Filter, sorting: Sorting, page: num
 
 export const postNewListing = async(object:CarListing): Promise<string | undefined> =>  {
     try {
-        await delay(1000);
+        await delay();
         object.id = mockList.length + 1;
         mockList.push(object);
         return "Listing added";
     }
     catch(err) {
         return "Oops, something went wrong";
+    }
+}
+
+export const getListingById = async(id:number): Promise<CarListing | undefined> => {
+    try {
+        await delay();
+        let listing = mockList.filter(listing => listing.id === id)[0];
+        return listing
+    }
+    catch (err) {
+        return;
     }
 }
 

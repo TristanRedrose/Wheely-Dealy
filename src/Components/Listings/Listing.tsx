@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { CarListing } from "../../Types/listing.type";
 
 interface ListingProps {
@@ -7,7 +8,7 @@ interface ListingProps {
 
 const ListingComponent: React.FC<ListingProps> = ({listing}) => {
     return (
-        <>
+        <NavLink className="listing-nav" to={"" + listing.id} >
             <div className="listing-container">
                 <div className="listing-image-container">
                     <img src={listing.image} className="listing-image" alt="car-showcase"></img>
@@ -20,7 +21,7 @@ const ListingComponent: React.FC<ListingProps> = ({listing}) => {
                     <p className="price-text">${listing.price}</p>
                 </div>
             </div>
-        </>
+        </NavLink>
     )
 }
 

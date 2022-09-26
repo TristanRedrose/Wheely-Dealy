@@ -4,7 +4,7 @@ import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { Sorting } from "../Types/sorting.types";
 import { companyList } from "./MockLists";
-import { getListingPage, postNewListing } from "../Services/Listing.service";
+import { getListingById, getListingPage, postNewListing } from "../Services/Listing.service";
 
 export class ListingStore {
 
@@ -31,6 +31,16 @@ export class ListingStore {
     isCancelled: boolean = false;
 
     newListing: CarListing = {
+        id: 0,
+        make: "",
+        type: "",
+        price: 0,
+        horsepower: 0,
+        image: "",
+        engine: "",
+    }
+
+    listing: CarListing = {
         id: 0,
         make: "",
         type: "",
@@ -70,6 +80,9 @@ export class ListingStore {
             setNewListingValue: action,
             setMessage: action,
             clearAddListings:action,
+            getListing: action,
+            setListing: action,
+            listing:observable,
         });
     }
 
@@ -296,6 +309,35 @@ export class ListingStore {
         this.setRedirect(false);
         this.setMessage('');
     }
+
+    setListing = (listing: CarListing): void => {
+        this.listing = listing;
+    }
+
+    getListing = async(id:number): Promise<void> => {
+        this.setLoadingStatus(true);
+        await getListingById(id).then(result => {
+            if (result !== undefined) {
+                this.setListing(result);
+            }
+        });
+        this.setLoadingStatus(false);
+    }
+
+    clearListing = ():void => {
+        let listing = {
+            id: 0,
+            make: "",
+            type: "",
+            price: 0,
+            horsepower: 0,
+            image: "",
+            engine: "",
+        }
+
+        this.setListing(listing);
+    }
+
 }
 
 export const listingStore = new ListingStore();
