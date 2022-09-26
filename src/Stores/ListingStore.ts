@@ -65,6 +65,7 @@ export class ListingStore {
             isLoading: observable,
             message: observable,
             redirect: observable,
+            setRedirect:action,
             setMakeFilter: action,
             setEngineFilter: action,
             setHorsepowerSorting: action,
@@ -319,12 +320,13 @@ export class ListingStore {
         await getListingById(id).then(result => {
             if (result !== undefined) {
                 this.setListing(result);
-            }
+            } else this.setRedirect(true);
         });
         this.setLoadingStatus(false);
     }
 
     clearListing = ():void => {
+        this.setRedirect(false);
         let listing = {
             id: 0,
             make: "",

@@ -1,24 +1,30 @@
 import React, { useEffect } from "react";
 import "./ListingDetails.css"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useListingsStore } from "../../../Context/ListingsContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 
 const ListingDetails: React.FC = observer(() => {
 
+    const navigate = useNavigate()
+
     const { id } = useParams();
-    const {getListing, clearListing, listing, isLoading} = useListingsStore();
+    const {getListing, clearListing, listing, isLoading, redirect} = useListingsStore();
 
     useEffect(()=> {
         window.scrollTo(0,0);
-        if (id !== undefined && parseInt(id)){
+        
+        if (!id || !parseInt(id) || redirect){
+            navigate("/*");
+        } else {
             getListing(parseInt(id));
-        } 
+        }
+
         return () => {
             clearListing();
         }
-    }, [clearListing, getListing, id])
+    }, [clearListing, getListing, navigate, id, redirect])
 
     return (
         <div className="content-body">
@@ -27,7 +33,7 @@ const ListingDetails: React.FC = observer(() => {
             </div>}
             {!isLoading && <div className="details-container">
                 <div className="details-image-container">
-                    <img src={"../" +listing.image} alt="car" className="details-image"></img>
+                    <img src={"../" + listing.image} alt="car" className="details-image"></img>
                 </div>
                 <div className="details-info-container">
                     <div className="info-box-1">

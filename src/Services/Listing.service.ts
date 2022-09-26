@@ -87,7 +87,7 @@ export const getListingById = async(id:number): Promise<CarListing | undefined> 
         return listing
     }
     catch (err) {
-        return;
+        console.log(err);
     }
 }
 
