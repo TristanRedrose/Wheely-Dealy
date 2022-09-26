@@ -28,7 +28,7 @@ const App: React.FC = () => {
           <Route path=":id" element = {<ListingDetails />} />
           <Route path="*" element={<Navigate to="/404" />} />
         </Route>
-        <Route path="404" element={<PageNotFound />} />
+        <Route path="404" element={<PageNotFound text="page" />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
       <Footer />

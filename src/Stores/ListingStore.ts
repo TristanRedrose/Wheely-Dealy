@@ -40,15 +40,7 @@ export class ListingStore {
         engine: "",
     }
 
-    listing: CarListing = {
-        id: 0,
-        make: "",
-        type: "",
-        price: 0,
-        horsepower: 0,
-        image: "",
-        engine: "",
-    }
+    listing: CarListing | undefined = undefined;
 
     message: string = '';
 
@@ -311,33 +303,20 @@ export class ListingStore {
         this.setMessage('');
     }
 
-    setListing = (listing: CarListing): void => {
+    setListing = (listing: CarListing | undefined): void => {
         this.listing = listing;
     }
 
     getListing = async(id:number): Promise<void> => {
         this.setLoadingStatus(true);
         await getListingById(id).then(result => {
-            if (result !== undefined) {
-                this.setListing(result);
-            } else this.setRedirect(true);
+            this.setListing(result);
         });
         this.setLoadingStatus(false);
     }
 
     clearListing = ():void => {
-        this.setRedirect(false);
-        let listing = {
-            id: 0,
-            make: "",
-            type: "",
-            price: 0,
-            horsepower: 0,
-            image: "",
-            engine: "",
-        }
-
-        this.setListing(listing);
+        this.setListing(undefined);
     }
 
 }

@@ -12,9 +12,10 @@ const AddListing: React.FC = observer(() => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (redirect === true) {
+        if (redirect) {
             navigate("/listings");
         }
+        
         return () => clearAddListings();
     }, [clearAddListings, navigate, redirect]);
 

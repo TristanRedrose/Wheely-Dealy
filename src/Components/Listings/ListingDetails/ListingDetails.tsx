@@ -4,34 +4,35 @@ import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useListingsStore } from "../../../Context/ListingsContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
+import PageNotFound from "../../404Page/PageNotFound";
 
 const ListingDetails: React.FC = observer(() => {
 
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const {getListing, clearListing, listing, isLoading, redirect} = useListingsStore();
+    const {getListing, clearListing, listing, isLoading} = useListingsStore();
 
     useEffect(()=> {
         window.scrollTo(0,0);
         
-        if (!id || !parseInt(id) || redirect){
-            navigate("/*");
-        } else {
+        if (id && parseInt(id)){
             getListing(parseInt(id));
         }
 
         return () => {
             clearListing();
         }
-    }, [clearListing, getListing, navigate, id, redirect])
+ 
+    }, [clearListing, getListing, navigate, id])
 
     return (
         <div className="content-body">
             {isLoading && <div className="loading-container-2">
                 <LoadingCircle />
             </div>}
-            {!isLoading && <div className="details-container">
+            {!isLoading && !listing &&<PageNotFound text="listing" />}
+            {!isLoading && listing && <div className="details-container">
                 <div className="details-image-container">
                     <img src={"../" + listing.image} alt="car" className="details-image"></img>
                 </div>
