@@ -80,9 +80,9 @@ export class ListingStore {
     }
 
     clearListings = (): void => {
+        this.setLoadingStatus(false);
         this.setListings([]);
         this.setMaxPages(0);
-        this.setLoadingStatus(false);
         this.filter = {
             make: null,
             engine: null,

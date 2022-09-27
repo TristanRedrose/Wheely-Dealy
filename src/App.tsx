@@ -2,7 +2,7 @@ import React from 'react';
 import NavbarComponent from './Components/Common/Navbar/Navbar';
 import Footer from './Components/Common/Footer/Footer';
 import Homepage from './Components/Homepage/Homepage/Homepage';
-import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { Routes, Route, Outlet} from 'react-router-dom';
 import PageNotFound from './Components/404Page/PageNotFound';
 import Listings from './Components/Listings/Listings';
 import { ListingsProvider } from './Context/ListingsContext';
@@ -26,10 +26,9 @@ const App: React.FC = () => {
           <Route path="" element = {<Listings />} />
           <Route path="add" element = {<AddListing />} />
           <Route path=":id" element = {<ListingDetails />} />
-          <Route path="*" element={<Navigate to="/404" />} />
+          <Route path="*" element={<PageNotFound text="page" />} />
         </Route>
-        <Route path="404" element={<PageNotFound text="page" />} />
-        <Route path="*" element={<Navigate to="/404" />} />
+        <Route path="*" element={<PageNotFound text="page" />} />
       </Routes>
       <Footer />
     </>

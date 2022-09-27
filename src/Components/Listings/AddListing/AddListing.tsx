@@ -20,7 +20,7 @@ const AddListing: React.FC = observer(() => {
     }, [clearAddListings, navigate, redirect]);
 
     return (
-        <div className="main-body">
+        <>
             <div className="listing-title">
                 <h2 className="lobster-text">Add Listing</h2>
             </div>
@@ -69,7 +69,7 @@ const AddListing: React.FC = observer(() => {
                 }
                 {isLoading && <LoadingCircle />}
             </div>
-        </div>
+        </>
     )
 })
 

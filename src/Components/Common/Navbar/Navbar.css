@@ -1,6 +1,9 @@
 .nav-container {
     background-color: #f9d102;
     height: 40px;
+    position: sticky;
+    top: 0px;
+    z-index: 100;
 }
 
 .navbar {

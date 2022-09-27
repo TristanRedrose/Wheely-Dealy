@@ -1,6 +1,5 @@
 .content-body {
-    background-color: #f2f2f2;
-    min-height: 95vh;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;

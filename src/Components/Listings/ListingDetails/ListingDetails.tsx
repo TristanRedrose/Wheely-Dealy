@@ -16,14 +16,14 @@ const ListingDetails: React.FC = observer(() => {
     useEffect(()=> {
         window.scrollTo(0,0);
         
-        if (id && parseInt(id)){
+        if (id && parseInt(id)) {
             getListing(parseInt(id));
         }
 
         return () => {
             clearListing();
         }
- 
+
     }, [clearListing, getListing, navigate, id])
 
     return (

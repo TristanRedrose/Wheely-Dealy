@@ -22,7 +22,7 @@ const Listings: React.FC = observer(() => {
     }, [getListings, clearListings]);
 
     return (
-        <div className="main-body">
+        <>
             <div className="listing-title">
                 <h2 className="lobster-text">All Listings</h2>
                 <ListingsFilterSort />
@@ -43,7 +43,8 @@ const Listings: React.FC = observer(() => {
                     <Pagination />
                 </div>}
             </div>
-        </div>)
+        </>
+    )
 })
 
 export default Listings;
