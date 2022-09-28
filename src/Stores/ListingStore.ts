@@ -80,6 +80,7 @@ export class ListingStore {
     }
 
     clearListings = (): void => {
+        this.setCancelStatus(true);
         this.setLoadingStatus(false);
         this.setListings([]);
         this.setMaxPages(0);
@@ -135,7 +136,6 @@ export class ListingStore {
         });
         if (this.isCancelled) {
             this.setCancelStatus(false);
-            this.getListings();
             return;
         }
         this.setLoadingStatus(false);
@@ -312,11 +312,17 @@ export class ListingStore {
         await getListingById(id).then(result => {
             this.setListing(result);
         });
+        if (this.isCancelled) {
+            this.setCancelStatus(false);
+            return;
+        }
         this.setLoadingStatus(false);
     }
 
     clearListing = ():void => {
+        this.setCancelStatus(true);
         this.setListing(undefined);
+        this.setLoadingStatus(false);
     }
 
 }
