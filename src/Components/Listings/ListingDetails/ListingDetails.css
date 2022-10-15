@@ -70,3 +70,9 @@
     padding: 16px;
     color: whitesmoke;
 }
+
+@media only screen and (max-width: 640px) {
+    .details-container {
+        width: 90%;
+    }
+  }

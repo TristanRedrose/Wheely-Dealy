@@ -1,0 +1,84 @@
+.auth-body {
+    min-height: 100vh;
+    background-color: rgb(70, 70, 86);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-form-container {
+    background-color: snow;
+    min-height: 325px;
+    min-width: 325px;
+    border-radius: 6px;
+}
+
+.auth-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin-bottom: -32px;
+}
+
+.auth-title-div {
+    padding-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px rgb(70, 70, 86, 0.4) solid;
+    margin-bottom: 32px;
+}
+
+.auth-input-div {
+    width: 100%;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-input {
+    width: 85%;
+    border: none;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.6);
+    padding-bottom: 4px;
+    font-size: 14px;
+}
+
+.auth-input:focus {
+    outline: none;
+}
+
+.auth-submit-button {
+    width: 70%;
+    border-radius: 16px;
+    height: 32px;
+    font-weight: 700;
+    color: white;
+    background-color: crimson;
+    border: none;
+    cursor: pointer;
+}
+
+.auth-submit-button:hover {
+    background-color: white;
+    color: crimson;
+    border: 1px crimson solid;
+}
+
+.auth-submit-button:active {
+    opacity: 0.6;
+}
+
+.auth-text-div {
+    margin-top: 24px;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-link {
+    margin: 8px 0px 16px 0px;
+    text-decoration: none;
+    color: rgb(87, 87, 206);
+}

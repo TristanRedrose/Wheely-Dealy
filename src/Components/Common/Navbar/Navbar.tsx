@@ -24,15 +24,22 @@ const NavbarComponent: React.FC = () => {
                             <NavLink
                                 end 
                                 className={({isActive}) => isActive ? "router-link active" : "router-link"} 
-                                to="listings">
+                                to="/listings">
                                     Listings
                             </NavLink>
                         </li>
                         <li>
                             <NavLink 
                                 className={({isActive}) => isActive ? "router-link active" : "router-link"} 
-                                to="listings/add">
+                                to="/listings/add">
                                     Add Listing
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink 
+                                className={({isActive}) => isActive ? "router-link active" : "router-link"} 
+                                to="/login">
+                                    Login
                             </NavLink>
                         </li>
                     </ul>
