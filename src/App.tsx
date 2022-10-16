@@ -10,42 +10,44 @@ import AddListing from './Components/Listings/AddListing/AddListing';
 import ListingDetails from './Components/Listings/ListingDetails/ListingDetails';
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
+import { AuthProvider } from './Context/AuthContext';
 
 const App: React.FC = () => {
   return (
     <>
-      <Routes>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route 
-          path="/*" 
-          element={
-            <>
-              <NavbarComponent />
-              <Outlet />
-              <Footer />
-            </>
-          }
-        >
-          <Route path="" element={ <Homepage />} />
+      <AuthProvider>
+        <Routes>
+          <Route path="login" element={<Login/>}/>
+          <Route path="register" element={<Register/>}/>
           <Route 
-            path="listings/*" 
+            path="/*" 
             element={
-              <ListingsProvider>
+              <>
+                <NavbarComponent />
                 <Outlet />
-              </ListingsProvider>
+                <Footer />
+              </>
             }
           >
-            <Route path="" element = {<Listings />} />
-            <Route path="add" element ={<AddListing />} />
-            <Route path=":id" element ={<ListingDetails />} />
-            <Route path="*" element={<PageNotFound text="listing" />} />
+            <Route path="" element={<Homepage />} />
+            <Route 
+              path="listings/*" 
+              element={
+                <ListingsProvider>
+                  <Outlet />
+                </ListingsProvider>
+              }
+            >
+              <Route path="" element = {<Listings />} />
+              <Route path="add" element ={<AddListing />} />
+              <Route path=":id" element ={<ListingDetails />} />
+              <Route path="*" element={<PageNotFound text="listing" />} />
+            </Route>
+            <Route path="*" element={<PageNotFound text="page" />} />
           </Route>
           <Route path="*" element={<PageNotFound text="page" />} />
-        </Route>
-        <Route path="*" element={<PageNotFound text="page" />} />
-      </Routes>
-      <Footer />
+        </Routes>
+      </AuthProvider>
     </>
   )
 }

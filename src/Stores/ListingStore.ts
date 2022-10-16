@@ -244,7 +244,6 @@ export class ListingStore {
             case "engine":
                 this.newListing.engine = value;
                 break;
-
         }  
     }
 
