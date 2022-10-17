@@ -1,13 +1,16 @@
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Link} from "react-router-dom";
 import { useAuthStore } from "../../Context/AuthContext";
 import "./Auth.css";
 
 const Register: React.FC = observer(() => {
 
-    const {register, setAuthData} = useAuthStore();
+    const {register, setAuthData, clearData, errorMessage, errorCode} = useAuthStore();
 
+    useEffect(() => {
+        return () => clearData() 
+    },[clearData])
 
     return (
         <div className="auth-body">
@@ -20,16 +23,20 @@ const Register: React.FC = observer(() => {
                 </div>
                 <form className="auth-form" onSubmit={(e) => {e.preventDefault(); register()}}>
                     <div className="auth-input-div">
-                        <input name="username" className="auth-input" type="text" placeholder="Username" onChange={(e) => setAuthData(e)} />
+                        <input name="username" className={(errorCode === 1) ? "auth-input error" : "auth-input"} type="text" placeholder="Username" onChange={(e) => setAuthData(e)} />
+                        {errorCode === 1 && <p className="error-text">{errorMessage}</p>}
                     </div>
                     <div className="auth-input-div">
-                        <input name="email" className="auth-input" type="text" placeholder="Email" onChange={(e) => setAuthData(e)} />
+                        <input name="email" className={(errorCode === 2) ? "auth-input error" : "auth-input"} type="text" placeholder="Email" onChange={(e) => setAuthData(e)} />
+                        {errorCode === 2 && <p className="error-text">{errorMessage}</p>}
                     </div>
                     <div className="auth-input-div">
-                        <input name="password" className="auth-input" type="password" placeholder="Password" onChange={(e) => setAuthData(e)} />
+                        <input name="password" className={(errorCode === 3 || errorCode === 5) ? "auth-input error" : "auth-input"} type="password" placeholder="Password" onChange={(e) => setAuthData(e)} />
+                        {errorCode === 3 && <p className="error-text">{errorMessage}</p>}
                     </div>
                     <div className="auth-input-div">
-                        <input name="confirm" className="auth-input" type="password" placeholder="Confirm Password" onChange={(e) => setAuthData(e)} />
+                        <input name="confirm" className={(errorCode === 4 || errorCode === 5) ? "auth-input error" : "auth-input"} type="password" placeholder="Confirm Password" onChange={(e) => setAuthData(e)} />
+                        {(errorCode === 4 || errorCode === 5) && <p className="error-text">{errorMessage}</p>}
                     </div>
                     <div className="auth-input-div">
                         <input className="auth-submit-button" type="submit" value="Register"/>

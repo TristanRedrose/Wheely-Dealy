@@ -10,6 +10,8 @@ export const login = async (user: User): Promise<void> => {
             validTo: res.data.exp,
         };
         setSession(session);
+    }).catch(error => {
+        console.error('There was an error!', error);
     });
 }
 
@@ -21,6 +23,8 @@ export const register = async(registration: Registration): Promise<void> => {
             validTo: res.data.exp,
         };
         setSession(session);
+    }).catch(error => {
+        console.error('There was an error!', error);
     });
 }
 

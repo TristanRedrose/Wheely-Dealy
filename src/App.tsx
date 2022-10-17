@@ -11,14 +11,17 @@ import ListingDetails from './Components/Listings/ListingDetails/ListingDetails'
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import { AuthProvider } from './Context/AuthContext';
+import AuthRoutes from './Utils/Auth.routes';
 
 const App: React.FC = () => {
   return (
     <>
       <AuthProvider>
         <Routes>
-          <Route path="login" element={<Login/>}/>
-          <Route path="register" element={<Register/>}/>
+          <Route element={<AuthRoutes />}>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
+          </Route>
           <Route 
             path="/*" 
             element={

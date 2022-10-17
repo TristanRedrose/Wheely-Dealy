@@ -1,8 +1,17 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./Navbar.css";
 import { NavLink, Link } from "react-router-dom";
+import { useAuthStore } from "../../../Context/AuthContext";
+import { observer } from "mobx-react-lite";
 
-const NavbarComponent: React.FC = () => {
+const NavbarComponent: React.FC = observer(() => {
+
+    const {authorised, logOut, isAuthorised} = useAuthStore();
+
+    useEffect(() => {
+        isAuthorised();
+    },[isAuthorised]);
+
     return (
         <div className="nav-container">
             <div className="navbar">
@@ -35,18 +44,30 @@ const NavbarComponent: React.FC = () => {
                                     Add Listing
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink 
-                                className={({isActive}) => isActive ? "router-link active" : "router-link"} 
-                                to="/login">
-                                    Login
-                            </NavLink>
-                        </li>
+                        {!authorised &&
+                            <li>
+                                <NavLink 
+                                    className={({isActive}) => isActive ? "router-link active" : "router-link"} 
+                                    to="/login">
+                                        Login
+                                </NavLink>
+                            </li>
+                        }
+                        {authorised &&
+                            <li>
+                                <NavLink 
+                                    className={({isActive}) => isActive ? "router-link active" : "router-link"} 
+                                    to="/logout"
+                                    onClick={(e) => {e.preventDefault(); logOut()}}>
+                                    Logout
+                                </NavLink>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </div>
     )
-}
+})
 
 export default NavbarComponent
