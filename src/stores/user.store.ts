@@ -11,7 +11,8 @@ const model = UserModel;
 
 class UserStore implements IUserStore {
     async userExists(username:string): Promise<boolean> {
-        const userExists = await model.exists({username: username})
+        const name = username.trim()
+        const userExists = await model.exists({username: name}).collation({ locale: 'en_US', strength: 1 });
         return userExists !== null;
     };
 
@@ -27,7 +28,8 @@ class UserStore implements IUserStore {
     };
 
     async getUser(username:string): Promise<User | null> {
-        const user = await model.findOne({ username: username })
+        const name = username.trim();
+        const user = await model.findOne({ username: name }).collation({ locale: 'en_US', strength: 1 });
         return user;
     }
 }
