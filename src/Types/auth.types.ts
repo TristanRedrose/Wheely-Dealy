@@ -21,6 +21,15 @@ export type Session = {
     validTo: number,
 }
 
-export type userCheckResponse = {
+export type UserCheckResponse = {
     userExists: boolean,
+}
+
+export type ErrorResponse = {
+    message:string;
+}
+
+export type ResultStatus = {
+    isSuccessful: boolean,
+    errMessage: string,
 }

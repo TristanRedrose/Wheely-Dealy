@@ -90,9 +90,10 @@ export class AuthStore {
                 username: this.username,
                 password: this.password,
             }
-            const message = await login(user);
-            console.log(message);
-            if (message) this.setError(7, message);
+
+            const response = await login(user);
+            
+            if (!response.isSuccessful) this.setError(7, response.errMessage);
             this.isAuthorised();
         }
     }
@@ -105,8 +106,10 @@ export class AuthStore {
                 email: this.email,
                 password: this.password,
             }
-            const message = await register(registration);
-            if (message) this.setError(7, message);
+
+            const response = await register(registration);
+
+            if (!response.isSuccessful) this.setError(7, response.errMessage);
             this.isAuthorised();
         }
     }
