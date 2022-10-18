@@ -28,7 +28,7 @@ const Login: React.FC = observer(() => {
                     </div>
                     <div className="auth-input-div">
                         <input name="password" className={(errorCode === 2) ? "auth-input error" : "auth-input"} type="password" placeholder="Password" onChange={(e) => setAuthData(e)} />
-                        {errorCode === 2 && <p className="error-text">{errorMessage}</p>}
+                        {(errorCode === 2 || errorCode === 7) && <p className="error-text">{errorMessage}</p>}
                     </div>
                     <div className="auth-input-div">
                         <input className="auth-submit-button" type="submit" value="Login"/>

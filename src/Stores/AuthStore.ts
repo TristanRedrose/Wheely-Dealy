@@ -90,7 +90,9 @@ export class AuthStore {
                 username: this.username,
                 password: this.password,
             }
-            await login(user);
+            const message = await login(user);
+            console.log(message);
+            if (message) this.setError(7, message);
             this.isAuthorised();
         }
     }
@@ -103,7 +105,8 @@ export class AuthStore {
                 email: this.email,
                 password: this.password,
             }
-            await register(registration);
+            const message = await register(registration);
+            if (message) this.setError(7, message);
             this.isAuthorised();
         }
     }
@@ -116,8 +119,14 @@ export class AuthStore {
 
     validateLoginData = async(): Promise<void> => {
         this.setError(0, "");
+        
         if (this.username.length === 0) {
             this.setError(1, "Username cannot be empty");
+            return;
+        }
+
+        if (this.username.includes(' ')) {
+            this.setError(1, "Username cannot contain whitespaces");
             return;
         }
 
@@ -135,8 +144,18 @@ export class AuthStore {
             return;
         }
 
+        if (this.username.includes(' ')) {
+            this.setError(1, "Username cannot contain whitespaces");
+            return;
+        }
+
         if (this.email.length === 0) {
             this.setError(2, "Email cannot be empty");
+            return;
+        }
+
+        if (this.email.includes(' ')) {
+            this.setError(2, "Email cannot contain whitespaces");
             return;
         }
 
@@ -163,8 +182,8 @@ export class AuthStore {
     }
 
     setAuthData = (event: React.FormEvent<HTMLInputElement>) => {
-        const name = event.currentTarget.name
-        const value = event.currentTarget.value
+        const name = event.currentTarget.name;
+        const value = event.currentTarget.value.trim();
 
         if (this.errorCode !== 0) {
             this.setError(0,'');

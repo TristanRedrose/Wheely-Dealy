@@ -43,7 +43,7 @@ const Register: React.FC = observer(() => {
                     </div>
                     <div className="auth-input-div">
                         <input name="confirm" className={(errorCode === 4 || errorCode === 5) ? "auth-input error" : "auth-input"} type="password" placeholder="Confirm Password" onChange={(e) => setAuthData(e)} />
-                        {(errorCode === 4 || errorCode === 5) && <p className="error-text">{errorMessage}</p>}
+                        {(errorCode === 4 || errorCode === 5 || errorCode === 7) && <p className="error-text">{errorMessage}</p>}
                     </div>
                     <div className="auth-input-div">
                         <input className="auth-submit-button" type="submit" value="Register"/>
