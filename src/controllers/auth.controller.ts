@@ -3,11 +3,13 @@ import { Response } from "express";
 import userService from "../services/user.service";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../env/env";
+import { UserName } from "../types/shared.types";
 
 
 export interface IAuthController {
-    login: (req:LoginRequest, res:Response) => Promise<Response>
-    register: (req:RegisterRequest, res:Response) => Promise<Response>
+    login: (req:LoginRequest, res:Response) => Promise<Response>,
+    register: (req:RegisterRequest, res:Response) => Promise<Response>,
+    checkUser: (req: UserName, res: Response) => Promise<Response>,
 }
 
 
@@ -40,6 +42,11 @@ class AuthController implements IAuthController {
         }
         
         return res.status(400).json({ message: 'User already exists' });  
+    }
+
+    async checkUser(req:UserName, res:Response): Promise<Response> {
+        const userExists = await userService.checkUser(req.username);
+        return res.json({userExists: userExists});
     }
 }
 

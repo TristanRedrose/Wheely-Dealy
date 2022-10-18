@@ -9,3 +9,7 @@ export type tokenPayload = {
   iat: number;
   exp: number;
 }
+
+export type UserName = {
+  username: string;
+}

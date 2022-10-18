@@ -1,6 +1,6 @@
 import express from "express";
 import { LoginRequest, RegisterRequest } from "../types/auth.types";
-import { TypedRequestBody } from "../types/shared.types";
+import { TypedRequestBody, UserName } from "../types/shared.types";
 import { body, validationResult } from "express-validator";
 import authController from "../controllers/auth.controller";
 
@@ -35,6 +35,21 @@ router.post('/login',
             }
             return authController.login(req.body, res);
         } catch (err) {
+            console.log(err);
+        }
+    }
+)
+
+router.post('/checkUser',
+    body('username').isLength({ min:1 }),
+    (req:TypedRequestBody<UserName>, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            return authController.checkUser(req.body, res);
+        } catch(err) {
             console.log(err);
         }
     }
