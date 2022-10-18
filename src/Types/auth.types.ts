@@ -20,3 +20,7 @@ export type Session = {
     username: string,
     validTo: number,
 }
+
+export type userCheckResponse = {
+    userExists: boolean,
+}

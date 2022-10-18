@@ -6,11 +6,17 @@ import "./Auth.css";
 
 const Register: React.FC = observer(() => {
 
-    const {register, setAuthData, clearData, errorMessage, errorCode} = useAuthStore();
+    const {register, setAuthData, clearData, errorMessage, errorCode, username, checkUser, userNameTaken} = useAuthStore();
 
     useEffect(() => {
         return () => clearData() 
     },[clearData])
+
+    useEffect(() => {
+        const userCheckTimeout = setTimeout(() => checkUser(username), 300);
+
+        return () => clearTimeout(userCheckTimeout);
+    },[checkUser, username])
 
     return (
         <div className="auth-body">
@@ -25,6 +31,7 @@ const Register: React.FC = observer(() => {
                     <div className="auth-input-div">
                         <input name="username" className={(errorCode === 1) ? "auth-input error" : "auth-input"} type="text" placeholder="Username" onChange={(e) => setAuthData(e)} />
                         {errorCode === 1 && <p className="error-text">{errorMessage}</p>}
+                        {userNameTaken && <p className="error-text">Username already taken</p>}
                     </div>
                     <div className="auth-input-div">
                         <input name="email" className={(errorCode === 2) ? "auth-input error" : "auth-input"} type="text" placeholder="Email" onChange={(e) => setAuthData(e)} />

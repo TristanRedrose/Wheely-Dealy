@@ -1,5 +1,5 @@
 import { makeObservable, observable, action } from "mobx";
-import { login, register, logOut } from "../Services/Auth.service";
+import { login, register, logOut, checkUser } from "../Services/Auth.service";
 import { Registration, User } from "../Types/auth.types";
 import { Session } from "../Types/auth.types";
 
@@ -21,6 +21,8 @@ export class AuthStore {
         username: this.username,
         password: this.password,
     }
+
+    userNameTaken: boolean = false;
 
     authorised: boolean = false;
 
@@ -46,6 +48,9 @@ export class AuthStore {
             authorised: observable,
             isAuthorised: action,
             setAuthorised: action,
+            checkUser:action,
+            userNameTaken:observable,
+            setUserNameTaken: action,
         })
     }
 
@@ -195,6 +200,19 @@ export class AuthStore {
 
     setAuthorised = (value: boolean):void => {
         this.authorised = value;
+    }
+
+    checkUser = async(username:string): Promise<void> =>{
+        this.setUserNameTaken(false);
+        if (username === '') return;
+        const userExists = await checkUser(username);
+        if (userExists) {
+            this.setUserNameTaken(true)
+        }
+    }
+
+    setUserNameTaken = (value:boolean): void => {
+        this.userNameTaken = value;
     }
 }
 

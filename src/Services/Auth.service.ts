@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User, AuthResponse, Session, Registration } from "../Types/auth.types";
+import { User, AuthResponse, Session, Registration, userCheckResponse } from "../Types/auth.types";
 import { environment } from "../Env/Env";
 
 export const login = async (user: User): Promise<void> => {
@@ -35,3 +35,13 @@ const setSession = (session: Session): void => {
 export const logOut = (): void => {
     localStorage.clear();
 };
+
+export const checkUser = async(username: string): Promise<boolean> => {
+    let userExists = false;
+    await axios.post<userCheckResponse>(`${environment.wishlist_API}/checkUser`,{username: username}).then(res => {
+        userExists = res.data.userExists;
+    }).catch(error => {
+        console.error('There was an error!', error);
+    });
+    return userExists;
+}
