@@ -6,7 +6,7 @@ import { secretKey } from "../env/env";
 import { UserName } from "../types/shared.types";
 
 
-export interface IAuthController {
+interface IAuthController {
     login: (req:LoginRequest, res:Response) => Promise<Response>,
     register: (req:RegisterRequest, res:Response) => Promise<Response>,
     checkUser: (req: UserName, res: Response) => Promise<Response>,

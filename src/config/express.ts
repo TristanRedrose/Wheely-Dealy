@@ -1,6 +1,6 @@
 import express from "express";
 import initialiseMongoConnection from "./database/db";
-import routes from "../routes/auth.routes";
+import routes from "../routes/routes";
 import cors from 'cors'
 
 const app = () => {

@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 import IUser from "./user.interface";
 
-const userSchema = new Schema(
+const userSchema = new Schema<IUser>(
     {
         username: {
             type: String,
