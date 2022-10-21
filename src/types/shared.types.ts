@@ -13,3 +13,20 @@ export type tokenPayload = {
 export type UserName = {
   username: string;
 }
+
+export type Options = {
+  page: number;
+  limit: number;
+  collation: Collation;
+  populate: Populate;
+}
+
+type Collation = {
+  locale: string;
+  strength: number;
+}
+
+type Populate = {
+  path: string,
+  select: string,
+}

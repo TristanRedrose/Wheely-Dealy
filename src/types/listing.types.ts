@@ -8,16 +8,28 @@ export type Listing = {
     engine: String;
     horsepower: Number;
     price: Number;
+    image?: String;
     createdAt: Date;
     updatedAt: Date;
 }
 
-export type NewListing = {
-    username: String,
+type NewListingData = {
     description: String;
     company: String;
     model: String;
     engine: String;
     horsepower: Number;
     price: Number;
+    image: String;
 }
+
+export type NewListingReq = {
+    token: string;
+    listingData: NewListingData
+}
+
+export type NewListing = {
+    username: String,
+    listingData: NewListingData,
+}
+

@@ -1,5 +1,6 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model, PaginateModel } from "mongoose";
 import IListing from "./listing.interface";
+import paginate  from "mongoose-paginate-v2";
 
 const listingSchema = new Schema<IListing> (
     {
@@ -40,7 +41,13 @@ const listingSchema = new Schema<IListing> (
             type: Date,
             defaut: () => Date.now(),
         },
+        image: {
+            type: String,
+        },
     }
 )
 
-export default model<IListing>('Listing', listingSchema);
+listingSchema.plugin(paginate);
+
+
+export default model<IListing, PaginateModel<IListing>>('Listing', listingSchema);

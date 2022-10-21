@@ -3,7 +3,7 @@ import { Listing, NewListing } from "../types/listing.types";
 
 interface IListingService {
     addListing:(listing:NewListing) => Promise<string>;
-    getListings:() => Promise<Listing[]>;
+    getListings:(page:number) => Promise<Listing[]>;
 }
 
 class ListingService implements IListingService {
@@ -11,8 +11,8 @@ class ListingService implements IListingService {
         return await listingStore.addListing(listing);
     }
 
-    async getListings():Promise<Listing[]> {
-        return await listingStore.getListings();
+    async getListings(page:number):Promise<Listing[]> {
+        return await listingStore.getListings(page);
     }
 }
 

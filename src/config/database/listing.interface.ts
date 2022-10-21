@@ -10,4 +10,5 @@ export default interface IListing extends Document {
     price: Number;
     createdAt: Date;
     updatedAt: Date;
+    image?: String;
 }
