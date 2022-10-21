@@ -25,11 +25,11 @@ export type UserCheckResponse = {
     userExists: boolean,
 }
 
-export type ErrorResponse = {
+export type ResponseMessage = {
     message:string;
 }
 
 export type ResultStatus = {
     isSuccessful: boolean,
-    errMessage: string,
+    message: string,
 }

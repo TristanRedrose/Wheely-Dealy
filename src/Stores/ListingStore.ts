@@ -1,10 +1,11 @@
 import { makeObservable, observable, action } from "mobx";
-import { CarListing } from "../Types/listing.type";
+import { CarListing, NewListingData, NewListingReq } from "../Types/listing.type";
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { Sorting } from "../Types/sorting.types";
 import { companyList } from "./MockLists";
 import { getListingById, getListingPage, postNewListing } from "../Services/Listing.service";
+import { Session } from "../Types/auth.types";
 
 export class ListingStore {
 
@@ -30,10 +31,10 @@ export class ListingStore {
 
     isCancelled: boolean = false;
 
-    newListing: CarListing = {
-        id: 0,
-        make: "",
-        type: "",
+    newListing: NewListingData = {
+        description:"",
+        company: "",
+        model: "",
         price: 0,
         horsepower: 0,
         image: "",
@@ -220,14 +221,14 @@ export class ListingStore {
         this.getCurrentListing();
     }
 
-    setNewListingValue = (event: React.FormEvent<HTMLSelectElement | HTMLInputElement>): void => {
+    setNewListingValue = (event: React.FormEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>): void => {
         const name = event.currentTarget.name
         const value = event.currentTarget.value
         this.setMessage('');
 
         switch (name) {
             case "company":
-                this.newListing.make = value;
+                this.newListing.company = value;
                 break;
             case "price":
                 this.newListing.price = +value;
@@ -236,13 +237,16 @@ export class ListingStore {
                 this.newListing.horsepower = +value;
                 break;
             case "type":
-                this.newListing.type = value;
+                this.newListing.model = value;
                 break;
             case "image":
                 this.newListing.image = value;
                 break;
             case "engine":
                 this.newListing.engine = value;
+                break;
+            case "description":
+                this.newListing.description = value;
                 break;
         }  
     }
@@ -252,15 +256,17 @@ export class ListingStore {
         if (!checkPassed) {
             return;
         }
-        this.setLoadingStatus(true);
-        await postNewListing(this.newListing).then((result) => {
-            if (result) {
-                this.setMessage(result);
-                setTimeout(() => {
-                    this.setRedirect(true);
-                }, 1000);
+        const token = this.getToken();
+        if (token) {
+            this.setLoadingStatus(true);
+            const newListingReq:NewListingReq = {
+                token: token,
+                listingData:this.newListing
             }
-        });
+            const response = await postNewListing(newListingReq);
+
+            this.setMessage(response.message);
+        }
         this.setLoadingStatus(false);
     }
 
@@ -286,9 +292,9 @@ export class ListingStore {
 
     resetNewListing = (): void => {
         this.newListing = {
-            id: 0,
-            make: "",
-            type: "",
+            description: "",
+            company: "",
+            model: "",
             price: 0,
             horsepower: 0,
             image: "",
@@ -322,6 +328,16 @@ export class ListingStore {
         this.setCancelStatus(true);
         this.setListing(undefined);
         this.setLoadingStatus(false);
+    }
+
+    getToken = (): string | null => {
+        let token: (string | null) = null
+        const currentSession = localStorage.getItem("CurrentSession");
+        if (currentSession) {
+            const session: Session = JSON.parse(currentSession);
+            token = session.token;
+        }
+        return token
     }
 
 }

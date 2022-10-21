@@ -93,7 +93,7 @@ export class AuthStore {
 
             const response = await login(user);
             
-            if (!response.isSuccessful) this.setError(7, response.errMessage);
+            if (!response.isSuccessful) this.setError(7, response.message);
             this.isAuthorised();
         }
     }
@@ -109,7 +109,7 @@ export class AuthStore {
 
             const response = await register(registration);
 
-            if (!response.isSuccessful) this.setError(7, response.errMessage);
+            if (!response.isSuccessful) this.setError(7, response.message);
             this.isAuthorised();
         }
     }

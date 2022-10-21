@@ -1,8 +1,11 @@
+import axios, {AxiosError} from "axios";
 import { mockList } from "../Stores/MockLists";
+import { ResponseMessage, ResultStatus } from "../Types/auth.types";
 import { Filter } from "../Types/filter.type";
-import { CarListing } from "../Types/listing.type";
+import { CarListing, NewListingReq } from "../Types/listing.type";
 import { Response } from "../Types/response.type";
 import { Sorting } from "../Types/sorting.types";
+import { environment } from "../Env/Env";
 
 const delay = () => new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * (1600) + 400)));
 
@@ -68,16 +71,21 @@ export const getListingPage = async (filter: Filter, sorting: Sorting, page: num
     }
 }
 
-export const postNewListing = async(object:CarListing): Promise<string | undefined> =>  {
-    try {
-        await delay();
-        object.id = mockList.length + 1;
-        mockList.push(object);
-        return "Listing added";
+export const postNewListing = async(newListing:NewListingReq): Promise<ResultStatus> =>  {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${newListing.token}`
+        }
     }
-    catch(err) {
-        return "Oops, something went wrong";
-    }
+    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listing/addListing`, newListing, config).then(res => {
+        return setResult(true, res.data.message)
+    }).catch((error: AxiosError<ResponseMessage>) => {
+        if (error.response?.data !== undefined) {
+            return setResult(false, error.response.data.message);
+        }
+        return setResult(false, "Something went wrong, try again.");
+    });
 }
 
 export const getListingById = async(id:number): Promise<CarListing | undefined> => {
@@ -89,6 +97,14 @@ export const getListingById = async(id:number): Promise<CarListing | undefined> 
     catch (err) {
         console.log(err);
     }
+}
+
+const setResult = (isSuccessful:boolean, message: string): ResultStatus => {
+    const result:ResultStatus = {
+        isSuccessful: isSuccessful,
+        message: message,
+    }
+    return result;
 }
 
 

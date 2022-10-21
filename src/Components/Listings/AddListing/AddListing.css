@@ -10,7 +10,7 @@
 .add-listing-form {
     box-sizing: border-box;
     margin: 0 auto;
-    height: 375px;
+    min-height: 375px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,6 +88,30 @@
     display: flex;
     padding: 8px 16px;
     justify-content: space-around;
+}
+
+.form-description-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.listing-description {
+    border: none;
+    box-sizing: border-box;
+    width: 80%;
+    height: 72px;
+    background-color: rgb(70, 70, 86);
+    margin: 8px 0px;
+    resize: none;
+    border-radius: 4px;
+    color: whitesmoke;
+    padding: 4px 8px;
+}
+
+.listing-description:focus {
+    outline: 1px #f9d102 solid;
 }
 
 .submit-button-div {

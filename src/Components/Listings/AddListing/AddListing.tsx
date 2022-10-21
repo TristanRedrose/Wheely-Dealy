@@ -64,6 +64,12 @@ const AddListing: React.FC = observer(() => {
                                 <input name="image" className="form-input" type="text" placeholder="Image-url" onChange={(e) => setNewListingValue(e)}/>
                             </div>
                         </div>
+                        <div className="input-div">
+                            <div className="form-description-container">
+                                <label htmlFor="description">Description:</label>
+                                <textarea name="description" className="listing-description"  placeholder="Description..." onChange={(e) => setNewListingValue(e)}/>
+                            </div>
+                        </div>
                         <input className="submit-button-div" type="submit" value="SUBMIT"/>
                     </form>
                 }
