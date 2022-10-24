@@ -46,6 +46,6 @@ type Filter = {
 export type PagingParams = {
     page: number,
     filter?: Filter,
-    sort?: String | null,
+    sorting?: string | null,
 }
 

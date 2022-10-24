@@ -23,6 +23,7 @@ export type Options = {
   limit: number;
   collation: Collation;
   populate: Populate;
+  sort: string;
 }
 
 type Collation = {

@@ -14,11 +14,13 @@ interface IListingStore {
 
 class ListingStore implements IListingStore {
     async getListings(pagingParams:PagingParams): Promise<PaginatedListings> {
+        const sort: string = pagingParams.sorting ? pagingParams.sorting : '';
         const options: Options = {
             page: pagingParams.page,
             limit: 8,
             collation: {locale: 'en_US', strength: 1},
             populate: {path: 'listedBy', select: 'username'},
+            sort: sort,
         }
 
         let paginatedListings:PaginatedListings = {
@@ -26,13 +28,13 @@ class ListingStore implements IListingStore {
             maxPages: 0,
             documentCount: 0,
         }
-        await listingModel.paginate({}, options, (err, results) => {
+        await listingModel.paginate(pagingParams.filter, options, (err, results) => {
             paginatedListings = {
                 listings: results.docs,
                 maxPages: results.totalPages,
                 documentCount: results.totalDocs,
             }
-        })
+        });
 
         return paginatedListings;
     }
@@ -55,7 +57,6 @@ class ListingStore implements IListingStore {
                     image:image,
                 }
             )
-            console.log(listing);
             return "Listing added";
         }
         return "An error occured";
