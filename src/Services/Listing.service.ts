@@ -1,15 +1,22 @@
 import axios, {AxiosError} from "axios";
 import { ResponseMessage, ResultStatus } from "../Types/auth.types";
-import { NewListingReq, PagingParams, PaginatedListings } from "../Types/listing.type";
+import { NewListingReq, PagingParams, PaginatedListings, CarListing, ListingId } from "../Types/listing.type";
 import { environment } from "../Env/Env";
 
 export const getListingPage = async(pagingParams: PagingParams): Promise<PaginatedListings> => {
     return await axios.get<PaginatedListings>(`${environment.wishlist_API}/listing/getListings`, {params: pagingParams}).then(res => {
-        console.log(res.data.paginatedListings.listings)
         return res.data;
-    }).catch((error) => {
+    }).catch(error => {
         return error;
     });
+}
+
+export const getListingDetails = async(id:ListingId): Promise<CarListing> => {
+    return await axios.get<CarListing>(`${environment.wishlist_API}/listing/getListing`, {params: id}).then(res => {
+        return res.data;
+    }).catch(error => {
+        return error;
+    })
 }
 
 export const postNewListing = async(newListing:NewListingReq): Promise<ResultStatus> =>  {

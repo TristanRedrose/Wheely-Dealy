@@ -38,5 +38,8 @@ export interface PaginatedListings {
         maxPages: number,
         documentCount: number,
     }
-    
+}
+
+export interface ListingId {
+    id:string;
 }

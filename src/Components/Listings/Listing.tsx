@@ -8,7 +8,7 @@ interface ListingProps {
 
 const ListingComponent: React.FC<ListingProps> = ({listing}) => {
     return (
-        <NavLink className="listing-nav" to={"" + listing._id} >
+        <NavLink className="listing-nav" to={"" + listing._id}>
             <div className="listing-container">
                 <div className="listing-image-container">
                     <img src={listing.image} className="listing-image" alt="car-showcase"></img>

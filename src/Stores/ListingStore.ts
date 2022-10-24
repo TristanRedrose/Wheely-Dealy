@@ -3,7 +3,7 @@ import { CarListing, NewListingData, NewListingReq, PagingParams } from "../Type
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { companyList } from "./MockLists";
-import { getListingPage, postNewListing } from "../Services/Listing.service";
+import { getListingDetails, getListingPage, postNewListing } from "../Services/Listing.service";
 import { Session } from "../Types/auth.types";
 
 export class ListingStore {
@@ -71,7 +71,8 @@ export class ListingStore {
             setMessage: action,
             clearAddListings:action,
             setListing: action,
-            listing:observable,
+            listing: observable,
+            getListing: action,
         });
     }
 
@@ -317,6 +318,13 @@ export class ListingStore {
             token = session.token;
         }
         return token
+    }
+
+    getListing = async (id:string): Promise<void> => {
+        const listingId = {id: id}
+        let listing = await getListingDetails(listingId);
+        this.setListing(listing);
+        console.log(listing)
     }
 
 }

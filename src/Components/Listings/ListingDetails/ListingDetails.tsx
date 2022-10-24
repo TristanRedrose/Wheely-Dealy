@@ -11,16 +11,16 @@ const ListingDetails: React.FC = observer(() => {
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const { clearListing, listing, isLoading} = useListingsStore();
+    const { clearListing, listing, isLoading, getListing} = useListingsStore();
 
     useEffect(()=> {
         window.scrollTo(0,0);
-
+        getListing(id!);
         return () => {
             clearListing();
         }
 
-    }, [clearListing, navigate, id])
+    }, [clearListing, navigate, id, getListing])
 
     return (
         <div className="content-body">
@@ -34,7 +34,6 @@ const ListingDetails: React.FC = observer(() => {
                 </div>
                 <div className="details-info-container">
                     <div className="info-box-1">
-                        <p><span>Owner:</span> {listing.listedby.username}</p>
                         <p><span>Company:</span> {listing.company}</p>
                         <p><span>Type:</span> {listing.model}</p>
                         <p><span>Engine:</span> {listing.engine}</p>
