@@ -41,8 +41,8 @@ const ListingsFilterSort = () => {
                             setHorsepowerSorting(e)}
                         }>
                         <option value={"none"}>N/A</option>
-                        <option value={"horsepower"}>Highest first</option>
-                        <option value={"-horsepower"}>Lowest first</option>
+                        <option value={"-horsepower"}>Highest first</option>
+                        <option value={"horsepower"}>Lowest first</option>
                     </select>
                 </div>
                 <div className="label-select-box">
@@ -53,8 +53,8 @@ const ListingsFilterSort = () => {
                             setPriceSorting(e)}
                         }>
                         <option value={"none"}>N/A</option>
-                        <option value={"price"}>Highest first</option>
-                        <option value={"-price"}>Lowest first</option>
+                        <option value={"-price"}>Highest first</option>
+                        <option value={"price"}>Lowest first</option>
                     </select>
                 </div>
             </div>

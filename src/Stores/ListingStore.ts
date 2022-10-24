@@ -180,8 +180,8 @@ export class ListingStore {
     setPriceSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
         this.page = 1;
         if (event.currentTarget.value === "none") {
-            this.getCurrentListing();
             this.sorting = null;
+            this.getCurrentListing();
             return;
         }
 
