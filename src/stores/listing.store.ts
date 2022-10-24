@@ -1,35 +1,45 @@
 import mongoose, {Types} from "mongoose";
 import ListingModel from "../config/database/listing.model";
 import UserModel from "../config/database/user.model";
-import { Listing, NewListing } from "../types/listing.types";
+import { PaginatedListings, NewListing, PagingParams, Listing } from "../types/listing.types";
 import { Options } from "../types/shared.types";
 
 const listingModel = ListingModel;
 const userModel = UserModel;
 
 interface IListingStore {
-    getListings: (page:number) => Promise<Listing[]>;
+    getListings: (pagingParams:PagingParams) => Promise<PaginatedListings>;
     addListing: (newListing:NewListing) => Promise<string>;
 }
 
 class ListingStore implements IListingStore {
-    async getListings(page:number): Promise<Listing[]> {
+    async getListings(pagingParams:PagingParams): Promise<PaginatedListings> {
         const options: Options = {
-            page: page,
+            page: pagingParams.page,
             limit: 8,
             collation: {locale: 'en_US', strength: 1},
             populate: {path: 'listedBy', select: 'username'},
         }
-        let result: Listing[] = {} as Listing[];
+
+        let paginatedListings:PaginatedListings = {
+            listings: {} as Listing[],
+            maxPages: 0,
+            documentCount: 0,
+        }
         await listingModel.paginate({}, options, (err, results) => {
-            result = results.docs;
+            paginatedListings = {
+                listings: results.docs,
+                maxPages: results.totalPages,
+                documentCount: results.totalDocs,
+            }
         })
 
-        return result;
+        return paginatedListings;
     }
 
     async addListing(newListing:NewListing): Promise<string> {
         const {username, listingData: {description,company,model,engine,horsepower,price, image}} = newListing;
+        
         const userId = await userModel.findOne({username: username}, '_id').collation({ locale: 'en_US', strength: 1 });
         if (userId) {
             const id:Types.ObjectId = userId._id;

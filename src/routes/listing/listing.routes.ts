@@ -1,16 +1,16 @@
-import express from "express";
+import express, { Request } from "express";
 import listingController from "../../controllers/listing.controller";
-import { TypedRequestBody } from "../../types/shared.types";
+import { TypedRequestBody, TypedRequestQuery } from "../../types/shared.types";
 import { body, validationResult } from "express-validator";
-import { NewListing, NewListingReq } from "../../types/listing.types";
+import { NewListing, NewListingReq, PagingParams } from "../../types/listing.types";
 import { verifyToken } from "../../middleware/verifyToken";
 import { decodeToken } from "../../middleware/decodeToken";
 
 const router = express.Router();
 
-router.get('/getListings', (req:TypedRequestBody<number>, res) => {
+router.get('/getListings', (req: TypedRequestQuery<PagingParams>, res) => {
     try {
-        return listingController.getListings(req.body, res);
+        return listingController.getListings(req.query, res);
     } catch (err) {
         console.log(err);
     }

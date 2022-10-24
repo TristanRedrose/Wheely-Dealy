@@ -13,6 +13,12 @@ export type Listing = {
     updatedAt: Date;
 }
 
+export type PaginatedListings = {
+    listings: Listing[],
+    maxPages: number,
+    documentCount: number,
+}
+
 type NewListingData = {
     description: String;
     company: String;
@@ -31,5 +37,15 @@ export type NewListingReq = {
 export type NewListing = {
     username: String,
     listingData: NewListingData,
+}
+type Filter = {
+    company: string,
+    engine: string,
+}
+
+export type PagingParams = {
+    page: number,
+    filter?: Filter,
+    sort?: String | null,
 }
 

@@ -1,8 +1,12 @@
 import { User } from "./user.type";
 
 export interface TypedRequestBody<T> extends Express.Request {
-    body: T;
-  }
+  body: T;
+}
+
+export interface TypedRequestQuery<T> extends Express.Request {
+  query: T;
+}
 
 export type tokenPayload = {
   user: User;
