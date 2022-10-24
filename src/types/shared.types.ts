@@ -35,3 +35,9 @@ type Populate = {
   path: string,
   select: string,
 }
+
+export type SessionData = {
+  message: string,
+  token: string,
+  exp: number,
+}

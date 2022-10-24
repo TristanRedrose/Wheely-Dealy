@@ -10,6 +10,7 @@ const userModel = UserModel;
 interface IListingStore {
     getListings: (pagingParams:PagingParams) => Promise<PaginatedListings>;
     addListing: (newListing:NewListing) => Promise<string>;
+    getListing: (id:string) => Promise<Listing | null>;
 }
 
 class ListingStore implements IListingStore {
@@ -45,7 +46,7 @@ class ListingStore implements IListingStore {
         const userId = await userModel.findOne({username: username}, '_id').collation({ locale: 'en_US', strength: 1 });
         if (userId) {
             const id:Types.ObjectId = userId._id;
-            const listing = await listingModel.create(
+            await listingModel.create(
                 {
                     listedBy: id,
                     description: description,
@@ -60,6 +61,10 @@ class ListingStore implements IListingStore {
             return "Listing added";
         }
         return "An error occured";
+    }
+
+    async getListing(id:string): Promise<Listing | null> {
+        return await listingModel.findById(id);
     }
 }
 

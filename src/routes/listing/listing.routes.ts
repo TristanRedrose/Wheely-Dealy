@@ -2,7 +2,7 @@ import express, { Request } from "express";
 import listingController from "../../controllers/listing.controller";
 import { TypedRequestBody, TypedRequestQuery } from "../../types/shared.types";
 import { body, validationResult } from "express-validator";
-import { NewListing, NewListingReq, PagingParams } from "../../types/listing.types";
+import { ListingId, NewListing, NewListingReq, PagingParams } from "../../types/listing.types";
 import { verifyToken } from "../../middleware/verifyToken";
 import { decodeToken } from "../../middleware/decodeToken";
 
@@ -14,7 +14,15 @@ router.get('/getListings', (req: TypedRequestQuery<PagingParams>, res) => {
     } catch (err) {
         console.log(err);
     }
-})
+});
+
+router.get("/getListing", (req:TypedRequestQuery<ListingId>, res) => {
+    try {
+        return listingController.getListing(req.query, res);
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 router.use(verifyToken);
 
@@ -39,7 +47,7 @@ router.post('/addListing',
             console.log(err);
         }
     }
-)
+);
 
 export default router;
 

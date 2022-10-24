@@ -49,3 +49,7 @@ export type PagingParams = {
     sorting?: string | null,
 }
 
+export type ListingId = {
+    id:string;
+}
+
