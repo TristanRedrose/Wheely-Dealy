@@ -11,20 +11,16 @@ const ListingDetails: React.FC = observer(() => {
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const {getListing, clearListing, listing, isLoading} = useListingsStore();
+    const { clearListing, listing, isLoading} = useListingsStore();
 
     useEffect(()=> {
         window.scrollTo(0,0);
-        
-        if (id && parseInt(id)) {
-            getListing(parseInt(id));
-        }
 
         return () => {
             clearListing();
         }
 
-    }, [clearListing, getListing, navigate, id])
+    }, [clearListing, navigate, id])
 
     return (
         <div className="content-body">
@@ -34,12 +30,13 @@ const ListingDetails: React.FC = observer(() => {
             {!isLoading && !listing &&<PageNotFound text="listing" />}
             {!isLoading && listing && <div className="details-container">
                 <div className="details-image-container">
-                    <img src={"../" + listing.image} alt="car" className="details-image"></img>
+                    <img src={listing.image} alt="car" className="details-image"></img>
                 </div>
                 <div className="details-info-container">
                     <div className="info-box-1">
-                        <p><span>Company:</span> {listing.make}</p>
-                        <p><span>Type:</span> {listing.type}</p>
+                        <p><span>Owner:</span> {listing.listedby.username}</p>
+                        <p><span>Company:</span> {listing.company}</p>
+                        <p><span>Type:</span> {listing.model}</p>
                         <p><span>Engine:</span> {listing.engine}</p>
                         <p><span>Horsepower:</span> {listing.horsepower}</p>
                         <p><span>Price:</span> ${listing.price}</p>

@@ -1,10 +1,9 @@
 import { makeObservable, observable, action } from "mobx";
-import { CarListing, NewListingData, NewListingReq } from "../Types/listing.type";
+import { CarListing, NewListingData, NewListingReq, PagingParams } from "../Types/listing.type";
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
-import { Sorting } from "../Types/sorting.types";
 import { companyList } from "./MockLists";
-import { getListingById, getListingPage, postNewListing } from "../Services/Listing.service";
+import { getListingPage, postNewListing } from "../Services/Listing.service";
 import { Session } from "../Types/auth.types";
 
 export class ListingStore {
@@ -16,14 +15,11 @@ export class ListingStore {
     page: number = 1;
 
     filter: Filter = {
-        make: null,
+        company: null,
         engine: null,
     }
 
-    sorting: Sorting = {
-        sortBy: null,
-        order: null,
-    }
+    sorting: string | null = null;
 
     maxPages: number = 0;
 
@@ -74,7 +70,6 @@ export class ListingStore {
             setNewListingValue: action,
             setMessage: action,
             clearAddListings:action,
-            getListing: action,
             setListing: action,
             listing:observable,
         });
@@ -86,14 +81,11 @@ export class ListingStore {
         this.setListings([]);
         this.setMaxPages(0);
         this.filter = {
-            make: null,
+            company: null,
             engine: null,
         }
 
-        this.sorting = {
-            sortBy: null,
-            order: null,
-        }
+        this.sorting = null
         this.page = 1;
     }
 
@@ -126,14 +118,19 @@ export class ListingStore {
         let list: CarListing[] = []
         let max: number = 0
         this.setLoadingStatus(true);
-        await getListingPage(this.filter, this.sorting, this.page).then((result) => {
+        const pagingParams: PagingParams = {
+            page: this.page,
+            filter: this.filter,
+            sorting: this.sorting
+        }
+        await getListingPage(pagingParams).then((result) => {
             if (result === undefined) {
                 list = [];
                 return;
             }
 
-            list = result.listing;
-            max = result.maxPages
+            list = result.paginatedListings.listings;
+            max = result.paginatedListings.maxPages;
         });
         if (this.isCancelled) {
             this.setCancelStatus(false);
@@ -147,12 +144,12 @@ export class ListingStore {
     setMakeFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
         this.page = 1;
         if (event.currentTarget.value === "M-N/A") {
-            this.filter.make = null;
+            this.filter.company = null;
             this.getCurrentListing();
             return;
         }
         
-        this.filter.make = event.currentTarget.value;
+        this.filter.company = event.currentTarget.value;
         this.getCurrentListing();
     }
 
@@ -171,15 +168,12 @@ export class ListingStore {
     setHorsepowerSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
         this.page = 1;
         if (event.currentTarget.value === "none") {
-            this.sorting.sortBy = null;
-            this.sorting.order = null;
+            this.sorting = null;
             this.getCurrentListing();
             return;
         }
 
-        this.sorting.sortBy = "horsepower";
-
-        this.sorting.order = event.currentTarget.value;
+        this.sorting= event.currentTarget.value;
         this.getCurrentListing();
     }
 
@@ -187,14 +181,11 @@ export class ListingStore {
         this.page = 1;
         if (event.currentTarget.value === "none") {
             this.getCurrentListing();
-            this.sorting.sortBy = null;
-            this.sorting.order = null;
+            this.sorting = null;
             return;
         }
 
-        this.sorting.sortBy = "price";
-
-        this.sorting.order = event.currentTarget.value;
+        this.sorting = event.currentTarget.value;
 
         this.getCurrentListing();
     }
@@ -310,18 +301,6 @@ export class ListingStore {
 
     setListing = (listing: CarListing | undefined): void => {
         this.listing = listing;
-    }
-
-    getListing = async(id:number): Promise<void> => {
-        this.setLoadingStatus(true);
-        await getListingById(id).then(result => {
-            this.setListing(result);
-        });
-        if (this.isCancelled) {
-            this.setCancelStatus(false);
-            return;
-        }
-        this.setLoadingStatus(false);
     }
 
     clearListing = ():void => {

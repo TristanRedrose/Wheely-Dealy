@@ -1,9 +1,12 @@
+import { Filter } from "./filter.type";
+
 export interface CarListing {
-    id: number,
-    make: string,
-    type: string,
+    _id: string,
+    company: string,
+    model: string,
     price: number,
     image: string,
+    listedby: {_id: string, username: string};
     horsepower: number,
     engine:string
 }
@@ -21,4 +24,19 @@ export interface NewListingData {
 export interface NewListingReq {
     token: string,
     listingData: NewListingData;
+}
+
+export interface PagingParams {
+    page: number | null;
+    filter: Filter,
+    sorting: string | null;
+}
+
+export interface PaginatedListings {
+    paginatedListings: {
+        listings: CarListing[],
+        maxPages: number,
+        documentCount: number,
+    }
+    
 }

@@ -35,7 +35,7 @@ const Listings: React.FC = observer(() => {
                 {!isLoading && <div className="listings-container">
                     {listings.map(listing => {
                         return (
-                            <Listing key={listing.id} listing={listing} />
+                            <Listing key={listing._id} listing={listing} />
                         )
                     })}
                 </div>}

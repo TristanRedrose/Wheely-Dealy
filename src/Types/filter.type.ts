@@ -1,4 +1,4 @@
 export interface Filter {
-    make: string | null ,
+    company: string | null,
     engine: string | null,
 }
