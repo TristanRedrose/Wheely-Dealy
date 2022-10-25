@@ -64,7 +64,7 @@ class ListingStore implements IListingStore {
     }
 
     async getListing(id:string): Promise<Listing | null> {
-        return await listingModel.findById(id);
+        return await listingModel.findById(id).populate('listedBy', 'username');
     }
 }
 
