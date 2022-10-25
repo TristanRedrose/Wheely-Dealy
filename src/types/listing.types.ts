@@ -2,13 +2,13 @@ import { Types } from "mongoose";
 
 export type Listing = {
     listedBy: Types.ObjectId;
-    description: String;
-    company: String;
-    model: String;
-    engine: String;
-    horsepower: Number;
-    price: Number;
-    image?: String;
+    description: string;
+    company: string;
+    model: string;
+    engine: string;
+    horsepower: number;
+    price: number;
+    image?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -20,13 +20,13 @@ export type PaginatedListings = {
 }
 
 type NewListingData = {
-    description: String;
-    company: String;
-    model: String;
-    engine: String;
-    horsepower: Number;
-    price: Number;
-    image: String;
+    description: string;
+    company: string;
+    model: string;
+    engine: string;
+    horsepower: number;
+    price: number;
+    image: string;
 }
 
 export type NewListingReq = {
@@ -51,5 +51,28 @@ export type PagingParams = {
 
 export type ListingId = {
     id:string;
+}
+
+export type DeleteListing = {
+    username: string;
+    id: string;
+}
+
+export type DeleteListingReq = {
+    token: string;
+    id:string;
+}
+
+export type PopulatedListing = {
+    listedBy: {_id: string, username:string};
+    description: string;
+    company: string;
+    model: string;
+    engine: string;
+    horsepower: number;
+    price: number;
+    image?: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 

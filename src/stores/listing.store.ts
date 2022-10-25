@@ -1,7 +1,7 @@
 import mongoose, {Types} from "mongoose";
 import ListingModel from "../config/database/listing.model";
 import UserModel from "../config/database/user.model";
-import { PaginatedListings, NewListing, PagingParams, Listing } from "../types/listing.types";
+import { PaginatedListings, NewListing, PagingParams, Listing, PopulatedListing } from "../types/listing.types";
 import { Options } from "../types/shared.types";
 
 const listingModel = ListingModel;
@@ -11,6 +11,7 @@ interface IListingStore {
     getListings: (pagingParams:PagingParams) => Promise<PaginatedListings>;
     addListing: (newListing:NewListing) => Promise<string>;
     getListing: (id:string) => Promise<Listing | null>;
+    deleteListing: (id:string, username:string) => Promise<string>;
 }
 
 class ListingStore implements IListingStore {
@@ -43,9 +44,9 @@ class ListingStore implements IListingStore {
     async addListing(newListing:NewListing): Promise<string> {
         const {username, listingData: {description,company,model,engine,horsepower,price, image}} = newListing;
         
-        const userId = await userModel.findOne({username: username}, '_id').collation({ locale: 'en_US', strength: 1 });
-        if (userId) {
-            const id:Types.ObjectId = userId._id;
+        const user = await userModel.findOne({username: username}, '_id').collation({ locale: 'en_US', strength: 1 });
+        if (user) {
+            const id:Types.ObjectId = user._id;
             await listingModel.create(
                 {
                     listedBy: id,
@@ -65,6 +66,17 @@ class ListingStore implements IListingStore {
 
     async getListing(id:string): Promise<Listing | null> {
         return await listingModel.findById(id).populate('listedBy', 'username');
+    }
+
+    async deleteListing(id:string, username:string): Promise<string> {
+        const listing = await listingModel.findById(id).populate('listedBy', 'username') as PopulatedListing;
+        if (!listing) return "Listing not found";
+        if (listing.listedBy.username !== username) {
+            return "Access denied"
+        }
+
+        await listingModel.deleteOne({_id: id});
+        return "Listing removed";
     }
 }
 

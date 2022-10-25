@@ -5,5 +5,5 @@ import { tokenPayload } from "../types/shared.types";
 export function decodeToken(token:string) {
     
     const decoded = jwt.verify(token, secretKey) as tokenPayload;
-    return decoded.user.username;
+    return decoded.user;
 }

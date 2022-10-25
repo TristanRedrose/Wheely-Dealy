@@ -7,6 +7,7 @@ interface IListingService {
     addListing:(listing:NewListing) => Promise<string>;
     getListings:(pagingParams:PagingParams) => Promise<PaginatedListings>;
     getListing: (id:string) => Promise<Listing | null>;
+    deleteListing: (id:string, username: string) => Promise<string>;
 }
 
 class ListingService implements IListingService {
@@ -20,6 +21,10 @@ class ListingService implements IListingService {
 
     async getListing(id:string): Promise<Listing | null> {
         return await listingStore.getListing(id);
+    }
+
+    async deleteListing(id:string, username:string): Promise<string> {
+        return await listingStore.deleteListing(id, username);
     }
 }
 
