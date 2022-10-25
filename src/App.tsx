@@ -13,46 +13,49 @@ import Register from './Components/Auth/Register';
 import { AuthProvider } from './Context/AuthContext';
 import AuthRoutes from './Utils/Auth.routes';
 import ListingRoutes from './Utils/Listing.routes';
+import { ModalProvider } from './Context/ModalContext';
 
 const App: React.FC = () => {
   return (
     <>
       <AuthProvider>
-        <Routes>
-          <Route element={<AuthRoutes />}>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
-          </Route>
-          <Route 
-            path="/*" 
-            element={
-              <>
-                <NavbarComponent />
-                <Outlet />
-                <Footer />
-              </>
-            }
-          >
-            <Route path="" element={<Homepage />} />
+        <ModalProvider>
+          <Routes>
+            <Route element={<AuthRoutes />}>
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/register" element={<Register/>}/>
+            </Route>
             <Route 
-              path="listings/*" 
+              path="/*" 
               element={
-                <ListingsProvider>
+                <>
+                  <NavbarComponent />
                   <Outlet />
-                </ListingsProvider>
+                  <Footer />
+                </>
               }
             >
-              <Route path="" element={<Listings />} />
-              <Route element={<ListingRoutes />}>
-                <Route path="add" element={<AddListing />} />
+              <Route path="" element={<Homepage />} />
+              <Route 
+                path="listings/*" 
+                element={
+                  <ListingsProvider>
+                    <Outlet />
+                  </ListingsProvider>
+                }
+              >
+                <Route path="" element={<Listings />} />
+                <Route element={<ListingRoutes />}>
+                  <Route path="add" element={<AddListing />} />
+                </Route>
+                <Route path=":id" element={<ListingDetails />} />
+                <Route path="*" element={<PageNotFound text="listing" />} />
               </Route>
-              <Route path=":id" element={<ListingDetails />} />
-              <Route path="*" element={<PageNotFound text="listing" />} />
+              <Route path="*" element={<PageNotFound text="page" />} />
             </Route>
             <Route path="*" element={<PageNotFound text="page" />} />
-          </Route>
-          <Route path="*" element={<PageNotFound text="page" />} />
-        </Routes>
+          </Routes>
+        </ModalProvider>
       </AuthProvider>
     </>
   )
