@@ -12,6 +12,7 @@ import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import { AuthProvider } from './Context/AuthContext';
 import AuthRoutes from './Utils/Auth.routes';
+import ListingRoutes from './Utils/Listing.routes';
 
 const App: React.FC = () => {
   return (
@@ -41,9 +42,11 @@ const App: React.FC = () => {
                 </ListingsProvider>
               }
             >
-              <Route path="" element = {<Listings />} />
-              <Route path="add" element ={<AddListing />} />
-              <Route path=":id" element ={<ListingDetails />} />
+              <Route path="" element={<Listings />} />
+              <Route element={<ListingRoutes />}>
+                <Route path="add" element={<AddListing />} />
+              </Route>
+              <Route path=":id" element={<ListingDetails />} />
               <Route path="*" element={<PageNotFound text="listing" />} />
             </Route>
             <Route path="*" element={<PageNotFound text="page" />} />

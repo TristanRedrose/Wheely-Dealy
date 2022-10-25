@@ -34,6 +34,7 @@ const ListingDetails: React.FC = observer(() => {
                 </div>
                 <div className="details-info-container">
                     <div className="info-box-1">
+                        <p><span>Listed by:</span> {listing.listedBy.username}</p>
                         <p><span>Company:</span> {listing.company}</p>
                         <p><span>Type:</span> {listing.model}</p>
                         <p><span>Engine:</span> {listing.engine}</p>
@@ -41,10 +42,7 @@ const ListingDetails: React.FC = observer(() => {
                         <p><span>Price:</span> ${listing.price}</p>
                     </div>
                     <div className="info-box-2">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, magni. 
-                            Culpa quae labore magni porro! At saepe eveniet laudantium! Suscipit voluptas adipisci
-                            dolorum cum voluptatem tenetur blanditiis accusamus doloribus molestias?
-                        </p>
+                        <p>{listing.description}</p>
                     </div>
                 </div>
             </div>}

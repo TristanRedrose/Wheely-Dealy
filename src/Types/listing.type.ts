@@ -6,7 +6,8 @@ export interface CarListing {
     model: string,
     price: number,
     image: string,
-    listedby: {_id: string, username: string};
+    description: string;
+    listedBy: {_id: string, username: string};
     horsepower: number,
     engine:string
 }

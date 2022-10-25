@@ -324,7 +324,7 @@ export class ListingStore {
         const listingId = {id: id}
         let listing = await getListingDetails(listingId);
         this.setListing(listing);
-        console.log(listing)
+        console.log(listing);
     }
 
 }
