@@ -1,5 +1,5 @@
 import { makeObservable, observable, action } from "mobx";
-import { CarListing, DeleteListingReq, NewListingData, NewListingReq, PagingParams } from "../Types/listing.type";
+import { CarListing, DeleteListingReq, NewListingData, PagingParams } from "../Types/listing.type";
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { companyList } from "./MockLists";
@@ -252,11 +252,7 @@ export class ListingStore {
         const token = this.getToken();
         if (token) {
             this.setLoadingStatus(true);
-            const newListingReq:NewListingReq = {
-                token: token,
-                listingData:this.newListing
-            }
-            const response = await postNewListing(newListingReq);
+            const response = await postNewListing(token, this.newListing);
 
             this.setMessage(response.message);
         }

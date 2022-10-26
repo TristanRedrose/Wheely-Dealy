@@ -6,7 +6,6 @@ import { useListingsStore } from "../../../Context/ListingsContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import PageNotFound from "../../404Page/PageNotFound";
 import { useModalStore } from "../../../Context/ModalContext";
-import Modal from "../../Common/Modal/Modal";
 import { useAuthStore } from "../../../Context/AuthContext";
 
 const ListingDetails: React.FC = observer(() => {
@@ -14,8 +13,8 @@ const ListingDetails: React.FC = observer(() => {
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const { clearListing, listing, isLoading, getListing, deleteListing, redirect} = useListingsStore();
-    const { toggleModal } = useModalStore();
+    const { clearListing, listing, isLoading, getListing, redirect} = useListingsStore();
+    const { toggleDeleteModal } = useModalStore();
     const { sessionUser } = useAuthStore();
 
     useEffect(()=> {
@@ -63,23 +62,12 @@ const ListingDetails: React.FC = observer(() => {
                         <div className="option-button">
                             Update
                         </div>
-                        <div className="option-button" onClick={()=> toggleModal()}>
+                        <div className="option-button" onClick={()=> toggleDeleteModal(id!)}>
                             Delete
                         </div>
                     </div>
                 }
             </div>}
-            <Modal>
-                <h4>Are you sure you want to delete listing?</h4>
-                <div className="modal-button-box">
-                    <div className="modal-button" onClick={()=> toggleModal()}>
-                        Return
-                    </div>
-                    <div className="modal-button" onClick={()=> {deleteListing(id!); toggleModal()}}>
-                        Delete
-                    </div>
-                </div>
-            </Modal>
         </div>
     )
 })

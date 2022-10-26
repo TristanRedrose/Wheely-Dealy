@@ -1,6 +1,6 @@
 import axios, {AxiosError} from "axios";
 import { ResponseMessage, ResultStatus } from "../Types/auth.types";
-import { NewListingReq, PagingParams, PaginatedListings, CarListing, ListingId, DeleteListingReq } from "../Types/listing.type";
+import { PagingParams, PaginatedListings, CarListing, ListingId, DeleteListingReq, NewListingData } from "../Types/listing.type";
 import { environment } from "../Env/Env";
 
 export const getListingPage = async(pagingParams: PagingParams): Promise<PaginatedListings> => {
@@ -19,15 +19,15 @@ export const getListingDetails = async(id:ListingId): Promise<CarListing> => {
     })
 }
 
-export const postNewListing = async(newListing:NewListingReq): Promise<ResultStatus> =>  {
+export const postNewListing = async(token:string, listingData: NewListingData): Promise<ResultStatus> =>  {
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${newListing.token}`
+            'Authorization': `Bearer ${token}`
         }
     }
 
-    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listing/addListing`, newListing.listingData, config).then(res => {
+    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listing/addListing`,listingData, config).then(res => {
         return setResult(true, res.data.message);
     }).catch((error: AxiosError<ResponseMessage>) => {
         if (error.response?.data !== undefined) {

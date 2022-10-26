@@ -122,6 +122,7 @@ export class AuthStore {
         logOut();
         this.clearData();
         this.setAuthorised(false);
+        this.setSessionUser('');
     }
 
     validateLoginData = async(): Promise<void> => {
