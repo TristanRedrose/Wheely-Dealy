@@ -1,8 +1,8 @@
 import express, { Request } from "express";
 import listingController from "../../controllers/listing.controller";
-import { TypedRequestBody, TypedRequestQuery } from "../../types/shared.types";
+import { AuthorisedTypedRequestBody, TypedRequestQuery, AuthorisedTypedRequestQuery } from "../../types/shared.types";
 import { body, validationResult } from "express-validator";
-import { DeleteListingReq, DeleteListing, ListingId, NewListing, NewListingReq, PagingParams } from "../../types/listing.types";
+import { DeleteListing, ListingId, NewListing, NewListingData, PagingParams } from "../../types/listing.types";
 import { verifyToken } from "../../middleware/verifyToken";
 import { decodeToken } from "../../middleware/decodeToken";
 
@@ -26,13 +26,12 @@ router.get("/getListing", (req:TypedRequestQuery<ListingId>, res) => {
 
 router.use(verifyToken);
 
-router.post('/addListing', 
-    body('token').isLength({ min:1 }),
-    body('listingData.description').isLength({ min:1 }),
-    body('listingData.company').isLength({ min:1 }),
-    body('listingData.model').isLength({ min:1 }),
-    body('listingData.engine').isLength({ min:1 }),
-    (req:TypedRequestBody<NewListingReq>, res) => {
+router.post('/addListing',
+    body('description').isLength({ min:1 }),
+    body('company').isLength({ min:1 }),
+    body('model').isLength({ min:1 }),
+    body('engine').isLength({ min:1 }),
+    (req:AuthorisedTypedRequestBody<NewListingData>, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -40,7 +39,7 @@ router.post('/addListing',
             }
             const newListing: NewListing = {
                 username: decodeToken(req.body.token).username,
-                listingData: req.body.listingData
+                listingData: req.body
             }
             return listingController.addListing(newListing, res);
         } catch (err) {
@@ -49,18 +48,11 @@ router.post('/addListing',
     }
 );
 
-router.delete('/deleteListing', 
-    body('token').isLength({ min:1 }),
-    body('id').isLength({ min:1 }),
-    (req:TypedRequestBody<DeleteListingReq>, res) => {
+router.delete('/deleteListing', (req:AuthorisedTypedRequestQuery<ListingId>, res) => {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
             const deleteListing: DeleteListing = {
                 username: decodeToken(req.body.token).username,
-                id: req.body.id
+                id: req.query.id,
             }
             return listingController.deleteListing(deleteListing, res);
         } catch (err) {

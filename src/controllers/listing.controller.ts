@@ -38,7 +38,7 @@ class ListingController implements IListingController {
     async deleteListing(req:DeleteListing, res:Response): Promise<Response> {
         const deleteResponse = await listingService.deleteListing(req.id, req.username);
 
-        if (deleteResponse === "Listing removed") return res.json(deleteResponse);
+        if (deleteResponse === "Listing removed") return res.json({message:deleteResponse});
 
         return res.status(400).json({message: deleteResponse});
     }

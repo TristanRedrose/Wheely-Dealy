@@ -19,7 +19,7 @@ export type PaginatedListings = {
     documentCount: number,
 }
 
-type NewListingData = {
+export type NewListingData = {
     description: string;
     company: string;
     model: string;
@@ -27,11 +27,6 @@ type NewListingData = {
     horsepower: number;
     price: number;
     image: string;
-}
-
-export type NewListingReq = {
-    token: string;
-    listingData: NewListingData
 }
 
 export type NewListing = {
@@ -56,11 +51,6 @@ export type ListingId = {
 export type DeleteListing = {
     username: string;
     id: string;
-}
-
-export type DeleteListingReq = {
-    token: string;
-    id:string;
 }
 
 export type PopulatedListing = {

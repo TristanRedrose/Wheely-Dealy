@@ -71,7 +71,7 @@ class ListingStore implements IListingStore {
     async deleteListing(id:string, username:string): Promise<string> {
         const listing = await listingModel.findById(id).populate('listedBy', 'username') as PopulatedListing;
         if (!listing) return "Listing not found";
-        if (listing.listedBy.username !== username) {
+        if (listing.listedBy.username.toLowerCase() !== username.toLowerCase()) {
             return "Access denied"
         }
 

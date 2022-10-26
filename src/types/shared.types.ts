@@ -1,3 +1,4 @@
+import { IncomingHttpHeaders } from "http";
 import { User } from "./user.type";
 
 export interface TypedRequestBody<T> extends Express.Request {
@@ -6,6 +7,15 @@ export interface TypedRequestBody<T> extends Express.Request {
 
 export interface TypedRequestQuery<T> extends Express.Request {
   query: T;
+}
+
+export interface AuthorisedTypedRequestBody<T> extends Express.Request {
+  body: T & {token: string};
+}
+
+export interface AuthorisedTypedRequestQuery<T> extends Express.Request {
+  query: T;
+  body: {token: string};
 }
 
 export type tokenPayload = {

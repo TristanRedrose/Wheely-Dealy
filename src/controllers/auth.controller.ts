@@ -15,8 +15,8 @@ class AuthController implements IAuthController {
     async login(req:LoginRequest, res:Response): Promise<Response> {
         const user = await userService.getAuthenticatedUser(req.username, req.password);
         if (user) {
-            const loginResponse = await userService.loginResponse(user, "Login successful")
-            return res.json(loginResponse);  
+            const loginResponse = await userService.loginResponse(user, "Login successful");
+            return res.json(loginResponse);
         }
 
         return res.status(400).json({ message:'Invalid username/password'});
@@ -25,7 +25,7 @@ class AuthController implements IAuthController {
     async register(req:RegisterRequest, res:Response): Promise<Response> {
         const newUser = await userService.addUser(req.username, req.password, req.email);
         if (newUser) {
-            const loginResponse = await userService.loginResponse(newUser, "Registration successful")
+            const loginResponse = await userService.loginResponse(newUser, "Registration successful");
             return res.json(loginResponse);
         }
         
