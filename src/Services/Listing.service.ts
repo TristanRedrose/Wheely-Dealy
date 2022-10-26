@@ -1,6 +1,6 @@
 import axios, {AxiosError} from "axios";
 import { ResponseMessage, ResultStatus } from "../Types/auth.types";
-import { NewListingReq, PagingParams, PaginatedListings, CarListing, ListingId } from "../Types/listing.type";
+import { NewListingReq, PagingParams, PaginatedListings, CarListing, ListingId, DeleteListingReq } from "../Types/listing.type";
 import { environment } from "../Env/Env";
 
 export const getListingPage = async(pagingParams: PagingParams): Promise<PaginatedListings> => {
@@ -27,7 +27,7 @@ export const postNewListing = async(newListing:NewListingReq): Promise<ResultSta
         }
     }
 
-    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listing/addListing`, newListing, config).then(res => {
+    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listing/addListing`, newListing.listingData, config).then(res => {
         return setResult(true, res.data.message);
     }).catch((error: AxiosError<ResponseMessage>) => {
         if (error.response?.data !== undefined) {
@@ -43,6 +43,26 @@ const setResult = (isSuccessful:boolean, message: string): ResultStatus => {
         message: message,
     }
     return result;
+}
+
+export const deleteListing = async(deleteRequest: DeleteListingReq): Promise<ResultStatus> => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${deleteRequest.token}`,
+        },
+        params: {id: deleteRequest.id},
+    }
+
+    return await axios.delete<ResponseMessage>(`${environment.wishlist_API}/listing/deleteListing`, config).then(res => {
+        console.log(res)
+        return setResult(true, res.data.message);
+    }).catch((error: AxiosError<ResponseMessage>) => {
+        if (error.response?.data !== undefined) {
+            return setResult(false, error.response.data.message);
+        }
+        return setResult(false, "Something went wrong, try again.");
+    });
 }
 
 

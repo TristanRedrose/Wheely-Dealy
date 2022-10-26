@@ -1,9 +1,9 @@
 import { makeObservable, observable, action } from "mobx";
-import { CarListing, NewListingData, NewListingReq, PagingParams } from "../Types/listing.type";
+import { CarListing, DeleteListingReq, NewListingData, NewListingReq, PagingParams } from "../Types/listing.type";
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { companyList } from "./MockLists";
-import { getListingDetails, getListingPage, postNewListing } from "../Services/Listing.service";
+import { deleteListing, getListingDetails, getListingPage, postNewListing } from "../Services/Listing.service";
 import { Session } from "../Types/auth.types";
 
 export class ListingStore {
@@ -73,6 +73,7 @@ export class ListingStore {
             setListing: action,
             listing: observable,
             getListing: action,
+            deleteListing: action,
         });
     }
 
@@ -308,6 +309,7 @@ export class ListingStore {
         this.setCancelStatus(true);
         this.setListing(undefined);
         this.setLoadingStatus(false);
+        this.setRedirect(false);
     }
 
     getToken = (): string | null => {
@@ -317,7 +319,7 @@ export class ListingStore {
             const session: Session = JSON.parse(currentSession);
             token = session.token;
         }
-        return token
+        return token;
     }
 
     getListing = async (id:string): Promise<void> => {
@@ -326,6 +328,20 @@ export class ListingStore {
         this.setListing(listing);
     }
 
+    deleteListing = async (id:string): Promise<void> => {
+        const token = this.getToken();
+        if (token) {
+            const deleteData:DeleteListingReq = {
+                id: id,
+                token: token,
+            }
+            const deleteResponse = await deleteListing(deleteData);
+            this.setMessage(deleteResponse.message);
+            if (this.message === "Listing removed") {
+                setTimeout(() => this.setRedirect(true), 2000);
+            }
+        }
+    }
 }
 
 export const listingStore = new ListingStore();

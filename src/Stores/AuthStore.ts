@@ -26,6 +26,8 @@ export class AuthStore {
 
     authorised: boolean = false;
 
+    sessionUser: string = '';
+
     constructor() {
         makeObservable(this, {
             username:observable,
@@ -51,6 +53,8 @@ export class AuthStore {
             checkUser:action,
             userNameTaken:observable,
             setUserNameTaken: action,
+            sessionUser: observable,
+            setSessionUser: action,
         })
     }
 
@@ -214,6 +218,7 @@ export class AuthStore {
             const session: Session = JSON.parse(currentSession);
             const token = session.token;
             if (token) this.setAuthorised(true);
+            this.setSessionUser(session.username);
             return;
         }
         this.setAuthorised(false);
@@ -235,6 +240,10 @@ export class AuthStore {
 
     setUserNameTaken = (value:boolean): void => {
         this.userNameTaken = value;
+    }
+
+    setSessionUser = (username:string): void => {
+        this.sessionUser = username;
     }
 }
 
