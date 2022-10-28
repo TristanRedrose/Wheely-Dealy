@@ -22,5 +22,4 @@ export function verifyToken(req: Request, res:Response, next: NextFunction) {
     else {
         return res.status(403).json({message: "Access denied, token not found"});
     };
-    
 };

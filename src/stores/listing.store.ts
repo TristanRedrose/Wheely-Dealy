@@ -61,11 +61,16 @@ class ListingStore implements IListingStore {
             )
             return "Listing added";
         }
-        return "An error occured";
+        return "Something went wrong";
     }
 
     async getListing(id:string): Promise<Listing | null> {
-        return await listingModel.findById(id).populate('listedBy', 'username');
+        try {
+            return await listingModel.findById(id).populate('listedBy', 'username');
+        } catch (error) {
+            return null;
+        }
+        
     }
 
     async deleteListing(id:string, username:string): Promise<string> {

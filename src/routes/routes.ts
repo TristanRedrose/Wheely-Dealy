@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.use("/auth", authRoutes);
 
-router.use("/listing", listingRoutes);
+router.use("/listings", listingRoutes);
 
 export default router;

@@ -2,8 +2,10 @@ import express from "express";
 import initialiseMongoConnection from "./database/db";
 import routes from "../routes/routes";
 import cors from 'cors'
+import {isTrustedError} from "../error/middleware/errorHandler";
 
 const app = () => {
+
     const app = express();
 
     // CONSTS
@@ -17,6 +19,14 @@ const app = () => {
 
     // Routing
     app.use("/api", routes);
+
+    process.on('uncaughtException', async(error:Error) => {
+        if (!isTrustedError(error)) process.exit(1);
+    });
+
+    process.on('unhandledRejection', (error: Error) => {
+        throw error;
+    })
 
     app.listen(PORT , () => {
         console.log(`Server listening on port ${PORT}`);
