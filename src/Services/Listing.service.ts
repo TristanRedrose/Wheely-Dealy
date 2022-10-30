@@ -1,21 +1,22 @@
 import axios, {AxiosError} from "axios";
 import { ResponseMessage, ResultStatus } from "../Types/auth.types";
-import { PagingParams, PaginatedListings, CarListing, ListingId, DeleteListingReq, NewListingData } from "../Types/listing.type";
+import { PagingParams, PaginatedListings, CarListing, DeleteListingReq, NewListingData } from "../Types/listing.type";
 import { environment } from "../Env/Env";
 
 export const getListingPage = async(pagingParams: PagingParams): Promise<PaginatedListings> => {
-    return await axios.get<PaginatedListings>(`${environment.wishlist_API}/listing/getListings`, {params: pagingParams}).then(res => {
+    return await axios.get<PaginatedListings>(`${environment.wishlist_API}/listings`, {params: pagingParams}).then(res => {
         return res.data;
     }).catch(error => {
         return error;
     });
 }
 
-export const getListingDetails = async(id:ListingId): Promise<CarListing> => {
-    return await axios.get<CarListing>(`${environment.wishlist_API}/listing/getListing`, {params: id}).then(res => {
+export const getListingDetails = async(id:string): Promise<CarListing | undefined> => {
+    return await axios.get<CarListing>(`${environment.wishlist_API}/listings/${id}`).then(res => {
         return res.data;
     }).catch(error => {
-        return error;
+        console.log(error);
+        return undefined;
     })
 }
 
@@ -27,7 +28,7 @@ export const postNewListing = async(token:string, listingData: NewListingData): 
         }
     }
 
-    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listing/addListing`,listingData, config).then(res => {
+    return await axios.post<ResponseMessage>(`${environment.wishlist_API}/listings`,listingData, config).then(res => {
         return setResult(true, res.data.message);
     }).catch((error: AxiosError<ResponseMessage>) => {
         if (error.response?.data !== undefined) {
@@ -51,10 +52,9 @@ export const deleteListing = async(deleteRequest: DeleteListingReq): Promise<Res
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${deleteRequest.token}`,
         },
-        params: {id: deleteRequest.id},
     }
 
-    return await axios.delete<ResponseMessage>(`${environment.wishlist_API}/listing/deleteListing`, config).then(res => {
+    return await axios.delete<ResponseMessage>(`${environment.wishlist_API}/listings/${deleteRequest.id}`, config).then(res => {
         console.log(res)
         return setResult(true, res.data.message);
     }).catch((error: AxiosError<ResponseMessage>) => {

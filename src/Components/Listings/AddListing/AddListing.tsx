@@ -5,28 +5,43 @@ import { observer } from "mobx-react-lite";
 import "./AddListing.css"
 import { useNavigate } from "react-router-dom";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddListing: React.FC = observer(() => {
 
-    const {setNewListingValue, addNewListing, message, redirect, clearAddListings,isLoading} = useListingsStore();
+    const {setNewListingValue, addNewListing, message, actionSuccess, clearAddListings,isLoading, notify} = useListingsStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (redirect) {
-            navigate("/listings");
+        if (actionSuccess) notify();
+        let timeout = setTimeout(() => navigate("/listings"), 2000);
+        if (!actionSuccess) {
+            clearTimeout(timeout);
         }
         
-        return () => clearAddListings();
-    }, [clearAddListings, navigate, redirect]);
+        return () => clearTimeout(timeout);
+    }, [ navigate, actionSuccess, notify]);
+
+    useEffect(() => {
+        return () =>  clearAddListings();
+    }, [clearAddListings]);
+
 
     return (
         <>
+            <ToastContainer />
             <div className="listing-title">
                 <h2 className="lobster-text">Add Listing</h2>
             </div>
             <div className="form-container">
-                {message && <h4 className="form-message">{message}</h4>}
-                {!isLoading && message !== "Listing added" &&
+                {message && !actionSuccess && <h4 className="form-message">{message}</h4>}
+                {actionSuccess && 
+                    <div className="success-div">
+                        <h4>Listing added</h4>
+                    </div>
+                }
+                {!isLoading && !actionSuccess &&
                     <form className="add-listing-form" onSubmit={(e) => {e.preventDefault(); addNewListing()}}>
                         <div className="form-logo-box">
                             <img className="form-logo" src="../Images/Logo/car-logo.png" alt="car-logo" />

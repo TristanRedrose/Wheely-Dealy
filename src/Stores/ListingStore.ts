@@ -5,6 +5,7 @@ import { Filter } from "../Types/filter.type";
 import { companyList } from "./MockLists";
 import { deleteListing, getListingDetails, getListingPage, postNewListing } from "../Services/Listing.service";
 import { Session } from "../Types/auth.types";
+import {toast} from "react-toastify";
 
 export class ListingStore {
 
@@ -41,7 +42,7 @@ export class ListingStore {
 
     message: string = '';
 
-    redirect: boolean = false;
+    actionSuccess: boolean = false;
 
     constructor() {
         makeObservable(this, {
@@ -53,8 +54,8 @@ export class ListingStore {
             maxPages: observable,
             isLoading: observable,
             message: observable,
-            redirect: observable,
-            setRedirect:action,
+            actionSuccess: observable,
+            setSuccess:action,
             setMakeFilter: action,
             setEngineFilter: action,
             setHorsepowerSorting: action,
@@ -74,8 +75,16 @@ export class ListingStore {
             listing: observable,
             getListing: action,
             deleteListing: action,
+            notify: action,
         });
     }
+
+    notify = () => toast(this.message, {
+        position:'top-right',
+        autoClose:1000,
+        theme:'dark',
+        }
+    );
 
     clearListings = (): void => {
         this.setCancelStatus(true);
@@ -247,13 +256,15 @@ export class ListingStore {
     addNewListing = async(): Promise<void> => {
         const checkPassed = this.checkNewListValue();
         if (!checkPassed) {
+            console.log('yolo')
             return;
         }
         const token = this.getToken();
         if (token) {
             this.setLoadingStatus(true);
             const response = await postNewListing(token, this.newListing);
-
+            
+            this.setSuccess(response.isSuccessful);
             this.setMessage(response.message);
         }
         this.setLoadingStatus(false);
@@ -263,8 +274,8 @@ export class ListingStore {
         this.message = message;
     }
 
-    setRedirect = (value: boolean): void => {
-        this.redirect = value;
+    setSuccess = (value: boolean): void => {
+        this.actionSuccess = value;
     }
  
     checkNewListValue = (): boolean => {
@@ -293,8 +304,9 @@ export class ListingStore {
 
     clearAddListings = ():void => {
         this.resetNewListing();
-        this.setRedirect(false);
+        this.setSuccess(false);
         this.setMessage('');
+        this.setLoadingStatus(false);
     }
 
     setListing = (listing: CarListing | undefined): void => {
@@ -305,7 +317,7 @@ export class ListingStore {
         this.setCancelStatus(true);
         this.setListing(undefined);
         this.setLoadingStatus(false);
-        this.setRedirect(false);
+        this.setSuccess(false);
     }
 
     getToken = (): string | null => {
@@ -319,9 +331,12 @@ export class ListingStore {
     }
 
     getListing = async (id:string): Promise<void> => {
-        const listingId = {id: id}
-        let listing = await getListingDetails(listingId);
-        this.setListing(listing);
+        this.setLoadingStatus(true)
+        let listing = await getListingDetails(id);
+        if (listing !== undefined) {
+            this.setListing(listing);
+        }
+        this.setLoadingStatus(false);
     }
 
     deleteListing = async (id:string): Promise<void> => {
@@ -334,7 +349,7 @@ export class ListingStore {
             const deleteResponse = await deleteListing(deleteData);
             this.setMessage(deleteResponse.message);
             if (this.message === "Listing removed") {
-                setTimeout(() => this.setRedirect(true), 2000);
+                this.setSuccess(true);
             }
         }
     }

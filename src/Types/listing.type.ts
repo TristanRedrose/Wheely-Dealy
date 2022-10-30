@@ -41,10 +41,6 @@ export interface PaginatedListings {
     }
 }
 
-export interface ListingId {
-    id:string;
-}
-
 export interface DeleteListingReq {
     token: string,
     id: string;

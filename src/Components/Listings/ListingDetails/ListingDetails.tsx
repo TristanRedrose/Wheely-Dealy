@@ -7,40 +7,50 @@ import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import PageNotFound from "../../404Page/PageNotFound";
 import { useModalStore } from "../../../Context/ModalContext";
 import { useAuthStore } from "../../../Context/AuthContext";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ListingDetails: React.FC = observer(() => {
 
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const { clearListing, listing, isLoading, getListing, redirect} = useListingsStore();
+    const { clearListing, listing, isLoading, getListing, actionSuccess, notify} = useListingsStore();
     const { toggleDeleteModal } = useModalStore();
     const { sessionUser } = useAuthStore();
 
     useEffect(()=> {
         window.scrollTo(0,0);
         getListing(id!);
+
         return () => {
             clearListing();
         }
-
-    }, [clearListing, navigate, id, getListing])
+    }, [clearListing, id, getListing])
 
     useEffect(() => {
-        if (redirect) {
-            navigate("/listings");
+        if (actionSuccess) notify();
+        let timeout = setTimeout(() => navigate("/listings"), 2000) ;
+        if (!actionSuccess) {
+            clearTimeout(timeout);
         }
         
-        return () => clearListing();
-    }, [clearListing, navigate, redirect]);
+        return () => clearTimeout(timeout);
+        
+    }, [navigate, actionSuccess, notify]);
 
     return (
         <div className="content-body">
+            <ToastContainer />
             {isLoading && <div className="loading-container-2">
                 <LoadingCircle />
             </div>}
-            {!isLoading && !listing &&<PageNotFound text="listing" />}
-            {!isLoading && listing && <div className="details-container">
+            {actionSuccess && 
+                <div className="success-div">
+                    <h4>Listing deleted</h4>
+                </div>
+            }
+            {(listing && !actionSuccess) && <div className="details-container">
                 <div className="details-image-container">
                     <img src={listing.image} alt="car" className="details-image"></img>
                 </div>
@@ -68,6 +78,7 @@ const ListingDetails: React.FC = observer(() => {
                     </div>
                 }
             </div>}
+            {(!isLoading && !listing) && <PageNotFound text="listing" />}
         </div>
     )
 })
