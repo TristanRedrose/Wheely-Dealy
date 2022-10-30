@@ -1,6 +1,6 @@
-import express from "express";
+import express, { Request } from "express";
 import listingController from "../../controllers/listing.controller";
-import { AuthorisedTypedRequestBody, TypedRequestQuery, AuthorisedTypedRequestQuery } from "../../types/shared.types";
+import { AuthorisedTypedRequestBody, TypedRequestQuery, AuthorisedTypedRequestParams } from "../../types/shared.types";
 import { body, validationResult } from "express-validator";
 import { DeleteListing, ListingId, NewListing, NewListingData, PagingParams } from "../../types/listing.types";
 import { verifyToken } from "../../middleware/verifyToken";
@@ -8,17 +8,17 @@ import { decodeToken } from "../../middleware/decodeToken";
 
 const router = express.Router();
 
-router.get('/get', async(req: TypedRequestQuery<PagingParams>, res, next) => {
+router.get('/', async(req: TypedRequestQuery<PagingParams>, res, next) => {
     return await listingController.getListings(req.query, res);
 });
 
-router.get("/listing/get", async(req:TypedRequestQuery<ListingId>, res, next) => {
-    return await listingController.getListing(req.query, res);
+router.get("/:id", async(req:Request<ListingId>, res, next) => {
+    return await listingController.getListing(req.params, res);
 });
 
 router.use(verifyToken);
 
-router.post('/post',
+router.post('/',
     body('description').isLength({ min:1 }),
     body('company').isLength({ min:1 }),
     body('model').isLength({ min:1 }),
@@ -36,10 +36,10 @@ router.post('/post',
     return await listingController.addListing(newListing, res);
 });
 
-router.delete('/delete', async(req:AuthorisedTypedRequestQuery<ListingId>, res, next) => {
+router.delete('/:id', async(req:AuthorisedTypedRequestParams<ListingId>, res, next) => {
     const deleteListing: DeleteListing = {
         username: decodeToken(req.body.token).username,
-        id: req.query.id,
+        id: req.params.id,
     }
     return await listingController.deleteListing(deleteListing, res);
 });

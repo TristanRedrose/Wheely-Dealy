@@ -26,7 +26,7 @@ class ListingStore implements IListingStore {
         }
 
         let paginatedListings:PaginatedListings = {
-            listings: {} as Listing[],
+            listings: [],
             maxPages: 0,
             documentCount: 0,
         }

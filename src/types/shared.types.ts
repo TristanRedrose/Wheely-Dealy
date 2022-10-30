@@ -13,8 +13,8 @@ export interface AuthorisedTypedRequestBody<T> extends Express.Request {
   body: T & {token: string};
 }
 
-export interface AuthorisedTypedRequestQuery<T> extends Express.Request {
-  query: T;
+export interface AuthorisedTypedRequestParams<T> extends Express.Request {
+  params: T;
   body: {token: string};
 }
 

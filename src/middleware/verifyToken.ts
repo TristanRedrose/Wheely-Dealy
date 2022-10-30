@@ -9,17 +9,17 @@ export function verifyToken(req: Request, res:Response, next: NextFunction) {
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         if (!bearerToken) {
-            return res.status(403).json({message: "Access denied, token not found"});
+            return res.status(401).json({message: "Access denied, token not found"});
         }
         try {
             jwt.verify(bearerToken, secretKey)
         } catch (err) {
-            return res.status(403).json({message: "Access denied, token failed verification"})
+            return res.status(401).json({message: "Access denied, token failed verification"})
         }
         req.body.token = bearerToken;
         next();
     }
     else {
-        return res.status(403).json({message: "Access denied, token not found"});
+        return res.status(401).json({message: "Access denied, token not found"});
     };
 };
