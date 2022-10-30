@@ -1,7 +1,7 @@
 import mongoose, {Types} from "mongoose";
 import ListingModel from "../config/database/listing.model";
 import UserModel from "../config/database/user.model";
-import { PaginatedListings, NewListing, PagingParams, Listing, PopulatedListing } from "../types/listing.types";
+import { PaginatedListings, NewListing, PagingParams, Listing, PopulatedListing, NewListingData } from "../types/listing.types";
 import { Options } from "../types/shared.types";
 
 const listingModel = ListingModel;
@@ -9,7 +9,7 @@ const userModel = UserModel;
 
 interface IListingStore {
     getListings: (pagingParams:PagingParams) => Promise<PaginatedListings>;
-    addListing: (newListing:NewListing) => Promise<string>;
+    addListing: (username:string, listingData: NewListingData) => Promise<string>;
     getListing: (id:string) => Promise<Listing | null>;
     deleteListing: (id:string, username:string) => Promise<string>;
 }
@@ -41,8 +41,8 @@ class ListingStore implements IListingStore {
         return paginatedListings;
     }
 
-    async addListing(newListing:NewListing): Promise<string> {
-        const {username, listingData: {description,company,model,engine,horsepower,price, image}} = newListing;
+    async addListing(username:string, listingData: NewListingData): Promise<string> {
+        const {description, company, model, engine, horsepower, price, image} = listingData;
         
         const user = await userModel.findOne({username: username}, '_id').collation({ locale: 'en_US', strength: 1 });
         if (user) {
@@ -70,7 +70,6 @@ class ListingStore implements IListingStore {
         } catch (error) {
             return null;
         }
-        
     }
 
     async deleteListing(id:string, username:string): Promise<string> {

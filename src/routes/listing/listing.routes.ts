@@ -2,18 +2,25 @@ import express, { Request } from "express";
 import listingController from "../../controllers/listing.controller";
 import { AuthorisedTypedRequestBody, TypedRequestQuery, AuthorisedTypedRequestParams } from "../../types/shared.types";
 import { body, validationResult } from "express-validator";
-import { DeleteListing, ListingId, NewListing, NewListingData, PagingParams } from "../../types/listing.types";
+import { ListingId, NewListingData, PagingParams } from "../../types/listing.types";
 import { verifyToken } from "../../middleware/verifyToken";
-import { decodeToken } from "../../middleware/decodeToken";
 
 const router = express.Router();
 
 router.get('/', async(req: TypedRequestQuery<PagingParams>, res, next) => {
-    return await listingController.getListings(req.query, res);
+    try {
+        return await listingController.getListings(req, res);
+    } catch (error) {
+        next(error);
+    }
 });
 
 router.get("/:id", async(req:Request<ListingId>, res, next) => {
-    return await listingController.getListing(req.params, res);
+    try {
+        return await listingController.getListing(req, res);
+    } catch (error) {
+        next(error)
+    }
 });
 
 router.use(verifyToken);
@@ -29,19 +36,19 @@ router.post('/',
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const newListing: NewListing = {
-        username: decodeToken(req.body.token).username,
-        listingData: req.body
+    try {
+        return await listingController.addListing(req, res);
+    } catch (error) {
+        next(error);
     }
-    return await listingController.addListing(newListing, res);
 });
 
 router.delete('/:id', async(req:AuthorisedTypedRequestParams<ListingId>, res, next) => {
-    const deleteListing: DeleteListing = {
-        username: decodeToken(req.body.token).username,
-        id: req.params.id,
+    try {
+        return await listingController.deleteListing(req, res);
+    } catch (error) {
+        next(error);  
     }
-    return await listingController.deleteListing(deleteListing, res);
 });
 
 export default router;

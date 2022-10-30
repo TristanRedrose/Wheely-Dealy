@@ -1,18 +1,19 @@
 import listingStore from "../stores/listing.store";
-import { NewListing, PaginatedListings } from "../types/listing.types";
+import { NewListingData, PaginatedListings } from "../types/listing.types";
 import { PagingParams } from "../types/listing.types";
 import { Listing } from "../types/listing.types";
 
 interface IListingService {
-    addListing:(listing:NewListing) => Promise<string>;
+    addListing:(username: string, listingData: NewListingData) => Promise<string>;
     getListings:(pagingParams:PagingParams) => Promise<PaginatedListings>;
     getListing: (id:string) => Promise<Listing | null>;
     deleteListing: (id:string, username: string) => Promise<string>;
 }
 
 class ListingService implements IListingService {
-    async addListing(listing:NewListing): Promise<string> {
-        return await listingStore.addListing(listing);
+    async addListing(username: string, listingData: NewListingData): Promise<string> {
+        
+        return await listingStore.addListing(username, listingData);
     }
 
     async getListings(pagingParams:PagingParams):Promise<PaginatedListings> {
