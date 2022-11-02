@@ -19,25 +19,25 @@ class ListingController implements IListingController {
 
         const response = await listingService.addListing(user.username, req.body);
 
-        if (response === "Listing added") return res.json({message: response});
+        if (response) return res.status(201).json({message: "Listing added"});
 
-        return res.status(400).json({message: response});
+        return res.status(400).json('Listing post failed');
     }
 
     async getListings(req:TypedRequestQuery<PagingParams>, res:Response): Promise<Response> {
         const response = await listingService.getListings(req.query);
 
-        if (response) return res.json({paginatedListings: response});
+        if (response) return res.status(200).json({paginatedListings: response});
 
-        return res.status(400).json({message: "Listing retrieval error"});
+        return res.status(400).json('Listing retrieval error');
     }
 
     async getListing(req:Request<ListingId>, res:Response): Promise<Response> {
         const listing = await listingService.getListing(req.params.id);
         
-        if (listing) return res.json(listing);
+        if (listing) return res.status(200).json(listing);
 
-        return res.status(400).json({message: "Listing retrieval error"});
+        return res.status(400).json('Listing retrieval error');
     }
 
     async deleteListing(req:AuthorisedTypedRequestParams<ListingId>, res:Response): Promise<Response> {
@@ -45,9 +45,9 @@ class ListingController implements IListingController {
 
         const deleteResponse = await listingService.deleteListing(req.params.id, user.username);
 
-        if (deleteResponse === "Listing removed") return res.json({message:deleteResponse});
+        if (deleteResponse) return res.sendStatus(204);
 
-        return res.status(400).json({message: deleteResponse});
+        return res.status(400).json('Something went wrong during listing deletion');
     }
 }
 
