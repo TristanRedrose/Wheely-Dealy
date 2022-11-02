@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { secretKey } from "../env/env";
 import jwt from "jsonwebtoken";
+import { getTokenPayload } from "../helpers/getTokenPayload";
 
 export function verifyToken(req: Request, res:Response, next: NextFunction) {
     
@@ -16,7 +17,7 @@ export function verifyToken(req: Request, res:Response, next: NextFunction) {
         } catch (err) {
             return res.status(401).json({message: "Access denied, token failed verification"})
         }
-        req.body.token = bearerToken;
+        req.username = getTokenPayload(bearerToken).username;
         next();
     }
     else {

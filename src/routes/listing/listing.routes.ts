@@ -1,6 +1,6 @@
 import express, { Request } from "express";
 import listingController from "../../controllers/listing.controller";
-import { AuthorisedTypedRequestBody, TypedRequestQuery, AuthorisedTypedRequestParams } from "../../types/shared.types";
+import { TypedRequestQuery, AuthenticatedRequest} from "../../types/shared.types";
 import { body, validationResult } from "express-validator";
 import { ListingId, NewListingData, PagingParams } from "../../types/listing.types";
 import { verifyToken } from "../../middleware/verifyToken";
@@ -30,9 +30,9 @@ router.post('/',
     body('company').isLength({ min:1 }),
     body('model').isLength({ min:1 }),
     body('engine').isLength({ min:1 }),
-    async (req:AuthorisedTypedRequestBody<NewListingData>, res, next) => {
+    async (req:AuthenticatedRequest<NewListingData>, res, next) => {
         
-    const errors = validationResult(req);
+    const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
@@ -43,7 +43,7 @@ router.post('/',
     }
 });
 
-router.delete('/:id', async(req:AuthorisedTypedRequestParams<ListingId>, res, next) => {
+router.delete('/:id', async(req:AuthenticatedRequest<void>, res, next) => {
     try {
         return await listingController.deleteListing(req, res);
     } catch (error) {

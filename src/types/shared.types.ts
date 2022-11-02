@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from "http";
+import { ListingId } from "./listing.types";
 import { User } from "./user.type";
 
 export interface TypedRequestBody<T> extends Express.Request {
@@ -9,13 +9,9 @@ export interface TypedRequestQuery<T> extends Express.Request {
   query: T;
 }
 
-export interface AuthorisedTypedRequestBody<T> extends Express.Request {
-  body: T & {token: string};
-}
-
-export interface AuthorisedTypedRequestParams<T> extends Express.Request {
-  params: T;
-  body: {token: string};
+export interface AuthenticatedRequest<T> extends Express.Request {
+  params?: ListingId,
+  body: T,
 }
 
 export type tokenPayload = {

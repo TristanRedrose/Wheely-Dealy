@@ -1,27 +1,26 @@
 import listingService from "../services/listing.service";
 import express, { Request, Response } from "express";
-import { ListingId, NewListingData, PagingParams} from "../types/listing.types";
-import { AuthorisedTypedRequestBody, AuthorisedTypedRequestParams, TypedRequestQuery } from "../types/shared.types";
-import { getTokenPayload } from "../helpers/getTokenPayload";
+import { ListingId, ListingUpdateData, NewListingData, PagingParams} from "../types/listing.types";
+import { AuthenticatedRequest, TypedRequestQuery } from "../types/shared.types";
 
 
 
 interface IListingController {
-    addListing:(req:AuthorisedTypedRequestBody<NewListingData>, res:Response) => Promise<Response>;
+    addListing:(req:AuthenticatedRequest<NewListingData>, res:Response) => Promise<Response>;
     getListings:(req:TypedRequestQuery<PagingParams>, res:Response) => Promise<Response>;
     getListing:(req:Request<ListingId>, res:Response) => Promise<Response>;
-    deleteListing:(req:AuthorisedTypedRequestParams<ListingId>, res:Response) => Promise<Response>;
+    deleteListing:(req:AuthenticatedRequest<void>, res:Response) => Promise<Response>;
+    updateListing:(req: AuthenticatedRequest<ListingUpdateData>, res:Response) => Promise<Response>;
 }
 
 class ListingController implements IListingController {
-    async addListing(req:AuthorisedTypedRequestBody<NewListingData>, res:Response): Promise<Response> {
-        const user = getTokenPayload(req.body.token)
+    async addListing(req:AuthenticatedRequest<NewListingData>, res:Response): Promise<Response> {
 
-        const response = await listingService.addListing(user.username, req.body);
+        const response = await listingService.addListing(req.username!, req.body);
 
         if (response) return res.status(201).json({message: "Listing added"});
 
-        return res.status(400).json('Listing post failed');
+        return res.status(400).json({message: 'Listing post failed'});
     }
 
     async getListings(req:TypedRequestQuery<PagingParams>, res:Response): Promise<Response> {
@@ -29,7 +28,7 @@ class ListingController implements IListingController {
 
         if (response) return res.status(200).json({paginatedListings: response});
 
-        return res.status(400).json('Listing retrieval error');
+        return res.status(400).json({message: 'Listing retrieval error'});
     }
 
     async getListing(req:Request<ListingId>, res:Response): Promise<Response> {
@@ -37,17 +36,24 @@ class ListingController implements IListingController {
         
         if (listing) return res.status(200).json(listing);
 
-        return res.status(400).json('Listing retrieval error');
+        return res.status(400).json({message: 'Listing retrieval error'});
     }
 
-    async deleteListing(req:AuthorisedTypedRequestParams<ListingId>, res:Response): Promise<Response> {
-        const user = getTokenPayload(req.body.token)
+    async deleteListing(req:AuthenticatedRequest<void>, res:Response): Promise<Response> {
 
-        const deleteResponse = await listingService.deleteListing(req.params.id, user.username);
+        const deleteResponse = await listingService.deleteListing(req.params!.id, req.username!);
 
         if (deleteResponse) return res.sendStatus(204);
 
-        return res.status(400).json('Something went wrong during listing deletion');
+        return res.status(400).json({message: 'Something went wrong during listing deletion'});
+    }
+    
+    async updateListing(req:AuthenticatedRequest<ListingUpdateData>, res:Response): Promise<Response> {
+        const updateResponse = await listingService.updateListing(req.params!.id, req.body, req.username!);
+
+        if (updateResponse) return res.status(200).json('Listing updated');
+
+        return res.status(400).json({message: 'Something went wrong during listing update'});
     }
 }
 

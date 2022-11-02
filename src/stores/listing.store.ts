@@ -1,7 +1,7 @@
 import mongoose, {Types} from "mongoose";
 import ListingModel from "../config/database/listing.model";
 import UserModel from "../config/database/user.model";
-import { PaginatedListings, NewListing, PagingParams, Listing, PopulatedListing, NewListingData } from "../types/listing.types";
+import { PaginatedListings, ListingUpdateData, PagingParams, Listing, PopulatedListing, NewListingData } from "../types/listing.types";
 import { Options } from "../types/shared.types";
 
 const listingModel = ListingModel;
@@ -10,8 +10,9 @@ const userModel = UserModel;
 interface IListingStore {
     getListings: (pagingParams:PagingParams) => Promise<PaginatedListings>;
     addListing: (username:string, listingData: NewListingData) => Promise<boolean>;
-    getListing: (id:string) => Promise<Listing | null>;
+    getListing: (id:string) => Promise<PopulatedListing | null>;
     deleteListing: (id:string, username:string) => Promise<boolean>;
+    updateListing: (id:string, updateData:ListingUpdateData, username: string) => Promise<boolean>;
 }
 
 class ListingStore implements IListingStore {
@@ -55,8 +56,8 @@ class ListingStore implements IListingStore {
                     model: model,
                     engine: engine,
                     horsepower: horsepower,
-                    price:price,
-                    image:image,
+                    price: price,
+                    image: image,
                 }
             )
             return true;
@@ -64,9 +65,9 @@ class ListingStore implements IListingStore {
         return false;
     }
 
-    async getListing(id:string): Promise<Listing | null> {
+    async getListing(id:string): Promise<PopulatedListing | null> {
         try {
-            return await listingModel.findById(id).populate('listedBy', 'username');
+            return await listingModel.findById(id).populate('listedBy', 'username') as PopulatedListing;
         } catch (error) {
             return null;
         }
@@ -80,6 +81,17 @@ class ListingStore implements IListingStore {
         }
 
         await listingModel.deleteOne({_id: id});
+        return true;
+    }
+
+    async updateListing(id:string, updateData:ListingUpdateData, username:string): Promise<boolean> {
+        const listing = await listingModel.findById(id).populate('listedBy', 'username') as PopulatedListing;
+
+        if (listing.listedBy.username.toLowerCase() !== username.toLowerCase()) {
+            return false;
+        }
+
+        await listingModel.updateOne({id: id}, updateData);
         return true;
     }
 }
