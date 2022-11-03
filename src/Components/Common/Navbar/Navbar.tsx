@@ -1,14 +1,14 @@
 import React, {useEffect} from "react";
 import "./Navbar.css";
 import { NavLink, Link } from "react-router-dom";
-import { useAuthStore } from "../../../Context/AuthContext";
 import { observer } from "mobx-react-lite";
-import { useModalStore } from "../../../Context/ModalContext";
+import { useRootStore } from "../../../Context/StoresContext";
 
 const NavbarComponent: React.FC = observer(() => {
 
-    const {authorised, isAuthorised} = useAuthStore();
-    const {toggleLoginModal} = useModalStore();
+    const {authStore, modalStore} = useRootStore();
+    const {authorised, isAuthorised} = authStore;
+    const {toggleLoginModal} = modalStore;
 
     useEffect(() => {
         isAuthorised();

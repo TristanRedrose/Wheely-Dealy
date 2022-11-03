@@ -1,10 +1,11 @@
 import React, {useRef} from "react";
-import { useListingsStore } from "../../../Context/ListingsContext";
+import { useRootStore } from "../../../Context/StoresContext";
 import "./FilterSort.css";
 
 const ListingsFilterSort = () => {
 
-    const {companyList, setMakeFilter, setEngineFilter, setHorsepowerSorting, setPriceSorting} = useListingsStore();
+    const {listingStore} = useRootStore();
+    const {companyList, setMakeFilter, setEngineFilter, setHorsepowerSorting, setPriceSorting} = listingStore;
 
     const priceFilter = useRef<null | HTMLSelectElement>(null);
     const horsepowerFilter = useRef<null | HTMLSelectElement>(null);

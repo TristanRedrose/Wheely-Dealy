@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import { useListingsStore } from "../../../Context/ListingsContext";
 import { companyList } from "../../../Stores/MockLists";
 import { observer } from "mobx-react-lite";
 import "./AddListing.css"
@@ -7,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRootStore } from "../../../Context/StoresContext";
 
 const AddListing: React.FC = observer(() => {
 
-    const {setNewListingValue, addNewListing, message, actionSuccess, clearAddListings,isLoading, notify} = useListingsStore();
+    const {listingStore} = useRootStore();
+    const {setNewListingValue, addNewListing, message, actionSuccess, clearAddListings,isLoading, notify} = listingStore;
     const navigate = useNavigate();
 
     useEffect(() => {

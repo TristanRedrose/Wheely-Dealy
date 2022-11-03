@@ -1,10 +1,11 @@
 import React from "react";
-import { useListingsStore } from "../../../Context/ListingsContext";
+import { useRootStore } from "../../../Context/StoresContext";
 import "./Pagination.css"
 
 const Pagination: React.FC = () => {
 
-    const {page, maxPages, setPage, incrementPage, decrementPage} = useListingsStore();
+    const {listingStore} = useRootStore();
+    const {page, maxPages, setPage, incrementPage, decrementPage} = listingStore;
 
     return (
         <div className="pagination">

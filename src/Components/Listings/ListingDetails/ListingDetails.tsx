@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import "./ListingDetails.css"
 import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { useListingsStore } from "../../../Context/ListingsContext";
+import { useRootStore } from "../../../Context/StoresContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import PageNotFound from "../../404Page/PageNotFound";
-import { useModalStore } from "../../../Context/ModalContext";
-import { useAuthStore } from "../../../Context/AuthContext";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,9 +13,10 @@ const ListingDetails: React.FC = observer(() => {
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const { clearListing, listing, isLoading, getListing, actionSuccess, notify} = useListingsStore();
-    const { toggleDeleteModal } = useModalStore();
-    const { sessionUser } = useAuthStore();
+    const {listingStore, modalStore, authStore} = useRootStore();
+    const { clearListing, listing, isLoading, getListing, actionSuccess, notify} = listingStore;
+    const { toggleDeleteModal } = modalStore;
+    const { sessionUser } = authStore;
 
     useEffect(()=> {
         window.scrollTo(0,0);

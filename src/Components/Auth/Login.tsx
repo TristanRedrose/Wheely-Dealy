@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import "./Auth.css";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../Context/AuthContext";
 import { observer } from "mobx-react-lite";
+import { useRootStore } from "../../Context/StoresContext";
 
 const Login: React.FC = observer(() => {
 
-    const {login, setAuthData, clearData, errorCode, errorMessage} = useAuthStore();
+    const {authStore} = useRootStore();
+    const {login, setAuthData, clearData, errorCode, errorMessage} = authStore;
 
     useEffect(() => {
         return () => clearData() 

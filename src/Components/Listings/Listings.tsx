@@ -1,6 +1,6 @@
 import React, { useEffect} from "react";
 import { observer } from "mobx-react-lite"
-import { useListingsStore } from "../../Context/ListingsContext";
+import { useRootStore } from "../../Context/StoresContext";
 import "./Listings.css";
 import Listing from "./Listing";
 import ListingsFilterSort from "./FilterSort/FilterSort";
@@ -11,7 +11,8 @@ import LoadingCircle from "../Common/Loading/LoadingCircle";
 
 const Listings: React.FC = observer(() => {
 
-    const {listings, getListings, isLoading, clearListings} = useListingsStore();
+    const {listingStore} = useRootStore();
+    const {listings, getListings, isLoading, clearListings} = listingStore;
 
     useEffect(() => {
         getListings();

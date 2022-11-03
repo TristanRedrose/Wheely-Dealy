@@ -1,17 +1,16 @@
 import React, { PropsWithChildren } from "react";
 import ReactDOM from "react-dom";
-import { useModalStore } from "../../../Context/ModalContext";
 import "./Modal.css";
 import { observer } from "mobx-react-lite";
-import { useListingsStore } from "../../../Context/ListingsContext";
-import { useAuthStore } from "../../../Context/AuthContext";
+import { useRootStore } from "../../../Context/StoresContext";
 
 
 const Modal: React.FC<PropsWithChildren> = observer(() => {
 
-    const {isActive, closeModal, modalText, buttonText, listingId} = useModalStore();
-    const {logOut} = useAuthStore();
-    const {deleteListing} = useListingsStore();
+    const {listingStore, modalStore, authStore} = useRootStore();
+    const {isActive, closeModal, modalText, buttonText, listingId} = modalStore;
+    const {logOut} = authStore;
+    const {deleteListing} = listingStore;
 
     return ReactDOM.createPortal(
         <div className={!isActive ? "modal" : "modal-on"}>
