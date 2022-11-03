@@ -10,6 +10,11 @@ export type Registration = {
 }
 
 export type AuthResponse = {
+    session: SessionResponse
+}
+
+type SessionResponse = {
+    user: string
     message: string;
     token: string;
     exp: number;

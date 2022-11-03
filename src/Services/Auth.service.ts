@@ -4,10 +4,12 @@ import { environment } from "../Env/Env";
 
 export const login = async (user: User): Promise<ResultStatus> => {
     return await axios.post<AuthResponse>(`${environment.wishlist_API}/auth/login`, user).then(res => {
+        console.log(res)
+        let sessionData = res.data.session
         const session: Session = {
-            token: res.data.token,
-            username: user.username,
-            validTo: res.data.exp,
+            token: sessionData.token,
+            username: sessionData.user,
+            validTo: sessionData.exp,
         };
         setSession(session);
         return setResult(true, '');
@@ -22,10 +24,11 @@ export const login = async (user: User): Promise<ResultStatus> => {
 
 export const register = async(registration: Registration): Promise<ResultStatus> => {
     return await axios.post<AuthResponse>(`${environment.wishlist_API}/auth/register`, registration).then(res => {
+        let sessionData = res.data.session
         const session: Session = {
-            token: res.data.token,
-            username: registration.username,
-            validTo: res.data.exp,
+            token: sessionData.token,
+            username: sessionData.user,
+            validTo: sessionData.exp,
         };
         setSession(session);
         return setResult(true, '');

@@ -256,7 +256,6 @@ export class ListingStore {
     addNewListing = async(): Promise<void> => {
         const checkPassed = this.checkNewListValue();
         if (!checkPassed) {
-            console.log('yolo')
             return;
         }
         const token = this.getToken();
@@ -347,10 +346,9 @@ export class ListingStore {
                 token: token,
             }
             const deleteResponse = await deleteListing(deleteData);
+            console.log(deleteResponse);
             this.setMessage(deleteResponse.message);
-            if (this.message === "Listing removed") {
-                this.setSuccess(true);
-            }
+            this.setSuccess(deleteResponse.isSuccessful);
         }
     }
 }

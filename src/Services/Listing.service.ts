@@ -1,4 +1,4 @@
-import axios, {AxiosError} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import { ResponseMessage, ResultStatus } from "../Types/auth.types";
 import { PagingParams, PaginatedListings, CarListing, DeleteListingReq, NewListingData } from "../Types/listing.type";
 import { environment } from "../Env/Env";
@@ -54,15 +54,15 @@ export const deleteListing = async(deleteRequest: DeleteListingReq): Promise<Res
         },
     }
 
-    return await axios.delete<ResponseMessage>(`${environment.wishlist_API}/listings/${deleteRequest.id}`, config).then(res => {
-        console.log(res)
-        return setResult(true, res.data.message);
-    }).catch((error: AxiosError<ResponseMessage>) => {
-        if (error.response?.data !== undefined) {
-            return setResult(false, error.response.data.message);
+    return await axios.delete<AxiosResponse>(`${environment.wishlist_API}/listings/${deleteRequest.id}`, config)
+        .then(() => setResult(true, "Listing removed"))
+        .catch((error: AxiosError<ResponseMessage>) => {
+            if (error.response?.data !== undefined) {
+                return setResult(false, error.response.data.message);
+            }
+            return setResult(false, "Something went wrong, try again.");
         }
-        return setResult(false, "Something went wrong, try again.");
-    });
+    );
 }
 
 
