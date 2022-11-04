@@ -4,7 +4,6 @@ import { environment } from "../Env/Env";
 
 export const login = async (user: User): Promise<ResultStatus> => {
     return await axios.post<AuthResponse>(`${environment.wishlist_API}/auth/login`, user).then(res => {
-        console.log(res)
         let sessionData = res.data.session
         const session: Session = {
             token: sessionData.token,
@@ -52,7 +51,6 @@ export const checkUser = async(username: string): Promise<boolean> => {
     return await axios.post<UserCheckResponse>(`${environment.wishlist_API}/auth/checkUser`,{username: username}).then(res => {
         return res.data.userExists;
     }).catch(error => {
-        console.error('There was an error!');
         return false;
     });
 }

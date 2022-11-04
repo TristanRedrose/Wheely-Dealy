@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./ListingDetails.css"
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useRootStore } from "../../../Context/StoresContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
@@ -14,7 +14,7 @@ const ListingDetails: React.FC = observer(() => {
 
     const { id } = useParams();
     const {listingStore, modalStore, authStore} = useRootStore();
-    const { clearListing, listing, isLoading, getListing, actionSuccess, notify} = listingStore;
+    const { clearListingData, listing, isLoading, getListing, actionSuccess, notify} = listingStore;
     const { toggleDeleteModal } = modalStore;
     const { sessionUser } = authStore;
 
@@ -23,9 +23,9 @@ const ListingDetails: React.FC = observer(() => {
         getListing(id!);
 
         return () => {
-            clearListing();
+            clearListingData();
         }
-    }, [clearListing, id, getListing])
+    }, [clearListingData, id, getListing])
 
     useEffect(() => {
         if (actionSuccess) notify();
@@ -68,9 +68,11 @@ const ListingDetails: React.FC = observer(() => {
                 </div>
                 {(sessionUser.toLowerCase() === (listing.listedBy.username).toLowerCase()) &&
                     <div className="listing-options-box">
-                        <div className="option-button">
-                            Update
-                        </div>
+                        <Link to={`/listings/update/${id!}`}>
+                            <div className="option-button">
+                                Update
+                            </div>
+                        </Link>
                         <div className="option-button" onClick={()=> toggleDeleteModal(id!)}>
                             Delete
                         </div>

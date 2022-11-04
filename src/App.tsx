@@ -6,13 +6,14 @@ import { Routes, Route, Outlet} from 'react-router-dom';
 import { StoresProvider } from './Context/StoresContext';
 import PageNotFound from './Components/404Page/PageNotFound';
 import Listings from './Components/Listings/Listings';
-import AddListing from './Components/Listings/AddListing/AddListing';
+import AddListing from './Components/Listings/AddUpdate/AddListing';
 import ListingDetails from './Components/Listings/ListingDetails/ListingDetails';
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import AuthRoutes from './Utils/Auth.routes';
 import ListingRoutes from './Utils/Listing.routes';
 import Modal from './Components/Common/Modal/Modal';
+import UpdateListing from './Components/Listings/AddUpdate/UpdateListing';
 
 
 const App: React.FC = () => {
@@ -43,6 +44,7 @@ const App: React.FC = () => {
               <Route path="" element={<Listings />} />
               <Route element={<ListingRoutes />}>
                 <Route path="add" element={<AddListing />} />
+                <Route path="update/:id" element={<UpdateListing />} />
               </Route>
               <Route path=":id" element={<ListingDetails />} />
               <Route path="*" element={<PageNotFound text="listing" />} />

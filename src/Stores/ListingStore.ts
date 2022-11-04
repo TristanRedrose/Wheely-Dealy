@@ -1,10 +1,9 @@
 import { makeObservable, observable, action } from "mobx";
-import { CarListing, DeleteListingReq, NewListingData, PagingParams } from "../Types/listing.type";
+import { CarListing, ListingData, PagingParams } from "../Types/listing.type";
 import { Company } from "../Types/company.type";
 import { Filter } from "../Types/filter.type";
 import { companyList } from "./MockLists";
-import { deleteListing, getListingDetails, getListingPage, postNewListing } from "../Services/Listing.service";
-import { Session } from "../Types/auth.types";
+import { deleteListing, getListingDetails, getListingPage, postNewListing, updateListing } from "../Services/Listing.service";
 import {toast} from "react-toastify";
 
 export class ListingStore {
@@ -28,15 +27,7 @@ export class ListingStore {
 
     isCancelled: boolean = false;
 
-    newListing: NewListingData = {
-        description:"",
-        company: "",
-        model: "",
-        price: 0,
-        horsepower: 0,
-        image: "",
-        engine: "",
-    }
+    
 
     listing: CarListing | undefined = undefined;
 
@@ -65,17 +56,16 @@ export class ListingStore {
             setPage: action,
             setListings: action,
             setMaxPages: action,
-            clearListings: action,
+            clearListingsPage: action,
             setLoadingStatus: action,
             setCancelStatus: action,
-            setNewListingValue: action,
             setMessage: action,
-            clearAddListings:action,
             setListing: action,
             listing: observable,
             getListing: action,
             deleteListing: action,
             notify: action,
+            clearListingData: action,
         });
     }
 
@@ -86,7 +76,7 @@ export class ListingStore {
         }
     );
 
-    clearListings = (): void => {
+    clearListingsPage = (): void => {
         this.setCancelStatus(true);
         this.setLoadingStatus(false);
         this.setListings([]);
@@ -223,49 +213,12 @@ export class ListingStore {
         this.getCurrentListing();
     }
 
-    setNewListingValue = (event: React.FormEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>): void => {
-        const name = event.currentTarget.name
-        const value = event.currentTarget.value
-        this.setMessage('');
-
-        switch (name) {
-            case "company":
-                this.newListing.company = value;
-                break;
-            case "price":
-                this.newListing.price = +value;
-                break;
-            case "horsepower":
-                this.newListing.horsepower = +value;
-                break;
-            case "type":
-                this.newListing.model = value;
-                break;
-            case "image":
-                this.newListing.image = value;
-                break;
-            case "engine":
-                this.newListing.engine = value;
-                break;
-            case "description":
-                this.newListing.description = value;
-                break;
-        }  
-    }
-
-    addNewListing = async(): Promise<void> => {
-        const checkPassed = this.checkNewListValue();
-        if (!checkPassed) {
-            return;
-        }
-        const token = this.getToken();
-        if (token) {
-            this.setLoadingStatus(true);
-            const response = await postNewListing(token, this.newListing);
-            
-            this.setSuccess(response.isSuccessful);
-            this.setMessage(response.message);
-        }
+    addNewListing = async(newListing:ListingData): Promise<void> => {
+        this.setLoadingStatus(true);
+        const response = await postNewListing(newListing);
+        
+        this.setSuccess(response.isSuccessful);
+        this.setMessage(response.message);
         this.setLoadingStatus(false);
     }
 
@@ -276,57 +229,16 @@ export class ListingStore {
     setSuccess = (value: boolean): void => {
         this.actionSuccess = value;
     }
- 
-    checkNewListValue = (): boolean => {
-        let checkPassed = true;
-        Object.entries(this.newListing).forEach(([key, value]) => {
-            if ((key as string) !== "id" && !value) {
-                this.setMessage("Please fill out the form");
-                checkPassed = false;
-                return checkPassed;
-            };
-        });
-        return checkPassed;
-    }
-
-    resetNewListing = (): void => {
-        this.newListing = {
-            description: "",
-            company: "",
-            model: "",
-            price: 0,
-            horsepower: 0,
-            image: "",
-            engine: "",
-        }
-    }
-
-    clearAddListings = ():void => {
-        this.resetNewListing();
-        this.setSuccess(false);
-        this.setMessage('');
-        this.setLoadingStatus(false);
-    }
 
     setListing = (listing: CarListing | undefined): void => {
         this.listing = listing;
     }
 
-    clearListing = ():void => {
+    clearListingData = ():void => {
+        this.setSuccess(false);
         this.setCancelStatus(true);
         this.setListing(undefined);
         this.setLoadingStatus(false);
-        this.setSuccess(false);
-    }
-
-    getToken = (): string | null => {
-        let token: (string | null) = null
-        const currentSession = localStorage.getItem("CurrentSession");
-        if (currentSession) {
-            const session: Session = JSON.parse(currentSession);
-            token = session.token;
-        }
-        return token;
     }
 
     getListing = async (id:string): Promise<void> => {
@@ -339,17 +251,19 @@ export class ListingStore {
     }
 
     deleteListing = async (id:string): Promise<void> => {
-        const token = this.getToken();
-        if (token) {
-            const deleteData:DeleteListingReq = {
-                id: id,
-                token: token,
-            }
-            const deleteResponse = await deleteListing(deleteData);
-            console.log(deleteResponse);
-            this.setMessage(deleteResponse.message);
-            this.setSuccess(deleteResponse.isSuccessful);
-        }
+        this.setLoadingStatus(true);
+        const deleteResponse = await deleteListing(id);
+        this.setMessage(deleteResponse.message);
+        this.setSuccess(deleteResponse.isSuccessful);
+        this.setLoadingStatus(false);
+    }
+
+    updateListing = async(id:string, listingData:ListingData): Promise<void> => {
+        this.setLoadingStatus(true);
+        const response = await updateListing(listingData, id);
+        this.setSuccess(response.isSuccessful);
+        this.setMessage(response.message);
+        this.setLoadingStatus(false);
     }
 }
 

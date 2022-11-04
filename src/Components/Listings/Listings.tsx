@@ -12,15 +12,15 @@ import LoadingCircle from "../Common/Loading/LoadingCircle";
 const Listings: React.FC = observer(() => {
 
     const {listingStore} = useRootStore();
-    const {listings, getListings, isLoading, clearListings} = listingStore;
+    const {listings, getListings, isLoading, clearListingsPage} = listingStore;
 
     useEffect(() => {
         getListings();
 
         return () => {
-            clearListings();
+            clearListingsPage();
         }
-    }, [getListings, clearListings]);
+    }, [getListings, clearListingsPage]);
 
     return (
         <>

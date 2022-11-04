@@ -12,7 +12,7 @@ export interface CarListing {
     engine:string
 }
 
-export interface NewListingData {
+export interface ListingData {
     description: string;
     company: string;
     model: string;
@@ -24,7 +24,7 @@ export interface NewListingData {
 
 export interface NewListingReq {
     token: string,
-    listingData: NewListingData;
+    listingData: ListingData;
 }
 
 export interface PagingParams {
@@ -39,9 +39,4 @@ export interface PaginatedListings {
         maxPages: number,
         documentCount: number,
     }
-}
-
-export interface DeleteListingReq {
-    token: string,
-    id: string;
 }

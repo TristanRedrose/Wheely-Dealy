@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
-import { companyList } from "../../../Stores/MockLists";
 import { observer } from "mobx-react-lite";
-import "./AddListing.css"
+import "./ListingForm.css"
 import { useNavigate } from "react-router-dom";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import { ToastContainer} from 'react-toastify';
@@ -10,8 +9,9 @@ import { useRootStore } from "../../../Context/StoresContext";
 
 const AddListing: React.FC = observer(() => {
 
-    const {listingStore} = useRootStore();
-    const {setNewListingValue, addNewListing, message, actionSuccess, clearAddListings,isLoading, notify} = listingStore;
+    const {listingStore, listingFormStore} = useRootStore();
+    const {setNewListingValue, error, clearListingForm, listingData, submitEnabled} = listingFormStore;
+    const {addNewListing, message, actionSuccess, clearListingData ,isLoading, notify, companyList} = listingStore;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,8 +25,8 @@ const AddListing: React.FC = observer(() => {
     }, [ navigate, actionSuccess, notify]);
 
     useEffect(() => {
-        return () =>  clearAddListings();
-    }, [clearAddListings]);
+        return () =>  {clearListingData(); clearListingForm()};
+    }, [clearListingData, clearListingForm]);
 
 
     return (
@@ -36,14 +36,14 @@ const AddListing: React.FC = observer(() => {
                 <h2 className="lobster-text">Add Listing</h2>
             </div>
             <div className="form-container">
-                {message && !actionSuccess && <h4 className="form-message">{message}</h4>}
+                {error && !actionSuccess && <h4 className="form-message">{message}</h4>}
                 {actionSuccess && 
                     <div className="success-div">
                         <h4>Listing added</h4>
                     </div>
                 }
                 {!isLoading && !actionSuccess &&
-                    <form className="add-listing-form" onSubmit={(e) => {e.preventDefault(); addNewListing()}}>
+                    <form className="add-listing-form" onSubmit={(e) => {e.preventDefault(); addNewListing(listingData)}}>
                         <div className="form-logo-box">
                             <img className="form-logo" src="../Images/Logo/car-logo.png" alt="car-logo" />
                         </div>
@@ -86,7 +86,7 @@ const AddListing: React.FC = observer(() => {
                                 <textarea name="description" className="listing-description"  placeholder="Description..." onChange={(e) => setNewListingValue(e)}/>
                             </div>
                         </div>
-                        <input className="submit-button-div" type="submit" value="SUBMIT"/>
+                        <input className="submit-button-div" type="submit" value="SUBMIT" disabled={!submitEnabled}/>
                     </form>
                 }
                 {isLoading && <LoadingCircle />}
