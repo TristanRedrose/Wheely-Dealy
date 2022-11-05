@@ -28,6 +28,7 @@ const ListingDetails: React.FC = observer(() => {
     }, [clearListingData, id, getListing])
 
     useEffect(() => {
+        console.log(actionSuccess);
         if (actionSuccess) notify();
         let timeout = setTimeout(() => navigate("/listings"), 2000) ;
         if (!actionSuccess) {
@@ -68,7 +69,7 @@ const ListingDetails: React.FC = observer(() => {
                 </div>
                 {(sessionUser.toLowerCase() === (listing.listedBy.username).toLowerCase()) &&
                     <div className="listing-options-box">
-                        <Link to={`/listings/update/${id!}`}>
+                        <Link className="title-link" to={`/listings/update/${id!}`}>
                             <div className="option-button">
                                 Update
                             </div>

@@ -12,8 +12,8 @@ const UpdateListing: React.FC = observer(() => {
 
     const { id } = useParams();
     const {listingStore, listingFormStore} = useRootStore();
-    const {setNewListingValue, error, clearListingForm, listingData, submitEnabled, setUpdateDefaultValue} = listingFormStore;
-    const {getListing, message, actionSuccess, clearListingData, isLoading, notify, companyList, listing, updateListing} = listingStore;
+    const {setNewListingValue, error, clearListingForm, listingData, setUpdateDefaultValue} = listingFormStore;
+    const {getListing, message, actionSuccess, clearListingData, isLoading, notify, companyList, listing, updateListing, setSuccess} = listingStore;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,14 +29,15 @@ const UpdateListing: React.FC = observer(() => {
     }, [listing, setUpdateDefaultValue]);
 
     useEffect(() => {
+        console.log(actionSuccess);
         if (actionSuccess) notify();
-        let timeout = setTimeout(() => {navigate(`/listings/${id}`)}, 2000);
+        let timeout = setTimeout(() => {navigate(`/listings/${id}`); setSuccess(false)}, 2000);
         if (!actionSuccess) {
             clearTimeout(timeout);
         }
         
         return () => clearTimeout(timeout);
-    }, [ navigate, actionSuccess, notify, getListing, id]);
+    }, [ navigate, actionSuccess, notify, getListing, id, clearListingData, setSuccess]);
 
     return (
         <>
@@ -95,7 +96,7 @@ const UpdateListing: React.FC = observer(() => {
                                 <textarea name="description" className="listing-description" defaultValue={listing.description} placeholder="Description..." onChange={(e) => setNewListingValue(e)}/>
                             </div>
                         </div>
-                        <input className="submit-button-div" type="submit" value="SUBMIT" disabled={!submitEnabled}/>
+                        <input className="submit-button-div" type="submit" value="SUBMIT"/>
                     </form>
                 }
                 {isLoading && <LoadingCircle />}
