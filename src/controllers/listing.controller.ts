@@ -16,17 +16,17 @@ interface IListingController {
 class ListingController implements IListingController {
     async addListing(req:AuthenticatedRequest<NewListingData>, res:Response): Promise<Response> {
 
-        const response = await listingService.addListing(req.username!, req.body);
+        const listingAdded = await listingService.addListing(req.username!, req.body);
 
-        if (response) return res.status(201).json({message: "Listing added"});
+        if (listingAdded) return res.status(201).json({message: "Listing added"});
 
         return res.status(400).json({message: 'Listing post failed'});
     }
 
     async getListings(req:TypedRequestQuery<PagingParams>, res:Response): Promise<Response> {
-        const response = await listingService.getListings(req.query);
+        const listings = await listingService.getListings(req.query);
 
-        if (response) return res.status(200).json({paginatedListings: response});
+        if (listings) return res.status(200).json({paginatedListings: listings});
 
         return res.status(400).json({message: 'Listing retrieval error'});
     }
@@ -41,17 +41,17 @@ class ListingController implements IListingController {
 
     async deleteListing(req:AuthenticatedRequest<void>, res:Response): Promise<Response> {
 
-        const deleteResponse = await listingService.deleteListing(req.params!.id, req.username!);
+        const listingDeleted = await listingService.deleteListing(req.params!.id, req.username!);
 
-        if (deleteResponse) return res.sendStatus(204);
+        if (listingDeleted) return res.sendStatus(204);
 
         return res.status(400).json({message: 'Something went wrong during listing deletion'});
     }
     
     async updateListing(req:AuthenticatedRequest<ListingUpdateData>, res:Response): Promise<Response> {
-        const updateResponse = await listingService.updateListing(req.params!.id, req.body, req.username!);
+        const listingUpdated = await listingService.updateListing(req.params!.id, req.body, req.username!);
 
-        if (updateResponse) return res.status(200).json('Listing updated');
+        if (listingUpdated) return res.status(200).json({message: 'Listing updated'});
 
         return res.status(400).json({message: 'Something went wrong during listing update'});
     }

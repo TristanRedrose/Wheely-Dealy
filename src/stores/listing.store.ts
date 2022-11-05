@@ -1,7 +1,7 @@
 import mongoose, {Types} from "mongoose";
 import ListingModel from "../config/database/listing.model";
 import UserModel from "../config/database/user.model";
-import { PaginatedListings, ListingUpdateData, PagingParams, Listing, PopulatedListing, NewListingData } from "../types/listing.types";
+import { PaginatedListings, PagingParams, PopulatedListing, NewListingData } from "../types/listing.types";
 import { Options } from "../types/shared.types";
 
 const listingModel = ListingModel;
@@ -12,7 +12,7 @@ interface IListingStore {
     addListing: (username:string, listingData: NewListingData) => Promise<boolean>;
     getListing: (id:string) => Promise<PopulatedListing | null>;
     deleteListing: (id:string, username:string) => Promise<boolean>;
-    updateListing: (id:string, updateData:ListingUpdateData, username: string) => Promise<boolean>;
+    updateListing: (id:string, updateData:NewListingData, username: string) => Promise<boolean>;
 }
 
 class ListingStore implements IListingStore {
@@ -84,14 +84,20 @@ class ListingStore implements IListingStore {
         return true;
     }
 
-    async updateListing(id:string, updateData:ListingUpdateData, username:string): Promise<boolean> {
+    async updateListing(id:string, updateData:NewListingData, username:string): Promise<boolean> {
         const listing = await listingModel.findById(id).populate('listedBy', 'username') as PopulatedListing;
 
         if (listing.listedBy.username.toLowerCase() !== username.toLowerCase()) {
             return false;
         }
+        try {
+            await listingModel.findByIdAndUpdate(id, updateData);
+        } catch (error) {
+            return false;
+        }
 
-        await listingModel.updateOne({id: id}, updateData);
+        console.log()
+        
         return true;
     }
 }

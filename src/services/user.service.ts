@@ -37,6 +37,7 @@ class UserService implements IUserService {
         const token = jwt.sign({ user: user }, secretKey, {expiresIn: '60m'});
         const exp: number = Math.floor(Date.now() / 1000) + (60 * 60);
         return {
+            user: user.username,
             message: message,
             token: token,
             exp: exp,

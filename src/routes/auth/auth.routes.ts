@@ -11,13 +11,13 @@ router.post('/register',
     body('username').isLength({ min:1 }),
     body('password').isLength({ min:1 }),
     body('email').isLength({ min:1 }).isEmail(),
-    (req: TypedRequestBody<RegisterRequest>, res) => {
+    async(req: TypedRequestBody<RegisterRequest>, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            return authController.register(req.body, res);
+            return await authController.register(req.body, res);
         } catch (err) {
             console.log(err);
         }
@@ -33,7 +33,7 @@ router.post('/login',
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            return authController.login(req.body, res);
+            return await authController.login(req.body, res);
         } catch (err) {
             next(err);
         }
@@ -48,7 +48,7 @@ router.post('/checkUser',
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            return authController.userExists(req.body, res);
+            return await authController.userExists(req.body, res);
         } catch(err) {
             next(err);
         }

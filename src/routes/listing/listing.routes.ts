@@ -32,7 +32,7 @@ router.post('/',
     body('engine').isLength({ min:1 }),
     async (req:AuthenticatedRequest<NewListingData>, res, next) => {
         
-    const errors = validationResult(req.body);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
@@ -50,6 +50,14 @@ router.delete('/:id', async(req:AuthenticatedRequest<void>, res, next) => {
         next(error);  
     }
 });
+
+router.patch('/:id', async(req:AuthenticatedRequest<NewListingData>, res, next) => {
+    try {
+        return await listingController.updateListing(req, res);
+    } catch (error) {
+        next(error);
+    }
+})
 
 export default router;
 

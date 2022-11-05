@@ -43,6 +43,7 @@ type Populate = {
 }
 
 export type SessionData = {
+  user: string;
   message: string,
   token: string,
   exp: number,
