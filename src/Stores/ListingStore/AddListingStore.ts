@@ -7,8 +7,6 @@ export class AddListingStore {
 
     isLoading: boolean = false;
 
-    isCancelled: boolean = false;
-
     message: string = '';
 
     actionSuccess: boolean = false;
@@ -20,14 +18,9 @@ export class AddListingStore {
             actionSuccess: observable,
             setSuccess:action,
             setLoadingStatus: action,
-            setCancelStatus: action,
             setMessage: action,
             clearAddListingData: action,
         });
-    }
-
-    setCancelStatus= (status:boolean): void => {
-        this.isCancelled = status;
     }
 
     setLoadingStatus= (status:boolean): void => {
@@ -53,7 +46,6 @@ export class AddListingStore {
 
     clearAddListingData = ():void => {
         this.setSuccess(false);
-        this.setCancelStatus(true);
         this.setLoadingStatus(false);
     }
 
