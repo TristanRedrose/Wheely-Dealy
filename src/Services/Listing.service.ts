@@ -2,30 +2,6 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import { ResponseMessage, ResultStatus } from "../Types/auth.types";
 import { PagingParams, PaginatedListings, CarListing, ListingData } from "../Types/listing.type";
 import { environment } from "../Env/Env";
-import { Session } from "../Types/auth.types";
-
-const getToken = (): string | null => {
-    let token: (string | null) = null
-    const currentSession = localStorage.getItem("CurrentSession");
-    if (currentSession) {
-        const session: Session = JSON.parse(currentSession);
-        token = session.token;
-    }
-    return token;
-}
-
-axios.interceptors.request.use(
-    (config) => {
-        const token = getToken()
-        if (token) {
-            config.headers!['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-    },
-    error => {
-        Promise.reject(error)
-    }
-)
 
 export const getListingPage = async(pagingParams: PagingParams): Promise<PaginatedListings> => {
     return await axios.get<PaginatedListings>(`${environment.wishlist_API}/listings`, {params: pagingParams}).then(res => {

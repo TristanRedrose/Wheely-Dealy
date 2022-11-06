@@ -1,7 +1,6 @@
 import { makeObservable, observable, action } from "mobx";
-import { login, register, logOut, checkUser } from "../Services/Auth.service";
-import { Registration, User } from "../Types/auth.types";
-import { Session } from "../Types/auth.types";
+import { login, register, logOut, checkUser } from "../../Services/Auth.service";
+import { Registration, User } from "../../Types/auth.types";
 
 export class AuthStore {
     
@@ -24,10 +23,6 @@ export class AuthStore {
 
     userNameTaken: boolean = false;
 
-    authorised: boolean = false;
-
-    sessionUser: string = '';
-
     constructor() {
         makeObservable(this, {
             username:observable,
@@ -47,14 +42,9 @@ export class AuthStore {
             setPassword: action,
             setPassConfirm: action,
             validateLoginData: action,
-            authorised: observable,
-            isAuthorised: action,
-            setAuthorised: action,
             checkUser:action,
             userNameTaken:observable,
             setUserNameTaken: action,
-            sessionUser: observable,
-            setSessionUser: action,
         })
     }
 
@@ -87,7 +77,7 @@ export class AuthStore {
         this.errorMessage = errorMessage;
     }
 
-    login = async(): Promise<void> => {
+    login = async(): Promise<boolean> => {
         await this.validateLoginData();
         if (this.errorCode === 0) {
             const user: User = {
@@ -98,11 +88,13 @@ export class AuthStore {
             const response = await login(user);
             
             if (!response.isSuccessful) this.setError(7, response.message);
-            this.isAuthorised();
+
+            return response.isSuccessful;
         }
+        return false;
     }
 
-    register = async(): Promise<void> => {
+    register = async(): Promise<boolean> => {
         await this.validateRegistrationData();
         if (this.errorCode === 0) {
             const registration: Registration = {
@@ -114,15 +106,16 @@ export class AuthStore {
             const response = await register(registration);
 
             if (!response.isSuccessful) this.setError(7, response.message);
-            this.isAuthorised();
+
+            return response.isSuccessful
         }
+
+        return false;
     }
 
     logOut = (): void => {
         logOut();
         this.clearData();
-        this.setAuthorised(false);
-        this.setSessionUser('');
     }
 
     validateLoginData = async(): Promise<void> => {
@@ -213,23 +206,6 @@ export class AuthStore {
         }  
     }
 
-    isAuthorised = (): void => {
-        const currentSession = localStorage.getItem("CurrentSession");
-        if (currentSession) {
-            const session: Session = JSON.parse(currentSession);
-            const token = session.token;
-            if (token) this.setAuthorised(true);
-            this.setSessionUser(session.username);
-            return;
-        }
-        this.setAuthorised(false);
-        return;
-    }
-
-    setAuthorised = (value: boolean):void => {
-        this.authorised = value;
-    }
-
     checkUser = async(username:string): Promise<void> =>{
         this.setUserNameTaken(false);
         if (username === '') return;
@@ -241,10 +217,6 @@ export class AuthStore {
 
     setUserNameTaken = (value:boolean): void => {
         this.userNameTaken = value;
-    }
-
-    setSessionUser = (username:string): void => {
-        this.sessionUser = username;
     }
 }
 

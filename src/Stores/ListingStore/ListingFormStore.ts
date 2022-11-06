@@ -15,7 +15,7 @@ export class ListingFormStore {
 
     error: string = '';
 
-    submitEnabled: boolean = false;
+    submitDisabled: boolean = true;
 
     constructor() {
         makeObservable (this, {
@@ -24,8 +24,8 @@ export class ListingFormStore {
             setNewListingValue: action,
             setError: action,
             clearListingForm: action,
-            submitEnabled: observable,
-            setSubmitEnabled: action,
+            submitDisabled: observable,
+            setSubmitDisabled: action,
             setUpdateDefaultValue: action,
         })
     }
@@ -58,7 +58,7 @@ export class ListingFormStore {
                 this.listingData.description = value;
                 break;
         }
-        this.setSubmitEnabled(this.checkNewListValue());
+        this.setSubmitDisabled(!this.checkNewListValue());
     }
 
     checkNewListValue = (): boolean => {
@@ -80,14 +80,16 @@ export class ListingFormStore {
             image: "",
             engine: "",
         }
+
+        this.setSubmitDisabled(true);
     }
 
     setError = (error: string):void => {
         this.error = error;
     }
 
-    setSubmitEnabled = (enabled: boolean): void => {
-        this.submitEnabled = enabled;
+    setSubmitDisabled = (enabled: boolean): void => {
+        this.submitDisabled = enabled;
     }
 
     setUpdateDefaultValue = (listingData: ListingData) => {

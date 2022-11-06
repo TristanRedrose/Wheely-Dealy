@@ -13,11 +13,11 @@ const ListingDetails: React.FC = observer(() => {
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const {listingDetailsStore, deleteListingStore, modalStore, authStore} = useRootStore();
+    const {listingDetailsStore, listingOperationsStore, modalStore, sessionStore} = useRootStore();
     const { clearListingData, listing, isLoading, getListing} = listingDetailsStore;
-    const { actionSuccess, notify, clearDeleteListingData} = deleteListingStore;
+    const { actionSuccess, notify, clearListingOperationData} = listingOperationsStore;
     const { toggleDeleteModal } = modalStore;
-    const { sessionUser } = authStore;
+    const { sessionUser } = sessionStore;
 
     useEffect(()=> {
         window.scrollTo(0,0);
@@ -25,12 +25,11 @@ const ListingDetails: React.FC = observer(() => {
 
         return () => {
             clearListingData();
-            clearDeleteListingData();
+            clearListingOperationData();
         }
-    }, [clearListingData, id, getListing, clearDeleteListingData])
+    }, [clearListingData, id, getListing, clearListingOperationData])
 
     useEffect(() => {
-        console.log(actionSuccess);
         if (actionSuccess) notify();
         let timeout = setTimeout(() => navigate("/listings"), 2000) ;
         if (!actionSuccess) {
@@ -71,7 +70,7 @@ const ListingDetails: React.FC = observer(() => {
                 </div>
                 {(sessionUser.toLowerCase() === (listing.listedBy.username).toLowerCase()) &&
                     <div className="listing-options-box">
-                        <Link className="title-link" to={`/listings/update/${id!}`}>
+                        <Link className="title-link" to={`/listings/form/${id!}`}>
                             <div className="option-button">
                                 Update
                             </div>

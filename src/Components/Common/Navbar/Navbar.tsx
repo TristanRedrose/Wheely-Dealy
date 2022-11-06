@@ -6,13 +6,13 @@ import { useRootStore } from "../../../Context/StoresContext";
 
 const NavbarComponent: React.FC = observer(() => {
 
-    const {authStore, modalStore} = useRootStore();
-    const {authorised, isAuthorised} = authStore;
+    const {sessionStore, modalStore} = useRootStore();
+    const {sessionActive, isSessionActive} = sessionStore;
     const {toggleLoginModal} = modalStore;
 
     useEffect(() => {
-        isAuthorised();
-    },[isAuthorised]);
+        isSessionActive();
+    },[isSessionActive]);
 
     return (
         <div className="nav-container">
@@ -39,16 +39,16 @@ const NavbarComponent: React.FC = observer(() => {
                                     Listings
                             </NavLink>
                         </li>
-                        {authorised &&
+                        {sessionActive &&
                             <li>
                                 <NavLink 
                                     className={({isActive}) => isActive ? "router-link active" : "router-link"} 
-                                    to="/listings/add">
+                                    to="/listings/form">
                                         Add Listing
                                 </NavLink>
                             </li>
                         }
-                        {!authorised &&
+                        {!sessionActive &&
                             <li>
                                 <NavLink 
                                     className={({isActive}) => isActive ? "router-link active" : "router-link"} 
@@ -57,7 +57,7 @@ const NavbarComponent: React.FC = observer(() => {
                                 </NavLink>
                             </li>
                         }
-                        {authorised &&
+                        {sessionActive &&
                             <li>
                                 <NavLink 
                                     className={({isActive}) => isActive ? "router-link active" : "router-link"} 

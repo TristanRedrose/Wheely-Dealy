@@ -1,50 +1,41 @@
-import { authStore, AuthStore } from "../Stores/AuthStore";
-import { ModalStore, modalStore } from "../Stores/ModalStore";
-import { ListingFormStore, listingFormStore } from "./ListingStore/ListingFormStore";
-import { AddListingStore, addListingStore } from "./ListingStore/AddListingStore";
-import { UpdateListingStore, updateListingStore } from "./ListingStore/UpdateListingStore";
-import { DeleteListingStore, deleteListingStore } from "./ListingStore/DeleteListingStore";
-import { ListingsPageStore, listingsPageStore } from "./ListingStore/ListingsPageStore";
-import { ListingDetailsStore, listingDetailsStore } from "./ListingStore/ListingDetailsStore";
+import { SessionStore } from "./SessionStore/SessionStore";
+import { AuthStore } from "./SessionStore/AuthStore";
+import { ModalStore } from "../Stores/ModalStore";
+import { ListingFormStore} from "./ListingStore/ListingFormStore";
+import { ListingOperationsStore} from "./ListingStore/ListingOperationsStore";
+import { ListingsPageStore } from "./ListingStore/ListingsPageStore";
+import { ListingDetailsStore } from "./ListingStore/ListingDetailsStore";
 
 export class RootStore {
     listingFormStore: ListingFormStore;
     modalStore: ModalStore;
-    authStore: AuthStore;
-    addListingStore: AddListingStore;
-    updateListingStore: UpdateListingStore;
-    deleteListingStore: DeleteListingStore;
+    sessionStore: SessionStore;
     listingsPageStore: ListingsPageStore;
     listingDetailsStore: ListingDetailsStore;
+    listingOperationsStore: ListingOperationsStore;
     
     constructor(
-        addListingStore:AddListingStore,
-        updateListingStore:UpdateListingStore,
-        deleteListingStore: DeleteListingStore,
         listingsPageStore: ListingsPageStore,
         listingDetailsStore: ListingDetailsStore,
+        listingOperationsStore: ListingOperationsStore,
         listingFormStore:ListingFormStore,
         modalStore: ModalStore,
-        authStore: AuthStore,
+        sessionStore: SessionStore,
         ) {
-            this.addListingStore = addListingStore;
-            this.updateListingStore = updateListingStore;
-            this.deleteListingStore = deleteListingStore;
             this.listingsPageStore = listingsPageStore;
             this.listingDetailsStore = listingDetailsStore;
+            this.listingOperationsStore = listingOperationsStore
             this.listingFormStore = listingFormStore;
             this.modalStore = modalStore;
-            this.authStore = authStore;
+            this.sessionStore = sessionStore;
     }
 }
 
 export const rootStore = new RootStore(
-            addListingStore,
-            updateListingStore,
-            deleteListingStore,
-            listingsPageStore,
-            listingDetailsStore,
-            listingFormStore,
-            modalStore,
-            authStore
+            new ListingsPageStore(),
+            new ListingDetailsStore(),
+            new ListingOperationsStore(),
+            new ListingFormStore(),
+            new ModalStore(),
+            new SessionStore(new AuthStore())
         );

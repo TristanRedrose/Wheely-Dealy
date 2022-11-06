@@ -6,14 +6,13 @@ import { Routes, Route, Outlet} from 'react-router-dom';
 import { StoresProvider } from './Context/StoresContext';
 import PageNotFound from './Components/404Page/PageNotFound';
 import Listings from './Components/Listings/Listings';
-import AddListing from './Components/Listings/AddUpdate/AddListing';
+import ListingForm from './Components/Listings/ListingForm/ListingForm';
 import ListingDetails from './Components/Listings/ListingDetails/ListingDetails';
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
-import AuthRoutes from './Utils/Auth.routes';
-import ListingRoutes from './Utils/Listing.routes';
+import AuthRoutes from './Utils/ProtectedRoutes/Auth.routes';
+import ListingRoutes from './Utils/ProtectedRoutes/Listing.routes';
 import Modal from './Components/Common/Modal/Modal';
-import UpdateListing from './Components/Listings/AddUpdate/UpdateListing';
 
 
 const App: React.FC = () => {
@@ -43,8 +42,8 @@ const App: React.FC = () => {
             >
               <Route path="" element={<Listings />} />
               <Route element={<ListingRoutes />}>
-                <Route path="add" element={<AddListing />} />
-                <Route path="update/:id" element={<UpdateListing />} />
+                <Route path="form/:id" element={<ListingForm />} />
+                <Route path="form" element={<ListingForm />} />
               </Route>
               <Route path=":id" element={<ListingDetails />} />
               <Route path="*" element={<PageNotFound text="listing" />} />

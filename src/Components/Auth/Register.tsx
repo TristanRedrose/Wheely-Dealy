@@ -6,8 +6,9 @@ import { useRootStore } from "../../Context/StoresContext";
 
 const Register: React.FC = observer(() => {
 
-    const {authStore} = useRootStore();
-    const {register, setAuthData, clearData, errorMessage, errorCode, username, checkUser, userNameTaken} = authStore;
+    const {sessionStore} = useRootStore();
+    const {authStore, register} = sessionStore;
+    const {setAuthData, clearData, errorMessage, errorCode, username, checkUser, userNameTaken} = authStore;
 
     useEffect(() => {
         return () => clearData() 
