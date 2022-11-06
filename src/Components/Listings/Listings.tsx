@@ -11,8 +11,8 @@ import LoadingCircle from "../Common/Loading/LoadingCircle";
 
 const Listings: React.FC = observer(() => {
 
-    const {listingStore} = useRootStore();
-    const {listings, getListings, isLoading, clearListingsPage} = listingStore;
+    const {listingsPageStore} = useRootStore();
+    const {getListings, clearListingsPage, isLoading, listings} = listingsPageStore
 
     useEffect(() => {
         getListings();

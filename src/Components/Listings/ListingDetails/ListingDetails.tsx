@@ -13,8 +13,9 @@ const ListingDetails: React.FC = observer(() => {
     const navigate = useNavigate()
 
     const { id } = useParams();
-    const {listingStore, modalStore, authStore} = useRootStore();
-    const { clearListingData, listing, isLoading, getListing, actionSuccess, notify} = listingStore;
+    const {listingDetailsStore, deleteListingStore, modalStore, authStore} = useRootStore();
+    const { clearListingData, listing, isLoading, getListing} = listingDetailsStore;
+    const { actionSuccess, notify, clearDeleteListingData} = deleteListingStore;
     const { toggleDeleteModal } = modalStore;
     const { sessionUser } = authStore;
 
@@ -24,8 +25,9 @@ const ListingDetails: React.FC = observer(() => {
 
         return () => {
             clearListingData();
+            clearDeleteListingData();
         }
-    }, [clearListingData, id, getListing])
+    }, [clearListingData, id, getListing, clearDeleteListingData])
 
     useEffect(() => {
         console.log(actionSuccess);

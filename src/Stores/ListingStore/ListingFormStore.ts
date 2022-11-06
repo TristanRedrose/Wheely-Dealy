@@ -1,4 +1,4 @@
-import { ListingData } from "../Types/listing.type";
+import { ListingData } from "../../Types/listing.type";
 import { action, makeObservable, observable } from "mobx";
 
 export class ListingFormStore {

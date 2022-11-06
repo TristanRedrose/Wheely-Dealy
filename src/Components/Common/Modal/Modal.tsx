@@ -7,10 +7,10 @@ import { useRootStore } from "../../../Context/StoresContext";
 
 const Modal: React.FC<PropsWithChildren> = observer(() => {
 
-    const {listingStore, modalStore, authStore} = useRootStore();
+    const {deleteListingStore, modalStore, authStore} = useRootStore();
     const {isActive, closeModal, modalText, buttonText, listingId} = modalStore;
     const {logOut} = authStore;
-    const {deleteListing} = listingStore;
+    const{deleteListing} = deleteListingStore;
 
     return ReactDOM.createPortal(
         <div className={!isActive ? "modal" : "modal-on"}>

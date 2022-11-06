@@ -4,8 +4,8 @@ import "./Pagination.css"
 
 const Pagination: React.FC = () => {
 
-    const {listingStore} = useRootStore();
-    const {page, maxPages, setPage, incrementPage, decrementPage} = listingStore;
+    const {listingsPageStore} = useRootStore();
+    const {page, maxPages, setPage, incrementPage, decrementPage} = listingsPageStore;
 
     return (
         <div className="pagination">

@@ -6,12 +6,13 @@ import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRootStore } from "../../../Context/StoresContext";
+import { companyList } from "../../../Stores/MockLists";
 
 const AddListing: React.FC = observer(() => {
 
-    const {listingStore, listingFormStore} = useRootStore();
+    const {addListingStore, listingFormStore} = useRootStore();
     const {setNewListingValue, error, clearListingForm, listingData, submitEnabled} = listingFormStore;
-    const {addNewListing, message, actionSuccess, clearListingData ,isLoading, notify, companyList} = listingStore;
+    const {addNewListing, message, actionSuccess, clearAddListingData ,isLoading, notify} = addListingStore;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,8 +26,8 @@ const AddListing: React.FC = observer(() => {
     }, [ navigate, actionSuccess, notify]);
 
     useEffect(() => {
-        return () =>  {clearListingData(); clearListingForm()};
-    }, [clearListingData, clearListingForm]);
+        return () =>  {clearAddListingData(); clearListingForm()};
+    }, [clearAddListingData, clearListingForm]);
 
 
     return (

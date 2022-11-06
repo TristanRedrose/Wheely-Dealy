@@ -4,8 +4,8 @@ import "./FilterSort.css";
 
 const ListingsFilterSort = () => {
 
-    const {listingStore} = useRootStore();
-    const {companyList, setMakeFilter, setEngineFilter, setHorsepowerSorting, setPriceSorting} = listingStore;
+    const {listingsPageStore} = useRootStore();
+    const {companyList, setMakeFilter, setEngineFilter, setHorsepowerSorting, setPriceSorting} = listingsPageStore;
 
     const priceFilter = useRef<null | HTMLSelectElement>(null);
     const horsepowerFilter = useRef<null | HTMLSelectElement>(null);
