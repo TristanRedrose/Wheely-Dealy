@@ -1,6 +1,6 @@
 import listingService from "../services/listing.service";
 import express, { Request, Response } from "express";
-import { ListingId, ListingUpdateData, NewListingData, PagingParams} from "../types/listing.types";
+import { ListingId, NewListingData, PagingParams} from "../types/listing.types";
 import { AuthenticatedRequest, TypedRequestQuery } from "../types/shared.types";
 
 
@@ -10,7 +10,7 @@ interface IListingController {
     getListings:(req:TypedRequestQuery<PagingParams>, res:Response) => Promise<Response>;
     getListing:(req:Request<ListingId>, res:Response) => Promise<Response>;
     deleteListing:(req:AuthenticatedRequest<void>, res:Response) => Promise<Response>;
-    updateListing:(req: AuthenticatedRequest<ListingUpdateData>, res:Response) => Promise<Response>;
+    updateListing:(req: AuthenticatedRequest<NewListingData>, res:Response) => Promise<Response>;
 }
 
 class ListingController implements IListingController {
@@ -48,7 +48,7 @@ class ListingController implements IListingController {
         return res.status(400).json({message: 'Something went wrong during listing deletion'});
     }
     
-    async updateListing(req:AuthenticatedRequest<ListingUpdateData>, res:Response): Promise<Response> {
+    async updateListing(req:AuthenticatedRequest<NewListingData>, res:Response): Promise<Response> {
         const listingUpdated = await listingService.updateListing(req.params!.id, req.body, req.username!);
 
         if (listingUpdated) return res.status(200).json({message: 'Listing updated'});

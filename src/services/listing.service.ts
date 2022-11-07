@@ -1,14 +1,13 @@
 import listingStore from "../stores/listing.store";
-import { ListingUpdateData, NewListingData, PaginatedListings, PopulatedListing } from "../types/listing.types";
+import { NewListingData, PaginatedListings, PopulatedListing } from "../types/listing.types";
 import { PagingParams } from "../types/listing.types";
-import { Listing } from "../types/listing.types";
 
 interface IListingService {
     addListing:(username: string, listingData: NewListingData) => Promise<boolean>;
     getListings:(pagingParams:PagingParams) => Promise<PaginatedListings>;
     getListing: (id:string) => Promise<PopulatedListing | null>;
     deleteListing: (id:string, username: string) => Promise<boolean>;
-    updateListing: (id:string, listingData: ListingUpdateData, username:string) => Promise<boolean>;
+    updateListing: (id:string, listingData: NewListingData, username:string) => Promise<boolean>;
 }
 
 class ListingService implements IListingService {
@@ -29,7 +28,7 @@ class ListingService implements IListingService {
         return await listingStore.deleteListing(id, username);
     }
 
-    async updateListing(id:string, updateData: ListingUpdateData, username:string): Promise<boolean> {
+    async updateListing(id:string, updateData: NewListingData, username:string): Promise<boolean> {
         return await listingStore.updateListing(id, updateData, username);
     }
 }

@@ -29,16 +29,6 @@ export type NewListingData = {
     image: string;
 }
 
-export type ListingUpdateData = {
-    description?: string;
-    company?: string;
-    model?: string;
-    engine?: string;
-    horsepower?: number;
-    price?: number;
-    image?: string;
-}
-
 export type NewListing = {
     username: String,
     listingData: NewListingData,
