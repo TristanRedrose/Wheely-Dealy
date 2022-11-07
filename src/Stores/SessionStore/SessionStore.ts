@@ -52,6 +52,7 @@ export class SessionStore {
 
         if (currentSession) {
             this.setSessionActive(true);
+            if (this.sessionUser === '') this.setSessionUser(JSON.parse(currentSession).username);
             return;
         };
 

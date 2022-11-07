@@ -2,6 +2,7 @@ import { makeObservable, observable, action } from "mobx";
 import { ListingData } from "../../Types/listing.type";
 import { postNewListing, deleteListing, updateListing } from "../../Services/Listing.service";
 import { toast } from "react-toastify";
+import { ResultStatus } from "../../Types/auth.types";
 
 export class ListingOperationsStore {
 
@@ -20,6 +21,7 @@ export class ListingOperationsStore {
             setLoadingStatus: action,
             setMessage: action,
             clearListingOperationData: action,
+            setOperationResults: action,
         });
     }
 
@@ -37,10 +39,7 @@ export class ListingOperationsStore {
     addNewListing = async(newListing:ListingData): Promise<void> => {
         this.setLoadingStatus(true);
         const response = await postNewListing(newListing);
-        
-        this.setSuccess(response.isSuccessful);
-        this.setMessage(response.message);
-        this.setLoadingStatus(false);
+        this.setOperationResults(response);
     }
 
     setMessage = (message: string): void => {
@@ -59,16 +58,19 @@ export class ListingOperationsStore {
     deleteListing = async (id:string): Promise<void> => {
         this.setLoadingStatus(true);
         const deleteResponse = await deleteListing(id);
-        this.setMessage(deleteResponse.message);
-        this.setSuccess(deleteResponse.isSuccessful);
-        this.setLoadingStatus(false);
+        this.setOperationResults(deleteResponse)
     }
 
     updateListing = async(id:string, listingData:ListingData): Promise<void> => {
         this.setLoadingStatus(true);
         const response = await updateListing(listingData, id);
+        this.setOperationResults(response);
+    }
+
+    setOperationResults = (response: ResultStatus): void => {
         this.setSuccess(response.isSuccessful);
         this.setMessage(response.message);
+        if (response.isSuccessful) this.notify();
         this.setLoadingStatus(false);
     }
 }

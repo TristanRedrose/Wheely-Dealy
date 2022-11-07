@@ -93,6 +93,7 @@ export class ListingFormStore {
     }
 
     setUpdateDefaultValue = (listingData: ListingData) => {
+        console.log(listingData)
         this.listingData = listingData;
     }
 }

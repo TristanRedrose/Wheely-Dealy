@@ -15,7 +15,7 @@ const ListingDetails: React.FC = observer(() => {
     const { id } = useParams();
     const {listingDetailsStore, listingOperationsStore, modalStore, sessionStore} = useRootStore();
     const { clearListingData, listing, isLoading, getListing} = listingDetailsStore;
-    const { actionSuccess, notify, clearListingOperationData} = listingOperationsStore;
+    const { actionSuccess, clearListingOperationData} = listingOperationsStore;
     const { toggleDeleteModal } = modalStore;
     const { sessionUser } = sessionStore;
 
@@ -30,7 +30,6 @@ const ListingDetails: React.FC = observer(() => {
     }, [clearListingData, id, getListing, clearListingOperationData])
 
     useEffect(() => {
-        if (actionSuccess) notify();
         let timeout = setTimeout(() => navigate("/listings"), 2000) ;
         if (!actionSuccess) {
             clearTimeout(timeout);
@@ -38,7 +37,7 @@ const ListingDetails: React.FC = observer(() => {
         
         return () => clearTimeout(timeout);
         
-    }, [navigate, actionSuccess, notify]);
+    }, [navigate, actionSuccess]);
 
     return (
         <div className="content-body">

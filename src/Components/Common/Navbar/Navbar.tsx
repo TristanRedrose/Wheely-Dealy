@@ -43,7 +43,7 @@ const NavbarComponent: React.FC = observer(() => {
                             <li>
                                 <NavLink 
                                     className={({isActive}) => isActive ? "router-link active" : "router-link"} 
-                                    to="/listings/form">
+                                    end to="/listings/form">
                                         Add Listing
                                 </NavLink>
                             </li>

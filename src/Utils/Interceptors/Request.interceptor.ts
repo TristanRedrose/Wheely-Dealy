@@ -11,7 +11,7 @@ const getToken = (): string | null => {
     return token;
 }
 
-axios.interceptors.request.use(
+const interceptor = axios.interceptors.request.use(
     (config) => {
         const token = getToken()
         if (token) {
@@ -23,3 +23,5 @@ axios.interceptors.request.use(
         Promise.reject(error)
     }
 )
+
+export default interceptor;
