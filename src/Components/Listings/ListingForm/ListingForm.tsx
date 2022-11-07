@@ -12,8 +12,8 @@ const ListingForm: React.FC = observer(() => {
 
     const { id } = useParams();
     const {listingOperationsStore, listingFormStore, listingDetailsStore} = useRootStore();
-    const {setNewListingValue, error, clearListingForm, listingData, submitDisabled, setUpdateDefaultValue} = listingFormStore;
-    const {addNewListing, message, actionSuccess, clearListingOperationData, isLoading, updateListing} = listingOperationsStore;
+    const {setNewListingValue, errorMessage, clearListingForm, listingData, submitDisabled, setUpdateDefaultValue, errorCode} = listingFormStore;
+    const {addNewListing, actionSuccess, clearListingOperationData, isLoading, updateListing} = listingOperationsStore;
     const {getListing, clearListingData, listing} = listingDetailsStore;
     const navigate = useNavigate();
     
@@ -49,14 +49,14 @@ const ListingForm: React.FC = observer(() => {
                 <h2 className="lobster-text">{id ? 'Update listing' : 'Add listing'}</h2>
             </div>
             <div className="form-container">
-                {error && !actionSuccess && <h4 className="form-message">{message}</h4>}
+                {errorCode && !submitDisabled && <h4 className="form-message">{errorMessage}</h4>}
                 {actionSuccess && 
                     <div className="success-div">
                         <h4>{id ? 'Listing updated' : 'Listing added'}</h4>
                     </div>
                 }
                 {!isLoading && !actionSuccess &&
-                    <form className="add-listing-form" onSubmit={(e) => {e.preventDefault(); id ? updateListing(id, listingData) : addNewListing(listingData) }}>
+                    <form className="add-listing-form" onSubmit={(e) => {e.preventDefault(); if (!errorCode) id ? updateListing(id, listingData) : addNewListing(listingData) }}>
                         <div className="form-logo-box">
                             <img className="form-logo" src="/Images/Logo/car-logo.png" alt="car-logo" />
                         </div>
