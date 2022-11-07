@@ -1,6 +1,7 @@
 import { makeObservable, observable, action } from "mobx";
 import { Session } from "../../Types/auth.types";
 import { AuthStore } from "./AuthStore";
+import { toast } from "react-toastify";
 
 export class SessionStore {
 
@@ -27,17 +28,31 @@ export class SessionStore {
             register: action,
             logOut:action,
             isSessionActive: action,
+            notify: action,
         })
     }
 
+    notify = (message: string) => toast(message, {
+        position:'top-right',
+        autoClose:1000,
+        theme:'dark',
+        }
+    );
+
     login = async(): Promise<void> => {
         const loginSuccess = await this.authStore.login();
-        if (loginSuccess) this.setSession();
+        if (loginSuccess) {
+            this.setSession();
+            this.notify("Logged in");
+        }
     }
 
     register = async(): Promise<void> => {
         const registerSuccess = await this.authStore.register();
-        if (registerSuccess) this.setSession();
+        if (registerSuccess) {
+            this.setSession();
+            this.notify("Logged in");
+        }
     }
 
     logOut = ():void => {
@@ -45,6 +60,7 @@ export class SessionStore {
         this.setSessionUser('');
         this.setSessionActive(false);
         this.clearSessionTimeout();
+        this.notify("Logged out");
     }
 
     isSessionActive = (): void => {

@@ -3,8 +3,6 @@ import { observer } from "mobx-react-lite";
 import "./ListingForm.css"
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useRootStore } from "../../../Context/StoresContext";
 import { companyList } from "../../../Stores/MockLists";
 
@@ -44,7 +42,6 @@ const ListingForm: React.FC = observer(() => {
 
     return (
         <>
-            <ToastContainer />
             <div className="listing-title">
                 <h2 className="lobster-text">{id ? 'Update listing' : 'Add listing'}</h2>
             </div>

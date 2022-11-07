@@ -5,8 +5,6 @@ import { observer } from "mobx-react-lite";
 import { useRootStore } from "../../../Context/StoresContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import PageNotFound from "../../404Page/PageNotFound";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const ListingDetails: React.FC = observer(() => {
 
@@ -41,7 +39,6 @@ const ListingDetails: React.FC = observer(() => {
 
     return (
         <div className="content-body">
-            <ToastContainer />
             {isLoading && <div className="loading-container-2">
                 <LoadingCircle />
             </div>}

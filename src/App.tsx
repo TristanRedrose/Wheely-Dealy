@@ -13,12 +13,15 @@ import Register from './Components/Auth/Register';
 import AuthRoutes from './Utils/ProtectedRoutes/Auth.routes';
 import ListingRoutes from './Utils/ProtectedRoutes/Listing.routes';
 import Modal from './Components/Common/Modal/Modal';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App: React.FC = () => {
   return (
     <>
       <StoresProvider>
+        <ToastContainer />
         <Modal />
         <Routes>
           <Route element={<AuthRoutes />}>
