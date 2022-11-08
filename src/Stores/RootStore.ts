@@ -5,6 +5,7 @@ import { ListingFormStore} from "./ListingStore/ListingFormStore";
 import { ListingOperationsStore} from "./ListingStore/ListingOperationsStore";
 import { ListingsPageStore } from "./ListingStore/ListingsPageStore";
 import { ListingDetailsStore } from "./ListingStore/ListingDetailsStore";
+import { NotificationStore } from "./NotificationStore";
 
 export class RootStore {
     listingFormStore: ListingFormStore;
@@ -34,8 +35,8 @@ export class RootStore {
 export const rootStore = new RootStore(
             new ListingsPageStore(),
             new ListingDetailsStore(),
-            new ListingOperationsStore(),
+            new ListingOperationsStore(new NotificationStore()),
             new ListingFormStore(),
             new ModalStore(),
-            new SessionStore(new AuthStore())
+            new SessionStore(new AuthStore(), new NotificationStore())
         );

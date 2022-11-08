@@ -58,5 +58,3 @@ export class ModalStore  {
         this.setListingId('');
     }
 }
-
-export const modalStore = new ModalStore();

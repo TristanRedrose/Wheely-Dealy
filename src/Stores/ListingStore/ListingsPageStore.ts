@@ -188,5 +188,3 @@ export class ListingsPageStore {
         this.getCurrentListing();
     }
 }
-
-export const listingsPageStore = new ListingsPageStore();

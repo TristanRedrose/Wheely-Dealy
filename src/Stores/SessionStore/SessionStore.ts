@@ -1,7 +1,7 @@
 import { makeObservable, observable, action } from "mobx";
 import { Session } from "../../Types/auth.types";
 import { AuthStore } from "./AuthStore";
-import { toast } from "react-toastify";
+import { NotificationStore } from "../NotificationStore";
 
 export class SessionStore {
 
@@ -11,10 +11,13 @@ export class SessionStore {
 
     sessionEnd: NodeJS.Timeout | null = null;
 
-    authStore: AuthStore
+    authStore: AuthStore;
 
-    constructor(authStore: AuthStore) {
+    notificationStore: NotificationStore;
+
+    constructor(authStore: AuthStore, notificationStore: NotificationStore) {
         this.authStore = authStore;
+        this.notificationStore = notificationStore;
         makeObservable(this, {
             sessionActive: observable,
             setSession: action,
@@ -28,22 +31,19 @@ export class SessionStore {
             register: action,
             logOut:action,
             isSessionActive: action,
-            notify: action,
+            notifySuccess: action,
         })
     }
 
-    notify = (message: string) => toast(message, {
-        position:'top-right',
-        autoClose:1000,
-        theme:'dark',
-        }
-    );
+    notifySuccess = (message: string) => {
+        this.notificationStore.notifySuccess(message);
+    }
 
     login = async(): Promise<void> => {
         const loginSuccess = await this.authStore.login();
         if (loginSuccess) {
             this.setSession();
-            this.notify("Logged in");
+            this.notifySuccess(`Welcome, ${this.sessionUser}!`);
         }
     }
 
@@ -51,7 +51,7 @@ export class SessionStore {
         const registerSuccess = await this.authStore.register();
         if (registerSuccess) {
             this.setSession();
-            this.notify("Logged in");
+            this.notifySuccess(`Welcome, ${this.sessionUser}!`);
         }
     }
 
@@ -60,7 +60,7 @@ export class SessionStore {
         this.setSessionUser('');
         this.setSessionActive(false);
         this.clearSessionTimeout();
-        this.notify("Logged out");
+        this.notifySuccess("Logged out");
     }
 
     isSessionActive = (): void => {

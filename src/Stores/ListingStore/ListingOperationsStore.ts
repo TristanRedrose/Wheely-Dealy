@@ -1,8 +1,8 @@
 import { makeObservable, observable, action } from "mobx";
 import { ListingData } from "../../Types/listing.type";
 import { postNewListing, deleteListing, updateListing } from "../../Services/Listing.service";
-import { toast } from "react-toastify";
 import { ResultStatus } from "../../Types/auth.types";
+import { NotificationStore } from "../NotificationStore";
 
 export class ListingOperationsStore {
 
@@ -12,7 +12,10 @@ export class ListingOperationsStore {
 
     actionSuccess: boolean = false;
 
-    constructor() {
+    notificationStore: NotificationStore;
+
+    constructor(notificationStore: NotificationStore) {
+        this.notificationStore = notificationStore
         makeObservable(this, {
             isLoading: observable,
             message: observable,
@@ -25,12 +28,9 @@ export class ListingOperationsStore {
         });
     }
 
-    notify = () => toast(this.message, {
-        position:'top-right',
-        autoClose:1000,
-        theme:'dark',
-        }
-    );
+    notifySuccess = (message: string) => {
+        this.notificationStore.notifySuccess(message);
+    }
 
     setLoadingStatus= (status:boolean): void => {
         this.isLoading = status;
@@ -70,9 +70,7 @@ export class ListingOperationsStore {
     setOperationResults = (response: ResultStatus): void => {
         this.setSuccess(response.isSuccessful);
         this.setMessage(response.message);
-        if (response.isSuccessful) this.notify();
+        if (response.isSuccessful) this.notifySuccess(response.message);
         this.setLoadingStatus(false);
     }
 }
-
-export const listingOperationsStore = new ListingOperationsStore();

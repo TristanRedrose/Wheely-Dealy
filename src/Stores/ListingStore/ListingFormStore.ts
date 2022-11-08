@@ -114,5 +114,3 @@ export class ListingFormStore {
         this.setSubmitDisabled(false);
     }
 }
-
-export const listingFormStore = new ListingFormStore();

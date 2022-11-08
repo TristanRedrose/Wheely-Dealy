@@ -41,5 +41,3 @@ export class ListingDetailsStore {
         this.setLoadingStatus(false);
     }
 }
-
-export const listingDetailsStore = new ListingDetailsStore();

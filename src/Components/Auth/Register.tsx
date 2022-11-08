@@ -55,6 +55,9 @@ const Register: React.FC = observer(() => {
                         <Link className="auth-link" to="/login">
                             <p>Login</p>
                         </Link> 
+                        <Link className="auth-link" to="/">
+                            <p>Home</p>
+                        </Link> 
                     </div>
                 </form>
             </div>

@@ -219,5 +219,3 @@ export class AuthStore {
         this.userNameTaken = value;
     }
 }
-
-export const authStore = new AuthStore();
