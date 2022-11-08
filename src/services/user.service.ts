@@ -3,6 +3,7 @@ import { User } from "../types/user.type";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../env/env";
 import { SessionData } from "../types/shared.types";
+import bcrypt from "bcrypt";
 
 interface IUserService {
     getAuthenticatedUser: (username:string, password:string) => Promise<User | null>,
@@ -14,7 +15,10 @@ interface IUserService {
 class UserService implements IUserService {
     async getAuthenticatedUser(username: string, password: string): Promise<User | null> {
         const user = await userStore.getUser(username);
-        if (user && user.password === password) return user;
+        if (user) {
+            const passwordCheck = await bcrypt.compare(password, user.password)
+            if (passwordCheck) return user;
+        }
 
         return null;
     }

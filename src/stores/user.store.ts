@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import UserModel from "../config/database/user.model";
 import { User } from "../types/user.type";
+import bcrypt from "bcrypt";
 
 interface IUserStore {
     userExists: (username: string) => Promise<boolean>;
@@ -17,10 +18,12 @@ class UserStore implements IUserStore {
     };
 
     async addUser(username:string, password:string, email:string): Promise<User> {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const user = await model.create( 
             {
                 username: username,
-                password: password,
+                password: hashedPassword,
                 email: email,
             }
         );
