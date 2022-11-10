@@ -31,4 +31,11 @@ export class NotificationStore {
         theme:'dark',
         }
     );
+
+    notifyInfo = (message: string) => toast.info(message, {
+        position: 'top-right',
+        autoClose: false,
+        theme:'light',
+        closeOnClick: true,
+    })
 }

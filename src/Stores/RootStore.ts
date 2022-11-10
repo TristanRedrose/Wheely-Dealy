@@ -9,34 +9,35 @@ import { NotificationStore } from "./NotificationStore";
 
 export class RootStore {
     listingFormStore: ListingFormStore;
+
     modalStore: ModalStore;
+
     sessionStore: SessionStore;
+
     listingsPageStore: ListingsPageStore;
+
     listingDetailsStore: ListingDetailsStore;
+
     listingOperationsStore: ListingOperationsStore;
     
+    notificationStore: NotificationStore;
+
     constructor(
-        listingsPageStore: ListingsPageStore,
-        listingDetailsStore: ListingDetailsStore,
-        listingOperationsStore: ListingOperationsStore,
-        listingFormStore:ListingFormStore,
-        modalStore: ModalStore,
-        sessionStore: SessionStore,
         ) {
-            this.listingsPageStore = listingsPageStore;
-            this.listingDetailsStore = listingDetailsStore;
-            this.listingOperationsStore = listingOperationsStore
-            this.listingFormStore = listingFormStore;
-            this.modalStore = modalStore;
-            this.sessionStore = sessionStore;
+            this.notificationStore = new NotificationStore();
+
+            this.listingsPageStore = new ListingsPageStore();
+
+            this.listingDetailsStore = new ListingDetailsStore();
+
+            this.listingOperationsStore = new ListingOperationsStore(this.notificationStore);
+
+            this.listingFormStore = new ListingFormStore();
+
+            this.modalStore = new ModalStore();
+
+            this.sessionStore = new SessionStore(new AuthStore(), this.notificationStore);
     }
 }
 
-export const rootStore = new RootStore(
-            new ListingsPageStore(),
-            new ListingDetailsStore(),
-            new ListingOperationsStore(new NotificationStore()),
-            new ListingFormStore(),
-            new ModalStore(),
-            new SessionStore(new AuthStore(), new NotificationStore())
-        );
+export const rootStore = new RootStore();

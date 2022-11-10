@@ -32,11 +32,16 @@ export class SessionStore {
             logOut:action,
             isSessionActive: action,
             notifySuccess: action,
+            notifyInfo: action,
         })
     }
 
     notifySuccess = (message: string) => {
         this.notificationStore.notifySuccess(message);
+    }
+
+    notifyInfo = (message: string) => {
+        this.notificationStore.notifyInfo(message);
     }
 
     login = async(): Promise<void> => {
@@ -60,7 +65,7 @@ export class SessionStore {
         this.setSessionUser('');
         this.setSessionActive(false);
         this.clearSessionTimeout();
-        this.notifySuccess("Logged out");
+        this.notifyInfo("Logged out");
     }
 
     isSessionActive = (): void => {
