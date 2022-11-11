@@ -1,23 +1,36 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useRootStore } from "../../../Context/StoresContext";
-import "./Pagination.css"
+import "./Pagination.css";
+import { useSearchParams } from "react-router-dom";
 
 const Pagination: React.FC = () => {
 
     const {listingsPageStore} = useRootStore();
-    const {page, maxPages, setPage, incrementPage, decrementPage} = listingsPageStore;
+    const {page, maxPages, setPage, sorting, filter, getParams} = listingsPageStore;
+    let {engine, company} = filter
+    let [searchParams, setSearchParams] = useSearchParams();
+
+    let queryPage = searchParams.get('page');
+
+    useEffect(() => {
+        console.log('running');
+        if (queryPage && +queryPage > 0) {
+            (+queryPage <= maxPages) ? setPage(+queryPage) : setPage(maxPages);
+        } else {
+            setPage(1);
+        }
+    }, [queryPage, maxPages, setPage])
 
     return (
         <div className="pagination">
             <div className="pagi-buttons-container">
-                {page > 1 && <div className="page-button" onClick={() => {
-                    setPage(1)}}>
+                {page > 1 && <div className="page-button" onClick={() => setSearchParams(getParams(1, sorting, company , engine))}>
                     <h5>1</h5>
                 </div>}
-                {(page - 4) > 1 && <div className="page-button" onClick={() => setPage(page - 4)}>
+                {(page - 4) > 1 && <div className="page-button" onClick={() => setSearchParams(getParams(page - 4, sorting, company , engine))}>
                     <h5>{page - 4}</h5>
                 </div>}
-                {page > 1 && <div className="page-button" onClick={() => decrementPage()}>
+                {page > 1 && <div className="page-button" onClick={() => setSearchParams(getParams(page -1, sorting, company , engine))}>
                     <h5>{'<'}</h5>
                 </div>}
             </div>
@@ -27,13 +40,13 @@ const Pagination: React.FC = () => {
                 </div>
             </div>
             <div className="pagi-buttons-container">
-                {page < maxPages && <div className="page-button" onClick={() => incrementPage()}>
+                {page < maxPages && <div className="page-button" onClick={() => setSearchParams(getParams(page + 1, sorting, company , engine))}>
                     <h5>{'>'}</h5>
                 </div>}
-                {(page + 4) < maxPages && <div className="page-button" onClick={() => setPage(page + 4)}>
+                {(page + 4) < maxPages && <div className="page-button" onClick={() => setSearchParams(getParams(page + 1, sorting, company , engine))}>
                     <h5>{page + 4}</h5>
                 </div>}
-                {page < maxPages && <div className="page-button" onClick={() => setPage(maxPages)}>
+                {page < maxPages && <div className="page-button" onClick={() => setSearchParams(getParams(maxPages, sorting, company , engine))}>
                     <h5>{maxPages}</h5>
                 </div>}
             </div>

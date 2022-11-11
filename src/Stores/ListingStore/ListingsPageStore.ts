@@ -5,8 +5,6 @@ import { Filter } from "../../Types/filter.type";
 import { companyList } from "../MockLists";
 import { getListingPage} from "../../Services/Listing.service";
 
-
-
 export class ListingsPageStore {
     listings: CarListing[] = [];
 
@@ -38,16 +36,14 @@ export class ListingsPageStore {
             isLoading: observable,
             setMakeFilter: action,
             setEngineFilter: action,
-            setHorsepowerSorting: action,
-            setPriceSorting: action,
-            incrementPage: action,
-            decrementPage: action,
+            setSorting: action,
             setPage: action,
             setListings: action,
             setMaxPages: action,
             clearListingsPage: action,
             setLoadingStatus: action,
             setCancelStatus: action,
+            getParams: action,
         })
     }
 
@@ -62,7 +58,7 @@ export class ListingsPageStore {
         }
 
         this.sorting = null
-        this.page = 1;
+        this.setPage(1);
     }
 
     setCancelStatus= (status:boolean): void => {
@@ -117,74 +113,65 @@ export class ListingsPageStore {
         this.setMaxPages(max);
     }
 
-    setMakeFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
-        this.page = 1;
-        if (event.currentTarget.value === "M-N/A") {
+    setMakeFilter = (filter: string): void =>  {
+        this.setPage(1);
+        if (filter === "all") {
             this.filter.company = null;
             this.getCurrentListing();
             return;
         }
         
-        this.filter.company = event.currentTarget.value;
+        this.filter.company = filter;
         this.getCurrentListing();
     }
 
-    setEngineFilter = (event: React.FormEvent<HTMLSelectElement>): void =>  {
-        this.page = 1;
-        if (event.currentTarget.value === "E-N/A") {
+    setEngineFilter = (filter: string): void =>  {
+        this.setPage(1);
+        if (filter === "all") {
             this.filter.engine = null;
             this.getCurrentListing();
             return;
         } 
         
-        this.filter.engine = event.currentTarget.value
+        this.filter.engine = filter;
         this.getCurrentListing();
     }
 
-    setHorsepowerSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
-        this.page = 1;
-        if (event.currentTarget.value === "none") {
+    setSorting = (sorting: string): void =>{
+        this.setPage(1);
+        if (sorting === "none") {
             this.sorting = null;
             this.getCurrentListing();
             return;
         }
 
-        this.sorting= event.currentTarget.value;
-        this.getCurrentListing();
-    }
-
-    setPriceSorting = (event: React.FormEvent<HTMLSelectElement>): void =>{
-        this.page = 1;
-        if (event.currentTarget.value === "none") {
-            this.sorting = null;
-            this.getCurrentListing();
-            return;
-        }
-
-        this.sorting = event.currentTarget.value;
-
-        this.getCurrentListing();
-    }
-
-    incrementPage = (): void => {
-        if (this.page === this.maxPages) return;
-
-        ++this.page;
-
-        this.getCurrentListing();
-    }
-
-    decrementPage = (): void => {
-        if (this.page === 1 ) return;
-
-        --this.page;
+        this.sorting = sorting;
 
         this.getCurrentListing();
     }
 
     setPage = (page:number): void => {
         this.page = page;
+    }
 
-        this.getCurrentListing();
+    getParams = (page: number, sort: string | null, make:string | null, engine:string | null): string => {
+        let query = `page=${page}`;
+        
+        if (sort) {
+            let sortQuery = `&sort=${sort}`;
+            query = query + sortQuery;
+        }
+
+        if (make) {
+            let makeQuery = `&make=${make}`;
+            query = query + makeQuery;
+        }
+
+        if (engine) {
+            let engineQuery = `&engine=${engine}`;
+            query = query + engineQuery;
+        }
+
+        return query
     }
 }
