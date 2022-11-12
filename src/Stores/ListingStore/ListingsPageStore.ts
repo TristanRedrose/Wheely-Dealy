@@ -43,7 +43,7 @@ export class ListingsPageStore {
             clearListingsPage: action,
             setLoadingStatus: action,
             setCancelStatus: action,
-            getParams: action,
+            getQueryParams: action,
         })
     }
 
@@ -154,24 +154,24 @@ export class ListingsPageStore {
         this.page = page;
     }
 
-    getParams = (page: number, sort: string | null, make:string | null, engine:string | null): string => {
-        let query = `page=${page}`;
+    getQueryParams = (page: number, sort: string | null, make:string | null, engine:string | null): string => {
+        let queryParams = `page=${page}`;
         
         if (sort) {
             let sortQuery = `&sort=${sort}`;
-            query = query + sortQuery;
+            queryParams = queryParams + sortQuery;
         }
 
         if (make) {
             let makeQuery = `&make=${make}`;
-            query = query + makeQuery;
+            queryParams = queryParams + makeQuery;
         }
 
         if (engine) {
             let engineQuery = `&engine=${engine}`;
-            query = query + engineQuery;
+            queryParams = queryParams + engineQuery;
         }
 
-        return query
+        return queryParams
     }
 }

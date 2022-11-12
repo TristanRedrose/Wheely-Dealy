@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 const ListingsFilterSort = () => {
 
     const {listingsPageStore} = useRootStore();
-    const {companyList, setMakeFilter, setEngineFilter, setSorting, getParams, page} = listingsPageStore;
+    const {companyList, setMakeFilter, setEngineFilter, setSorting, getQueryParams, page} = listingsPageStore;
 
     const priceSorting = useRef<null | HTMLSelectElement>(null);
     const horsepowerSorting = useRef<null | HTMLSelectElement>(null);
@@ -58,7 +58,7 @@ const ListingsFilterSort = () => {
                 <h5>Filter by:</h5>
                 <div className="label-select-box">
                     <h6>Make:</h6>
-                    <select title="company-filter" className="filter" defaultValue={"all"} ref={makeFilter} onChange={(e) => setSearchParams(getParams(page, querySort, e.currentTarget.value, queryEngine))}>
+                    <select title="company-filter" className="filter" defaultValue={"all"} ref={makeFilter} onChange={(e) => setSearchParams(getQueryParams(1, querySort, e.currentTarget.value, queryEngine))}>
                         <option value={"all"}>All</option>
                         {companyList.map(item => {
                             return <option key={item.id} value={item.company}>{item.company}</option>
@@ -67,7 +67,7 @@ const ListingsFilterSort = () => {
                 </div>
                 <div className="label-select-box">
                     <h6>Engine:</h6>
-                    <select title="engine-filter" className="filter" ref={engineFilter} defaultValue={"all"} onChange={(e) => setSearchParams(getParams(page, querySort, queryMake, e.currentTarget.value))}>
+                    <select title="engine-filter" className="filter" ref={engineFilter} defaultValue={"all"} onChange={(e) => setSearchParams(getQueryParams(1, querySort, queryMake, e.currentTarget.value))}>
                         <option value={"all"}>All</option>
                         <option value={"petrol"}>Petrol</option>
                         <option value={"diesel"}>Diesel</option>
@@ -79,7 +79,7 @@ const ListingsFilterSort = () => {
                 <div className="label-select-box">
                     <h6>Horsepower:</h6>
                     <select title="horsepower-sort" ref={horsepowerSorting} className="filter" defaultValue={"none"} 
-                        onChange={(e) => setSearchParams(getParams(page, e.currentTarget.value, queryMake, queryEngine))}>
+                        onChange={(e) => setSearchParams(getQueryParams(page, e.currentTarget.value, queryMake, queryEngine))}>
                         <option value={"none"}>N/A</option>
                         <option value={"-horsepower"}>Highest first</option>
                         <option value={"horsepower"}>Lowest first</option>
@@ -88,7 +88,7 @@ const ListingsFilterSort = () => {
                 <div className="label-select-box">
                     <h6>Price:</h6>
                     <select title="price-sort" ref={priceSorting} className="filter" defaultValue={"none"} 
-                        onChange={(e) => setSearchParams(getParams(page, e.currentTarget.value, queryMake, queryEngine))}>
+                        onChange={(e) => setSearchParams(getQueryParams(page, e.currentTarget.value, queryMake, queryEngine))}>
                         <option value={"none"}>N/A</option>
                         <option value={"-price"}>Highest first</option>
                         <option value={"price"}>Lowest first</option>

@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 const Pagination: React.FC = () => {
 
     const {listingsPageStore} = useRootStore();
-    const {page, maxPages, setPage, sorting, filter, getParams} = listingsPageStore;
+    const {page, maxPages, setPage, sorting, filter, getQueryParams} = listingsPageStore;
     let {engine, company} = filter
     let [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,13 +24,13 @@ const Pagination: React.FC = () => {
     return (
         <div className="pagination">
             <div className="pagi-buttons-container">
-                {page > 1 && <div className="page-button" onClick={() => setSearchParams(getParams(1, sorting, company , engine))}>
+                {page > 1 && <div className="page-button" onClick={() => setSearchParams(getQueryParams(1, sorting, company , engine))}>
                     <h5>1</h5>
                 </div>}
-                {(page - 4) > 1 && <div className="page-button" onClick={() => setSearchParams(getParams(page - 4, sorting, company , engine))}>
+                {(page - 4) > 1 && <div className="page-button" onClick={() => setSearchParams(getQueryParams(page - 4, sorting, company , engine))}>
                     <h5>{page - 4}</h5>
                 </div>}
-                {page > 1 && <div className="page-button" onClick={() => setSearchParams(getParams(page -1, sorting, company , engine))}>
+                {page > 1 && <div className="page-button" onClick={() => setSearchParams(getQueryParams(page -1, sorting, company , engine))}>
                     <h5>{'<'}</h5>
                 </div>}
             </div>
@@ -40,13 +40,13 @@ const Pagination: React.FC = () => {
                 </div>
             </div>
             <div className="pagi-buttons-container">
-                {page < maxPages && <div className="page-button" onClick={() => setSearchParams(getParams(page + 1, sorting, company , engine))}>
+                {page < maxPages && <div className="page-button" onClick={() => setSearchParams(getQueryParams(page + 1, sorting, company , engine))}>
                     <h5>{'>'}</h5>
                 </div>}
-                {(page + 4) < maxPages && <div className="page-button" onClick={() => setSearchParams(getParams(page + 1, sorting, company , engine))}>
+                {(page + 4) < maxPages && <div className="page-button" onClick={() => setSearchParams(getQueryParams(page + 1, sorting, company , engine))}>
                     <h5>{page + 4}</h5>
                 </div>}
-                {page < maxPages && <div className="page-button" onClick={() => setSearchParams(getParams(maxPages, sorting, company , engine))}>
+                {page < maxPages && <div className="page-button" onClick={() => setSearchParams(getQueryParams(maxPages, sorting, company , engine))}>
                     <h5>{maxPages}</h5>
                 </div>}
             </div>
