@@ -19,6 +19,12 @@ export class ListingsPageStore {
 
     sorting: string | null = null;
 
+    sortKeys: string[] = ["price", "-price", "horsepower", "-horsepower"]
+
+    engineFilterKeys: string[] = ["petrol", "diesel"];
+
+    companyFilterKeys: string[] = companyList.map(item => item.company);
+
     maxPages: number = 0;
 
     isLoading: boolean = false;
@@ -77,15 +83,6 @@ export class ListingsPageStore {
         this.maxPages = maxPages;
     }
 
-    getCurrentListing() {
-        if (this.isLoading) {
-            this.setCancelStatus(true);
-            return;
-        }
-
-        this.getListings();
-    }
-
     getListings = async(): Promise<void> =>{
         this.setLoadingStatus(true);
         const pagingParams: PagingParams = {
@@ -99,43 +96,22 @@ export class ListingsPageStore {
             this.setCancelStatus(false);
             return;
         }
-
+        console.log(this.companyFilterKeys)
         this.setLoadingStatus(false);
         this.setListings(listingsResult.paginatedListings.listings);
         this.setMaxPages(listingsResult.paginatedListings.maxPages);
     }
 
     setMakeFilter = (filter: string): void =>  {
-        if (filter === "all") {
-            this.filter.company = null;
-            this.getCurrentListing();
-            return;
-        }
-        
-        this.filter.company = filter;
-        this.getCurrentListing();
+        this.companyFilterKeys.includes(filter) ? this.filter.company = filter : this.filter.engine = null;
     }
 
     setEngineFilter = (filter: string): void =>  {
-        if (filter === "all") {
-            this.filter.engine = null;
-            this.getCurrentListing();
-            return;
-        } 
-        
-        this.filter.engine = filter;
-        this.getCurrentListing();
+        this.engineFilterKeys.includes(filter) ? this.filter.engine = filter : this.filter.engine = null;
     }
 
     setSorting = (sorting: string): void =>{
-        if (sorting === "none") {
-            this.sorting = null;
-            this.getCurrentListing();
-            return;
-        }
-
-        this.sorting = sorting;
-        this.getCurrentListing();
+        this.sortKeys.includes(sorting) ? this.sorting = sorting : this.sorting = null;
     }
 
     setPage = (page:number): void => {

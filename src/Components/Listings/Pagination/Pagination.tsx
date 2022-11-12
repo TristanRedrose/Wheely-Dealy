@@ -13,7 +13,6 @@ const Pagination: React.FC = () => {
     let queryPage = searchParams.get('page');
 
     useEffect(() => {
-        console.log('running');
         if (queryPage && +queryPage > 0) {
             (+queryPage <= maxPages) ? setPage(+queryPage) : setPage(maxPages);
         } else {
