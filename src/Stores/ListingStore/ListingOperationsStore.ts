@@ -8,8 +8,6 @@ export class ListingOperationsStore {
 
     isLoading: boolean = false;
 
-    message: string = '';
-
     actionSuccess: boolean = false;
 
     notificationStore: NotificationStore;
@@ -18,11 +16,9 @@ export class ListingOperationsStore {
         this.notificationStore = notificationStore
         makeObservable(this, {
             isLoading: observable,
-            message: observable,
             actionSuccess: observable,
             setSuccess:action,
             setLoadingStatus: action,
-            setMessage: action,
             clearListingOperationData: action,
             setOperationResults: action,
         });
@@ -40,10 +36,6 @@ export class ListingOperationsStore {
         this.setLoadingStatus(true);
         const response = await postNewListing(newListing);
         this.setOperationResults(response);
-    }
-
-    setMessage = (message: string): void => {
-        this.message = message;
     }
 
     setSuccess = (value: boolean): void => {
@@ -69,7 +61,6 @@ export class ListingOperationsStore {
 
     setOperationResults = (response: ResultStatus): void => {
         this.setSuccess(response.isSuccessful);
-        this.setMessage(response.message);
         if (response.isSuccessful) this.notifySuccess(response.message);
         this.setLoadingStatus(false);
     }
