@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 const ListingsFilterSort = () => {
 
     const {listingsPageStore} = useRootStore();
-    const {companyList, setMakeFilter, setEngineFilter, setSorting, getQueryParams, page} = listingsPageStore;
+    const {companyList, setMakeFilter, setEngineFilter, setSorting, getQueryParams} = listingsPageStore;
 
     const priceSorting = useRef<null | HTMLSelectElement>(null);
     const horsepowerSorting = useRef<null | HTMLSelectElement>(null);
@@ -79,7 +79,7 @@ const ListingsFilterSort = () => {
                 <div className="label-select-box">
                     <h6>Horsepower:</h6>
                     <select title="horsepower-sort" ref={horsepowerSorting} className="filter" defaultValue={"none"} 
-                        onChange={(e) => setSearchParams(getQueryParams(page, e.currentTarget.value, queryMake, queryEngine))}>
+                        onChange={(e) => setSearchParams(getQueryParams(1, e.currentTarget.value, queryMake, queryEngine))}>
                         <option value={"none"}>N/A</option>
                         <option value={"-horsepower"}>Highest first</option>
                         <option value={"horsepower"}>Lowest first</option>
@@ -88,7 +88,7 @@ const ListingsFilterSort = () => {
                 <div className="label-select-box">
                     <h6>Price:</h6>
                     <select title="price-sort" ref={priceSorting} className="filter" defaultValue={"none"} 
-                        onChange={(e) => setSearchParams(getQueryParams(page, e.currentTarget.value, queryMake, queryEngine))}>
+                        onChange={(e) => setSearchParams(getQueryParams(1, e.currentTarget.value, queryMake, queryEngine))}>
                         <option value={"none"}>N/A</option>
                         <option value={"-price"}>Highest first</option>
                         <option value={"price"}>Lowest first</option>

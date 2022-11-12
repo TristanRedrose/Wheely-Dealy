@@ -87,34 +87,25 @@ export class ListingsPageStore {
     }
 
     getListings = async(): Promise<void> =>{
-        let list: CarListing[] = []
-        let max: number = 0
         this.setLoadingStatus(true);
         const pagingParams: PagingParams = {
             page: this.page,
             filter: this.filter,
             sorting: this.sorting
         }
-        await getListingPage(pagingParams).then((result) => {
-            if (result === undefined) {
-                list = [];
-                return;
-            }
+        const listingsResult = await getListingPage(pagingParams);
 
-            list = result.paginatedListings.listings;
-            max = result.paginatedListings.maxPages;
-        });
         if (this.isCancelled) {
             this.setCancelStatus(false);
             return;
         }
+
         this.setLoadingStatus(false);
-        this.setListings(list);
-        this.setMaxPages(max);
+        this.setListings(listingsResult.paginatedListings.listings);
+        this.setMaxPages(listingsResult.paginatedListings.maxPages);
     }
 
     setMakeFilter = (filter: string): void =>  {
-        this.setPage(1);
         if (filter === "all") {
             this.filter.company = null;
             this.getCurrentListing();
@@ -126,7 +117,6 @@ export class ListingsPageStore {
     }
 
     setEngineFilter = (filter: string): void =>  {
-        this.setPage(1);
         if (filter === "all") {
             this.filter.engine = null;
             this.getCurrentListing();
@@ -138,7 +128,6 @@ export class ListingsPageStore {
     }
 
     setSorting = (sorting: string): void =>{
-        this.setPage(1);
         if (sorting === "none") {
             this.sorting = null;
             this.getCurrentListing();
@@ -146,7 +135,6 @@ export class ListingsPageStore {
         }
 
         this.sorting = sorting;
-
         this.getCurrentListing();
     }
 
