@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from "react";
+import React, { useEffect } from "react";
 import { useRootStore } from "../../../Context/StoresContext";
 import "./FilterSort.css";
 import { useSearchParams } from "react-router-dom";
@@ -7,11 +7,6 @@ const ListingsFilterSort = () => {
 
     const {listingsPageStore} = useRootStore();
     const {companyList, setMakeFilter, setEngineFilter, setSorting, getQueryParams, engineFilterKeys, companyFilterKeys, getListings} = listingsPageStore;
-
-    const priceSorting = useRef<null | HTMLSelectElement>(null);
-    const horsepowerSorting = useRef<null | HTMLSelectElement>(null);
-    const engineFilter = useRef<null | HTMLSelectElement>(null);
-    const makeFilter = useRef<null | HTMLSelectElement>(null);
 
     let [searchParams, setSearchParams] = useSearchParams();
     let querySort = searchParams.get('sort');
@@ -23,10 +18,7 @@ const ListingsFilterSort = () => {
 
         if (queryMake) setMakeFilter(queryMake); 
 
-        if (queryEngine) setEngineFilter(queryEngine);
-
-        if (querySort || queryEngine || queryMake) getListings();
-        
+        if (queryEngine) setEngineFilter(queryEngine);    
     }, [querySort, setSorting, queryEngine, setEngineFilter, queryMake, setMakeFilter, getListings])
 
 
@@ -40,7 +32,6 @@ const ListingsFilterSort = () => {
                         title="company-filter" 
                         className="filter" 
                         value={(queryMake && companyFilterKeys.includes(queryMake)) ? queryMake : "all"} 
-                        ref={makeFilter} 
                         onChange={(e) => setSearchParams(getQueryParams(1, querySort, e.currentTarget.value, queryEngine))}>
                             <option value={"all"}>All</option>
                             {companyList.map(item => {
@@ -53,7 +44,6 @@ const ListingsFilterSort = () => {
                     <select 
                         title="engine-filter"
                         className="filter" 
-                        ref={engineFilter} 
                         value={queryEngine && engineFilterKeys.includes(queryEngine) ? queryEngine : "all"} 
                         onChange={(e) => setSearchParams(getQueryParams(1, querySort, queryMake, e.currentTarget.value))}>
                             <option value={"all"}>All</option>
@@ -68,7 +58,6 @@ const ListingsFilterSort = () => {
                     <h6>Horsepower:</h6>
                     <select 
                         title="horsepower-sort" 
-                        ref={horsepowerSorting} 
                         className="filter" 
                         value={(querySort && ["-horsepower", "horsepower"].includes(querySort)) ? querySort : "none"} 
                         onChange={(e) => setSearchParams(getQueryParams(1, e.currentTarget.value, queryMake, queryEngine))}>
@@ -81,7 +70,6 @@ const ListingsFilterSort = () => {
                     <h6>Price:</h6>
                     <select 
                         title="price-sort" 
-                        ref={priceSorting} 
                         className="filter" 
                         value={(querySort && ["-price", "price"].includes(querySort)) ? querySort : "none"}
                         onChange={(e) => setSearchParams(getQueryParams(1, e.currentTarget.value, queryMake, queryEngine))}>

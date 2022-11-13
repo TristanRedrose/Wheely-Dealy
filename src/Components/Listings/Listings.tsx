@@ -6,17 +6,21 @@ import Listing from "./Listing";
 import ListingsFilterSort from "./FilterSort/FilterSort";
 import Pagination from "./Pagination/Pagination";
 import LoadingCircle from "../Common/Loading/LoadingCircle";
+import { useSearchParams } from "react-router-dom";
 
 
 
 const Listings: React.FC = observer(() => {
 
     const {listingsPageStore} = useRootStore();
-    const {getListings, clearListingsPage, isLoading, listings, page} = listingsPageStore
+    const {getListings, clearListingsPage, isLoading, listings} = listingsPageStore
+    let [searchParams] = useSearchParams();
+
+    let params = searchParams.toString()
 
     useEffect(() => {
-        getListings();
-    }, [getListings, page]);
+        getListings()
+    }, [getListings, params]);
 
     useEffect(() => {
         return () => clearListingsPage();

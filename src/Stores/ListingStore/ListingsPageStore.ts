@@ -96,14 +96,13 @@ export class ListingsPageStore {
             this.setCancelStatus(false);
             return;
         }
-        console.log(this.companyFilterKeys)
         this.setLoadingStatus(false);
         this.setListings(listingsResult.paginatedListings.listings);
         this.setMaxPages(listingsResult.paginatedListings.maxPages);
     }
 
     setMakeFilter = (filter: string): void =>  {
-        this.companyFilterKeys.includes(filter) ? this.filter.company = filter : this.filter.engine = null;
+        this.companyFilterKeys.includes(filter) ? this.filter.company = filter : this.filter.company = null;
     }
 
     setEngineFilter = (filter: string): void =>  {
