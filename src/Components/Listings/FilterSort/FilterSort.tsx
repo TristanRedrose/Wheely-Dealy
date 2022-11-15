@@ -1,26 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRootStore } from "../../../Context/StoresContext";
 import "./FilterSort.css";
-import { useSearchParams } from "react-router-dom";
 
 const ListingsFilterSort = () => {
 
     const {listingsPageStore} = useRootStore();
-    const {companyList, setMakeFilter, setEngineFilter, setSorting, getQueryParams, engineFilterKeys, companyFilterKeys, getListings} = listingsPageStore;
-
-    let [searchParams, setSearchParams] = useSearchParams();
-    let querySort = searchParams.get('sort');
-    let queryEngine = searchParams.get('engine');
-    let queryMake = searchParams.get('make');
-
-    useEffect(() => {
-        if (querySort) setSorting(querySort);
-
-        if (queryMake) setMakeFilter(queryMake); 
-
-        if (queryEngine) setEngineFilter(queryEngine);    
-    }, [querySort, setSorting, queryEngine, setEngineFilter, queryMake, setMakeFilter, getListings])
-
+    const {companyList, setMakeFilter, setEngineFilter, setSorting, engineFilterKeys, companyFilterKeys, queryParams, goToFirstPage} = listingsPageStore;
+    const {sorting, filter: {company, engine}} = queryParams
 
     return (
         <div className="filter-sort-container">
@@ -31,8 +17,8 @@ const ListingsFilterSort = () => {
                     <select 
                         title="company-filter" 
                         className="filter" 
-                        value={(queryMake && companyFilterKeys.includes(queryMake)) ? queryMake : "all"} 
-                        onChange={(e) => setSearchParams(getQueryParams(1, querySort, e.currentTarget.value, queryEngine))}>
+                        value={(company && companyFilterKeys.includes(company)) ? company : "all"} 
+                        onChange={(e) => {setMakeFilter(e.currentTarget.value); goToFirstPage()}}>
                             <option value={"all"}>All</option>
                             {companyList.map(item => {
                                 return <option key={item.id} value={item.company}>{item.company}</option>
@@ -44,8 +30,8 @@ const ListingsFilterSort = () => {
                     <select 
                         title="engine-filter"
                         className="filter" 
-                        value={queryEngine && engineFilterKeys.includes(queryEngine) ? queryEngine : "all"} 
-                        onChange={(e) => setSearchParams(getQueryParams(1, querySort, queryMake, e.currentTarget.value))}>
+                        value={engine && engineFilterKeys.includes(engine) ? engine : "all"} 
+                        onChange={(e) => {setEngineFilter(e.currentTarget.value); goToFirstPage()}}>
                             <option value={"all"}>All</option>
                             <option value={"petrol"}>Petrol</option>
                             <option value={"diesel"}>Diesel</option>
@@ -59,8 +45,8 @@ const ListingsFilterSort = () => {
                     <select 
                         title="horsepower-sort" 
                         className="filter" 
-                        value={(querySort && ["-horsepower", "horsepower"].includes(querySort)) ? querySort : "none"} 
-                        onChange={(e) => setSearchParams(getQueryParams(1, e.currentTarget.value, queryMake, queryEngine))}>
+                        value={(sorting && ["-horsepower", "horsepower"].includes(sorting)) ? sorting : "none"} 
+                        onChange={(e) => {setSorting(e.currentTarget.value); goToFirstPage()}}>
                             <option value={"none"}>N/A</option>
                             <option value={"-horsepower"}>Highest first</option>
                             <option value={"horsepower"}>Lowest first</option>
@@ -71,8 +57,8 @@ const ListingsFilterSort = () => {
                     <select 
                         title="price-sort" 
                         className="filter" 
-                        value={(querySort && ["-price", "price"].includes(querySort)) ? querySort : "none"}
-                        onChange={(e) => setSearchParams(getQueryParams(1, e.currentTarget.value, queryMake, queryEngine))}>
+                        value={(sorting && ["-price", "price"].includes(sorting)) ? sorting : "none"}
+                        onChange={(e) => {setSorting(e.currentTarget.value); goToFirstPage()}}>
                             <option value={"none"}>N/A</option>
                             <option value={"-price"}>Highest first</option>
                             <option value={"price"}>Lowest first</option>

@@ -28,7 +28,7 @@ export interface NewListingReq {
 }
 
 export interface PagingParams {
-    page: number | null;
+    page: number;
     filter: Filter,
     sorting: string | null;
 }

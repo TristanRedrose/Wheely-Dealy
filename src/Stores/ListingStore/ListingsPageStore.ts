@@ -1,7 +1,6 @@
 import { makeObservable, observable, action } from "mobx";
 import { CarListing, PagingParams } from "../../Types/listing.type";
 import { Company } from "../../Types/company.type";
-import { Filter } from "../../Types/filter.type";
 import { companyList } from "../MockLists";
 import { getListingPage} from "../../Services/Listing.service";
 
@@ -9,15 +8,6 @@ export class ListingsPageStore {
     listings: CarListing[] = [];
 
     companyList: Company[] = companyList;
-
-    page: number = 1;
-
-    filter: Filter = {
-        company: null,
-        engine: null,
-    }
-
-    sorting: string | null = null;
 
     sortKeys: string[] = ["price", "-price", "horsepower", "-horsepower"]
 
@@ -31,13 +21,19 @@ export class ListingsPageStore {
 
     isCancelled: boolean = false;
 
+    queryParams: PagingParams = {
+        page: 1,
+        sorting: null,
+        filter: {
+            company: null,
+            engine: null,
+        }
+    };
+
     constructor() {
         makeObservable(this, {
             listings: observable,
             companyList: observable,
-            page: observable,
-            sorting: observable,
-            filter: observable,
             maxPages: observable,
             isLoading: observable,
             setMakeFilter: action,
@@ -49,7 +45,11 @@ export class ListingsPageStore {
             clearListingsPage: action,
             setLoadingStatus: action,
             setCancelStatus: action,
-            getQueryParams: action,
+            serializeQueryParams: action,
+            queryParams: observable,
+            getListings: action,
+            resetQueryParams: action,
+            goToFirstPage: action,
         })
     }
 
@@ -58,13 +58,7 @@ export class ListingsPageStore {
         this.setLoadingStatus(false);
         this.setListings([]);
         this.setMaxPages(0);
-        this.filter = {
-            company: null,
-            engine: null,
-        }
-
-        this.sorting = null
-        this.setPage(1);
+        this.resetQueryParams();
     }
 
     setCancelStatus= (status:boolean): void => {
@@ -85,13 +79,8 @@ export class ListingsPageStore {
 
     getListings = async(): Promise<void> =>{
         this.setLoadingStatus(true);
-        const pagingParams: PagingParams = {
-            page: this.page,
-            filter: this.filter,
-            sorting: this.sorting
-        }
-        const listingsResult = await getListingPage(pagingParams);
-
+        console.log('am running')
+        const listingsResult = await getListingPage(this.queryParams);
         if (this.isCancelled) {
             this.setCancelStatus(false);
             return;
@@ -102,39 +91,64 @@ export class ListingsPageStore {
     }
 
     setMakeFilter = (filter: string): void =>  {
-        this.companyFilterKeys.includes(filter) ? this.filter.company = filter : this.filter.company = null;
+        this.companyFilterKeys.includes(filter) ? this.queryParams.filter.company = filter : this.queryParams.filter.company = null;
     }
 
     setEngineFilter = (filter: string): void =>  {
-        this.engineFilterKeys.includes(filter) ? this.filter.engine = filter : this.filter.engine = null;
+        this.engineFilterKeys.includes(filter) ? this.queryParams.filter.engine = filter : this.queryParams.filter.engine = null;
     }
 
-    setSorting = (sorting: string): void =>{
-        this.sortKeys.includes(sorting) ? this.sorting = sorting : this.sorting = null;
+    setSorting = (sorting: string): void => {
+        this.sortKeys.includes(sorting) ? this.queryParams.sorting = sorting : this.queryParams.sorting = null;
     }
 
-    setPage = (page:number): void => {
-        this.page = page;
+    setPage = (queryPage: string): void => {
+        if (+queryPage > 0 && this.maxPages > 0) {
+            (+queryPage <= this.maxPages) ? this.queryParams.page = +queryPage : this.queryParams.page = this.maxPages;
+        } else (
+            this.queryParams.page = 1
+        )
     }
 
-    getQueryParams = (page: number, sort: string | null, make:string | null, engine:string | null): string => {
-        let queryParams = `page=${page}`;
+    goToFirstPage = (): void => {
+        if (this.queryParams.page !== 1) this.setPage('1');
+    }
+
+    serializeQueryParams = (): string => {
+        const {page, sorting, filter: {company, engine}} = this.queryParams
+        let queryParams = ''
+
+        if (page) {
+            const pageQuery = `&page=${page}`;
+            queryParams = queryParams + pageQuery;
+        }
         
-        if (sort) {
-            let sortQuery = `&sort=${sort}`;
+        if (sorting) {
+            const sortQuery = `&sort=${sorting}`;
             queryParams = queryParams + sortQuery;
         }
 
-        if (make) {
-            let makeQuery = `&make=${make}`;
+        if (company) {
+            const makeQuery = `&make=${company}`;
             queryParams = queryParams + makeQuery;
         }
 
         if (engine) {
-            let engineQuery = `&engine=${engine}`;
+            const engineQuery = `&engine=${engine}`;
             queryParams = queryParams + engineQuery;
         }
 
         return queryParams
+    }
+
+    resetQueryParams = (): void => {
+        this.queryParams = {
+            page: 1,
+            sorting: null,
+            filter: {
+                company: null,
+                engine: null,
+            }
+        };
     }
 }
