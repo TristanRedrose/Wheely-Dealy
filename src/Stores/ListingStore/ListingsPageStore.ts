@@ -79,7 +79,6 @@ export class ListingsPageStore {
 
     getListings = async(): Promise<void> =>{
         this.setLoadingStatus(true);
-        console.log('am running')
         const listingsResult = await getListingPage(this.queryParams);
         if (this.isCancelled) {
             this.setCancelStatus(false);
