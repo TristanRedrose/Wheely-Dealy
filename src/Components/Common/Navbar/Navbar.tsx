@@ -19,7 +19,7 @@ const NavbarComponent: React.FC = observer(() => {
             <div className="navbar">
                 <Link className="title-link" to="/">
                     <div className="">
-                        <h3 className="lobster-text">Wheely-Deally</h3>
+                        <h3 className="lobster-text">Wheely-Dealy</h3>
                     </div>
                 </Link>
                 <div>

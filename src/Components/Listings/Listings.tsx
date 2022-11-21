@@ -13,7 +13,7 @@ import { useSearchParams } from "react-router-dom";
 const Listings: React.FC = observer(() => {
 
     const {listingsPageStore} = useRootStore();
-    const {getListings, clearListingsPage, isLoading, listings, setPage, setSorting, setEngineFilter, setMakeFilter, serializeQueryParams, queryParams} = listingsPageStore;
+    const {getListings, clearListingsPage, isLoading, listings, setPage, setSorting, setEngineFilter, setMakeFilter, serializeQueryParams, queryParams, maxPages} = listingsPageStore;
     const {page, sorting, filter: {engine, company}} = queryParams;
 
     let [searchParams, setSearchParams] = useSearchParams();
@@ -69,8 +69,9 @@ const Listings: React.FC = observer(() => {
                             <Listing key={listing._id} listing={listing} />
                         )
                     })}
+                    {maxPages === 0 && <h3>No listings found</h3>}
                 </div>}
-                {!isLoading && <div className="pagination-box">
+                {!isLoading && maxPages > 0 && <div className="pagination-box">
                     <Pagination />
                 </div>}
             </div>

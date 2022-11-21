@@ -6,7 +6,7 @@ const About: React.FC = () => {
     return (
         <div className="section-box">
             <div>
-                <h2>Welcome to Wheely-Deally, an online car listing, where the best deals are only a few clicks away</h2>
+                <h2>Welcome to Wheely-Dealy, an online car listing, where the best deals are only a few clicks away</h2>
             </div>
             <div className="about-container">
                 <div className="about-box">

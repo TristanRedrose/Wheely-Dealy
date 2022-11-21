@@ -87,6 +87,10 @@ export class ListingsPageStore {
         this.setLoadingStatus(false);
         this.setListings(listingsResult.paginatedListings.listings);
         this.setMaxPages(listingsResult.paginatedListings.maxPages);
+
+        if (this.maxPages < this.queryParams.page) {
+            this.setPage(`${this.maxPages}`);
+        }
     }
 
     setMakeFilter = (filter: string): void =>  {
@@ -102,11 +106,7 @@ export class ListingsPageStore {
     }
 
     setPage = (queryPage: string): void => {
-        if (+queryPage > 0 && this.maxPages > 0) {
-            (+queryPage <= this.maxPages) ? this.queryParams.page = +queryPage : this.queryParams.page = this.maxPages;
-        } else (
-            this.queryParams.page = 1
-        )
+        (+queryPage > 0) ? this.queryParams.page = +queryPage : this.queryParams.page = 1;   
     }
 
     goToFirstPage = (): void => {
