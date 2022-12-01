@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React from "react";
 import { observer } from "mobx-react-lite"
 import { useRootStore } from "../../Context/StoresContext";
 import "./Listings.css";
@@ -6,51 +6,14 @@ import Listing from "./Listing";
 import ListingsFilterSort from "./FilterSort/FilterSort";
 import Pagination from "./Pagination/Pagination";
 import LoadingCircle from "../Common/Loading/LoadingCircle";
-import { useSearchParams } from "react-router-dom";
-
-
+import { usePagingParams } from "../../Utils/CustomHooks/UsePagingParams";
 
 const Listings: React.FC = observer(() => {
 
     const {listingsPageStore} = useRootStore();
-    const {getListings, clearListingsPage, isLoading, listings, setPage, setSorting, setEngineFilter, setMakeFilter, serializeQueryParams, queryParams, maxPages} = listingsPageStore;
-    const {page, sorting, filter: {engine, company}} = queryParams;
+    const {isLoading, listings, maxPages} = listingsPageStore;
 
-    let [searchParams, setSearchParams] = useSearchParams();
-    let pageParam = searchParams.get('page');
-    let sortParam = searchParams.get('sort');
-    let engineParam = searchParams.get('engine');
-    let makeParam = searchParams.get('make');
-
-    let params = searchParams.toString();
-
-    useEffect(() => {
-        pageParam ? setPage(pageParam) : setPage('');
-    }, [pageParam, setPage])
-
-    useEffect(() => {
-        sortParam ? setSorting(sortParam) : setSorting('');
-    }, [sortParam, setSorting])
-
-    useEffect(() => {
-        engineParam ? setEngineFilter(engineParam) : setEngineFilter('');
-    }, [engineParam, setEngineFilter])
-
-    useEffect(() => {
-        makeParam ? setMakeFilter(makeParam) : setMakeFilter('');
-    }, [makeParam, setMakeFilter])
-
-    useEffect(() => {
-        setSearchParams(serializeQueryParams())
-    }, [serializeQueryParams, setSearchParams, page, company, engine, sorting])
-
-    useEffect(() => {
-        getListings()
-    }, [getListings, params]);
-
-    useEffect(() => {
-        return () => clearListingsPage();
-    }, [clearListingsPage])
+    usePagingParams();
 
     return (
         <>
@@ -71,10 +34,10 @@ const Listings: React.FC = observer(() => {
                     })}
                     {maxPages === 0 && <h3>No listings found</h3>}
                 </div>}
-                {!isLoading && maxPages > 0 && <div className="pagination-box">
-                    <Pagination />
-                </div>}
             </div>
+            {!isLoading && maxPages > 0 && <div className="pagination-box">
+                <Pagination />
+            </div>}
         </>
     )
 })

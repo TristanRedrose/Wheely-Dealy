@@ -106,7 +106,7 @@ export class ListingsPageStore {
     }
 
     setPage = (queryPage: string): void => {
-        (+queryPage > 0) ? this.queryParams.page = +queryPage : this.queryParams.page = 1;   
+        (+queryPage > 0) ? this.queryParams.page = +queryPage : this.queryParams.page = 1;
     }
 
     goToFirstPage = (): void => {

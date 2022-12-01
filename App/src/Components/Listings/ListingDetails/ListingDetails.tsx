@@ -1,41 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./ListingDetails.css"
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useRootStore } from "../../../Context/StoresContext";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import PageNotFound from "../../404Page/PageNotFound";
+import { useListingDetails } from "../../../Utils/CustomHooks/UseListingDetails";
 
 const ListingDetails: React.FC = observer(() => {
 
-    const navigate = useNavigate()
-
     const { id } = useParams();
     const {listingDetailsStore, listingOperationsStore, modalStore, sessionStore} = useRootStore();
-    const { clearListingData, listing, isLoading, getListing} = listingDetailsStore;
-    const { actionSuccess, clearListingOperationData} = listingOperationsStore;
-    const { toggleDeleteModal } = modalStore;
-    const { sessionUser } = sessionStore;
+    const {listing, isLoading} = listingDetailsStore;
+    const {actionSuccess} = listingOperationsStore;
+    const {toggleDeleteModal} = modalStore;
+    const {sessionUser} = sessionStore;
 
-    useEffect(()=> {
-        window.scrollTo(0,0);
-        getListing(id!);
-
-        return () => {
-            clearListingData();
-            clearListingOperationData();
-        }
-    }, [clearListingData, id, getListing, clearListingOperationData])
-
-    useEffect(() => {
-        let timeout = setTimeout(() => navigate("/listings"), 2000) ;
-        if (!actionSuccess) {
-            clearTimeout(timeout);
-        }
-        
-        return () => clearTimeout(timeout);
-        
-    }, [navigate, actionSuccess]);
+    useListingDetails();
 
     return (
         <div className="content-body">

@@ -1,44 +1,20 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import "./ListingForm.css"
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import LoadingCircle from "../../Common/Loading/LoadingCircle";
 import { useRootStore } from "../../../Context/StoresContext";
 import { companyList } from "../../../Stores/MockLists";
+import { useListingForm } from "../../../Utils/CustomHooks/UseListingForm";
 
 const ListingForm: React.FC = observer(() => {
 
     const { id } = useParams();
-    const {listingOperationsStore, listingFormStore, listingDetailsStore} = useRootStore();
-    const {setNewListingValue, errorMessage, clearListingForm, listingData, submitDisabled, setUpdateDefaultValue, errorCode} = listingFormStore;
-    const {addNewListing, actionSuccess, clearListingOperationData, isLoading, updateListing} = listingOperationsStore;
-    const {getListing, clearListingData, listing} = listingDetailsStore;
-    const navigate = useNavigate();
+    const {listingOperationsStore, listingFormStore} = useRootStore();
+    const {setNewListingValue, errorMessage, listingData, submitDisabled, errorCode} = listingFormStore;
+    const {addNewListing, actionSuccess, isLoading, updateListing} = listingOperationsStore;
     
-    useEffect(() => {
-        let timeout = setTimeout(() => {id ? navigate(`/listings/${id}`) : navigate('/listings')}, 2000);
-        if (!actionSuccess) {
-            clearTimeout(timeout);
-        }
-        
-        return () => clearTimeout(timeout);
-    }, [actionSuccess, navigate, id]);
-
-    useEffect(() => {    
-        if (id) getListing(id);
-
-        return () =>  {
-            clearListingOperationData(); 
-            clearListingForm();
-            clearListingData();
-        };
-    }, [clearListingOperationData, clearListingForm, id, clearListingData, getListing]);
-
-    useEffect(() => {
-        if (listing && id) {
-            setUpdateDefaultValue(listing);
-        }
-    }, [listing, setUpdateDefaultValue, id]);
+    useListingForm();
 
     return (
         <>

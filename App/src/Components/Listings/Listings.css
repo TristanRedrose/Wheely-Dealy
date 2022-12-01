@@ -66,9 +66,11 @@
 }
 
 .pagination-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     position: absolute;
     bottom: 24px;
-    text-align: center;
 }
 
 .loading-container {

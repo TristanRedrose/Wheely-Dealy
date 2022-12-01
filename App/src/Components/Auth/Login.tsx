@@ -18,7 +18,7 @@ const Login: React.FC = observer(() => {
         <div className="auth-body">
             <div className="auth-form-container">
                 <Link to="/">
-                    <img className="auth-logo" src="../Images/Logo/Wheely-Deally.png" alt="cars-banner" />
+                    <img className="auth-logo" src="../Images/Logo/Wheely-Dealy.png" alt="cars-banner" />
                 </Link>
                 <div className="auth-title-div">
                     <h2 className="lobster-text">Login</h2>
